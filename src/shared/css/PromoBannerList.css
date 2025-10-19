@@ -1,0 +1,40 @@
+.PromoBannerList {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin: 40px auto;
+  }
+  
+  /* 🔹 슬라이드 전체를 감싸는 영역 */
+  .PromoBanner_container {
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* 🔹 실제로 움직이는 트랙 */
+.PromoBanner_track {
+    display: flex;
+    transition: transform 0.6s ease-in-out; /* 부드럽게 이동 */
+  }
+  
+  /* 🔹 각 배너 */
+  .PromoBanner {
+    flex: 0 0 50%; /* 한 화면에 2개씩 보이게 */
+    padding: 0 8px;
+    box-sizing: border-box;
+  }
+  .nav-btn {
+    background-color: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.2s;
+    color: #707070;
+  }
+  
+  .nav-btn:hover {
+    transform: scale(1.2);
+    color: #000;
+  }
+  

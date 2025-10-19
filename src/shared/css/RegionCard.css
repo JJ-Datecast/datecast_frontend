@@ -1,0 +1,34 @@
+.RegionCard {
+    width: 100px;
+    cursor: pointer;
+    transition: all 0.2s ease; 
+   
+}
+
+.RegionCard:hover{
+    transform: translateY(-3px); 
+}
+
+.RegionCard_box{
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    transition: all 0.2s ease; 
+    padding: 25px;
+    border-radius: 10px;
+}
+.RegionCard_box:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); 
+    transform: translateY(-3px); 
+}
+
+.RegionCard_img img {
+    width:80px;
+    height: 100px;
+    object-fit: contain;
+   
+}
+
+.RegionCard_name h4{
+    padding: 0;
+    margin: 0;
+    font-size: 18px;
+}

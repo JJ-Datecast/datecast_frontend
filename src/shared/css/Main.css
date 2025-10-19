@@ -1,0 +1,9 @@
+
+.regionRow {
+    display: flex;
+    justify-content: center;
+    gap: 55px;
+    margin-bottom: 25px;
+    
+  }
+  
