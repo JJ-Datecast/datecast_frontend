@@ -22,6 +22,9 @@ const Main = () => {
                 <PromoBannerList/>
             </div>
             <div className="main_popularPlace">
+                
+            </div>
+            <div className="main_foot">
 
             </div>
         </div>

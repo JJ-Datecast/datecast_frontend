@@ -1,0 +1,17 @@
+.CategoryButton{
+    width: 90px;
+    height: 35px;
+    border-radius: 50px;
+    border:1px solid #B8B8B8; 
+    background-color: white;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight:600;
+
+}
+
+.CategoryButton.active {
+    background-color: #FFA3A3;
+    color: white;
+    border:none;
+}

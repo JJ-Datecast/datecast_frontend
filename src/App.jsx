@@ -15,8 +15,8 @@ import Profile from './pages/mypage/Profile'
 import ReviewDetail from './pages/mypage/ReviewDetail'
 import ReceiptCheck from './pages/receipt/ReceiptCheck'
 import MainView from './views/MainView'
-
-import PromoBanner from './shared/\bcomponents/PromoBanner'
+import PopularPlacesSection from './shared/\bcomponents/PopularPlacesSection'
+import PlaceCard from './shared/\bcomponents/PlaceCard'
 
 
 function App() {
@@ -26,23 +26,25 @@ function App() {
     <>
    
       <Routes>
-        <Route path="/" element={""}/>
-        <Route path="/promo" element={<PromoBanner/>}/>
+        <Route path="/place" element={<PopularPlacesSection/>}/>
+        <Route path="/placeCard" element={<PlaceCard/>}/>
 
-        <Route path="/login" element={<Login/>}/>
-        <Route path="/signUp" element={<SignUp/>}/>
-        <Route path="/mainView" element={<MainView/>}/>
-        <Route path="/calendarAddEvent" element={<CalendarAddEvent/>}/>
-        <Route path="/calendarView" element={<CalendarView/>}/>
-        <Route path="/locationDetail" element={<LocationDetail/>}/>
-        <Route path="locationList" element={<LocationList/>}/>
-        <Route path="locationReview" element={<LocationReview/>}/>
-        <Route path="/loveConnect" element={<LoveConnect/>}/>
-        <Route path="myReivew" element={<MyReview/>}/>
-        <Route path="preLove" element={<PreLove/>}/>
-        <Route path="profile" element={<Profile/>}/>
-        <Route path="reviewDetail" element={<ReviewDetail/>}/>
-        <Route path="receiptCheck" element={<ReceiptCheck/>}/>
+
+          <Route path="/" element={<MainView/>}/>
+          <Route path="/login" element={<Login/>}/>
+          <Route path="/signUp" element={<SignUp/>}/>
+          <Route path="/mainView" element={<MainView/>}/>
+          <Route path="/calendarAddEvent" element={<CalendarAddEvent/>}/>
+          <Route path="/calendarView" element={<CalendarView/>}/>
+          <Route path="/locationDetail" element={<LocationDetail/>}/>
+          <Route path="locationList" element={<LocationList/>}/>
+          <Route path="locationReview" element={<LocationReview/>}/>
+          <Route path="/loveConnect" element={<LoveConnect/>}/>
+          <Route path="myReivew" element={<MyReview/>}/>
+          <Route path="preLove" element={<PreLove/>}/>
+          <Route path="profile" element={<Profile/>}/>
+          <Route path="reviewDetail" element={<ReviewDetail/>}/>
+          <Route path="receiptCheck" element={<ReceiptCheck/>}/>
         <Route path="*" element={<Notfound/>}/>
       </Routes>
 

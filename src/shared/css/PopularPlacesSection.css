@@ -1,0 +1,9 @@
+.PopularPlacesSection_header{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.PopularPlacesSection_filters{
+    display: flex;
+    gap: 20px;
+}
