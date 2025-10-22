@@ -1,3 +1,9 @@
+.PopularPlacesSection{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}   
+
 .PopularPlacesSection_header{
     display: flex;
     align-items: center;
@@ -6,4 +12,14 @@
 .PopularPlacesSection_filters{
     display: flex;
     gap: 20px;
+}
+.PopularPlacesSection_list{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 한 줄에 3개 */
+    gap: 30px;
+    justify-items: center;
+    margin-top: 40px;
+    max-width: 1100px;
+    margin-right: auto; 
+    margin-left: auto;
 }

@@ -1,0 +1,83 @@
+.mainFooter {
+    background-color: #f7f8fa;
+    padding: 40px 60px;
+    font-size: 14px;
+    color: #555;
+    line-height: 1.6;
+  }
+  
+  .mainFooter_inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .mainFooter_top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .mainFooter_logo {
+    font-size: 28px;
+    font-weight: 700;
+  }
+  
+  .mainFooter_family select {
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .mainFooter_links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  
+  .mainFooter_links a {
+    color: #555;
+    text-decoration: none;
+  }
+  
+  .mainFooter_links a:hover {
+    text-decoration: underline;
+  }
+  
+  .mainFooter_sns {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  
+  .mainFooter_info {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 20px;
+  }
+  
+  .law-link {
+    color: #555;
+    text-decoration: underline;
+  }
+  
+  .mainFooter_awards ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: #777;
+  }
+  
+  .mainFooter_bottom {
+    border-top: 1px solid #ddd;
+    padding-top: 16px;
+    font-size: 12px;
+    color: #999;
+    text-align: center;
+  }
+  

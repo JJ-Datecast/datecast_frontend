@@ -1,0 +1,11 @@
+.AuthButton{
+    background-color: #FCCECE;
+    color: white;
+    border: none;
+    height: 50px;
+    border-radius: 10px;
+    font-size: 18px;
+    padding: 10px 20px;
+    width: 200px;
+    cursor: pointer;
+}

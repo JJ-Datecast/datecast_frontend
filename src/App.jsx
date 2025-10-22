@@ -15,9 +15,7 @@ import Profile from './pages/mypage/Profile'
 import ReviewDetail from './pages/mypage/ReviewDetail'
 import ReceiptCheck from './pages/receipt/ReceiptCheck'
 import MainView from './views/MainView'
-import PopularPlacesSection from './shared/\bcomponents/PopularPlacesSection'
-import PlaceCard from './shared/\bcomponents/PlaceCard'
-
+import SideBar from './shared/\bcomponents/SideBar'
 
 function App() {
 
@@ -26,9 +24,7 @@ function App() {
     <>
    
       <Routes>
-        <Route path="/place" element={<PopularPlacesSection/>}/>
-        <Route path="/placeCard" element={<PlaceCard/>}/>
-
+        <Route path="/side" element={<SideBar/>}/>
 
           <Route path="/" element={<MainView/>}/>
           <Route path="/login" element={<Login/>}/>

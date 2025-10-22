@@ -2,9 +2,17 @@ import "../css/PopularPlacesSection.css";
 import CategoryBtn from "./CategoryButton";
 import category from "../../util/get-categoryButton";
 import { useState } from "react";
-
+import PlaceCard from "./PlaceCard";
+import mainCard from "../../util/get-placeCard";
 const PopularPlacesSection = () => {
-    const [selectedCategory, setSelectedCategory] = useState("전체");
+    const [selectedCategoryId, setSelectedCategoryId] = useState(1);
+    
+    const filteredCards =
+        selectedCategoryId === 1
+            ? mainCard.filter((item) => item.categoryId === 1) 
+            : mainCard.filter((item) => item.categoryId === selectedCategoryId);
+
+
     return(
         <div className="PopularPlacesSection">
             <div className="PopularPlacesSection_header">
@@ -16,13 +24,21 @@ const PopularPlacesSection = () => {
                     <CategoryBtn 
                         key={item.id} 
                         name={item.name}
-                        isClicked={selectedCategory === item.name}
-                        onClick={() => setSelectedCategory(item.name)}
+                        isClicked={selectedCategoryId === item.id}
+                        onClick={() => setSelectedCategoryId(item.id)}
                     />
                 ))}
             </div>
             <div className="PopularPlacesSection_list">
-
+            {filteredCards.map((item, index) => (
+                <PlaceCard
+                    key={index}
+                    image={item.image}
+                    title={item.title}
+                    price={item.price}
+                     url={item.url}
+            />
+      ))}
             </div>
         </div>
     )

@@ -1,7 +1,17 @@
 .PlaceCard {
-    width: 250px;
     cursor: pointer;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 한 줄에 3개 */
+    
+    justify-items: center; /* 중앙 정렬 */
+  
 }
+.PlaceCard a{
+    text-decoration: none;
+    color: black;
+    
+}
+
 .PlaceCard_image{
     width: 230px;
     height: 300px;
@@ -14,7 +24,16 @@
     align-items: flex-start;
     gap: 10px;
     margin: 10px 0 0 10px;
+
 }
+.PlaceCard_title:hover{
+    text-decoration: underline;
+}
+.PlaceCard_price:hover{
+    text-decoration: underline;
+}
+
+
 
 .PlaceCard_content h3, p{
     margin: 0;

@@ -1,0 +1,43 @@
+.SideBar{
+    border:1px solid #E6E6E6;
+    border-radius: 10px;
+    width: 250px;
+    height: 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+/* 상단 로그인/회원가입 버튼 영역 */
+.SideBar_AuthBtn {
+    margin-top: 10px;
+    width: 90%;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    padding: 6px 0;
+  }
+  
+  /* 하단 메뉴 영역 */
+  .SideBar_content {
+    width: 100%;
+    border-top: 1px solid #e0e0e0;
+    padding-top: 10px;
+  }
+  
+  .SideBar_content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+  
+  .SideBar_content li {
+    padding: 15px 20px;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    font-weight:500;
+  }
+  
+  .SideBar_content li:hover {
+    background-color: #f8f8f8;
+  }
