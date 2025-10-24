@@ -6,7 +6,7 @@ import InitialButton from "./InitialButton";
 
 
 
-const Header = ({isLoggedIn}) => {
+const Header = ({isLoggedIn, onSidebarClick}) => {
     const nav = useNavigate();
     return(
         <>
@@ -14,7 +14,7 @@ const Header = ({isLoggedIn}) => {
                 <div className="header_left"><img src={logo}/></div>
                 <div className="header_right">
                     <div className="header_right_left">{isLoggedIn ? "로그인 됨" : <InitialButton childern={"로그인/회원가입"} onClick={()=>nav('/login')}/>}</div>
-                    <div className="header_right_right"><img src={sidebarBtn}/></div>
+                    <div className="header_right_right" onClick={onSidebarClick}><img src={sidebarBtn}/></div>
                 </div>
             </header>
         </>
