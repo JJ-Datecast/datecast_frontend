@@ -1,0 +1,214 @@
+/* ===== 전체 컨테이너 ===== */
+.CalendarView {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(255, 180, 180, 0.2);
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+  min-height: 600px;
+  z-index: 0;
+  overflow: visible;
+}
+.CalendarView_img {
+  position: absolute; /* 배경처럼 깔기 */
+  top: 240px;
+  left: 150;
+  width: 380px;
+  height: 320px;
+  z-index: 0; /* 맨 뒤로 보내기 */
+  margin: 0 auto;
+  opacity: 0.6; /* 이미지 투명도 조절 (선택사항) */
+}
+
+/* ===== react-calendar 기본 구조 ===== */
+.react-calendar {
+  z-index: 1;
+  width: 100%;
+  border: none;
+  font-family: "Pretendard", sans-serif;
+  height: 100%;
+  position: relative;
+  z-index: 2; /* 로고보다 위에 보이지만, 투명 부분은 뚫려 보임 */
+  background: transparent;
+}
+
+/* ===== 상단 (년도 / 월 / 이동 버튼) ===== */
+.react-calendar__navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 35;
+}
+
+.react-calendar__navigation button {
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  color: #333;
+  font-weight: 600;
+  margin: 0 15px;
+  cursor: pointer;
+}
+
+.react-calendar__navigation button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* ===== 요일 헤더 (일, 월, 화 ...) ===== */
+.react-calendar__month-view__weekdays {
+  text-align: center;
+  background-color: #fcc2c2;
+  color: white;
+  font-weight: 700;
+
+  overflow: hidden;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  padding: 20px 0;
+  font-size: 18px;
+}
+.react-calendar__month-view__weekdays__weekday abbr {
+  text-decoration: none;
+  cursor: default;
+}
+
+/* ===== 날짜 셀 ===== */
+.react-calendar__tile {
+  display: flex; /* 내부 배치 컨트롤용 */
+  flex-direction: column;
+  align-items: flex-start; /* ← 왼쪽 정렬 */
+  justify-content: flex-start; /* ← 위쪽 정렬 */
+  padding: 6px 8px; /* 여백 (원하는 만큼 조절) */
+  height: 115px; /* 날짜 칸 높이 (기존보다 크면 더 여유 생김) */
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.3);
+
+  border: 1px solid #eee;
+  border-right: none;
+  border-bottom: none;
+  transition: background 0.2s ease;
+}
+
+/* ✅ 일요일(한 주의 마지막 열)에만 오른쪽 선 추가 */
+.react-calendar__month-view__days__day:nth-child(7n) {
+  border-right: 1px solid #eee;
+}
+
+/* ✅ 마지막 주(아래쪽 줄)에는 하단 선 추가 */
+.react-calendar__month-view__days__day:nth-last-child(-n + 7) {
+  border-bottom: 1px solid #eee;
+}
+
+/* ✅ 혹시 렌더링 중 마지막 열이 밀리는 경우까지 대비 */
+.react-calendar__month-view__days__day:last-child {
+  border-right: 1px solid #eee;
+}
+.react-calendar__tile abbr {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+/* 일정 텍스트 (예: 백현생파~) */
+.event-text {
+  font-size: 0.8rem;
+  color: #d48d9f;
+  margin-top: 4px;
+}
+
+.react-calendar__tile:hover {
+  background-color: #fff3f6;
+}
+
+.react-calendar__tile--now {
+  background-color: #ffeaf0;
+  border: 1px solid #ffc4d3;
+  border-radius: 10px;
+}
+
+.react-calendar__tile--active {
+  background-color: #ffdde8;
+  color: #ff7b9c;
+  border-radius: 10px;
+}
+
+/* 일요일 (첫 번째 열) */
+.react-calendar__month-view__weekdays__weekday:first-child,
+.react-calendar__month-view__days__day:nth-child(7n + 1) {
+  color: #ff6b81;
+}
+
+/* 토요일 (일곱 번째 열) */
+.react-calendar__month-view__weekdays__weekday:nth-child(7),
+.react-calendar__month-view__days__day:nth-child(7n) {
+  color: #6b80ff;
+}
+.react-calendar__month-view__days__day--neighboringMonth,
+.react-calendar__month-view__days__day--neighboringMonth abbr {
+  color: rgba(200, 200, 200, 0.6) !important;
+  font-weight: 400;
+}
+
+/* ===== 일정 텍스트 (예: "백현생파~") ===== */
+.event-text {
+  position: absolute;
+  bottom: 5px;
+  left: 0;
+  right: 0;
+  font-size: 0.8rem;
+  color: #ff7b9c;
+}
+
+/* ===== 팝업 박스 ===== */
+.event-popup {
+  position: absolute;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  width: 260px;
+  top: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.event-popup h3 {
+  color: #ff7b9c;
+  margin-bottom: 8px;
+}
+
+.event-popup p {
+  font-size: 0.9rem;
+  margin: 4px 0;
+}
+
+.event-popup .btns {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.event-popup button {
+  flex: 1;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.event-popup button:first-child {
+  background: #eee;
+}
+
+.event-popup button:last-child {
+  background: #ff7b9c;
+  color: white;
+}

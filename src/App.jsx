@@ -15,18 +15,10 @@ import Profile from "./pages/mypage/Profile";
 import ReviewDetail from "./pages/mypage/ReviewDetail";
 import ReceiptCheck from "./pages/receipt/ReceiptCheck";
 import MainView from "./views/MainView";
-import ActionButton from "./shared/\bcomponents/ActionButton";
-import AlterModal from "./shared/\bcomponents/AlterModal";
-
 function App() {
   return (
     <>
       <Routes>
-        <Route
-          path="/modal"
-          element={<AlterModal title={"로그인 후 이용해주세요."} />}
-        />
-
         <Route path="/" element={<MainView />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signUp" element={<SignUp />} />

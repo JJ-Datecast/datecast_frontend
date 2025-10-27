@@ -1,0 +1,21 @@
+.LoginButton {
+  border: none;
+  width: 380px;
+  display: flex;
+  justify-content: flex-start; /* 왼쪽 정렬 */
+  border-radius: 5px;
+  background-color: white;
+  border: 1px solid #b6b6b6;
+  cursor: pointer;
+  align-items: center;
+  gap: 20px;
+}
+
+.LoginButton img {
+  width: 50px;
+}
+.LoginButton h4 {
+  font-size: 18px;
+  margin: 0;
+  margin-left: 60px;
+}

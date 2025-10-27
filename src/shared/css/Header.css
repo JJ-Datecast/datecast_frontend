@@ -1,36 +1,33 @@
 .Header {
-    display: flex;
-    align-items: center;
-    border-bottom: 1.5px solid rgb(234, 234, 234);
-    position: sticky;
-    
+  display: flex;
+  align-items: center;
+  border-bottom: 1.5px solid rgb(234, 234, 234);
+  position: sticky;
 }
 
 .Header > div {
-    display: flex;
+  display: flex;
 }
 
 .Header .header_left {
-    justify-content: flex-start;
-    width: 25%;
+  justify-content: flex-start;
+  width: 25%;
+  margin-left: 10px;
 }
 
-
 .Header .header_left img {
-   width: 100px;
-   cursor: pointer;
-
+  width: 80px;
+  cursor: pointer;
 }
 
 .Header .header_right {
-    margin-left: auto; /* 오른쪽으로 밀기 */
-    display: flex;
-    gap: 11px;
-    align-items: center;
-    justify-content: flex-end;
-    margin-top: 50px;
+  margin-left: auto; /* 오른쪽으로 밀기 */
+  display: flex;
+  gap: 11px;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 50px;
 }
-.Header .header_right img{
-    cursor: pointer;
+.Header .header_right img {
+  cursor: pointer;
 }
-

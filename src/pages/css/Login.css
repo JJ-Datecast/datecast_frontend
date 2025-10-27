@@ -1,0 +1,17 @@
+.Login {
+  padding-top: 40px;
+  height: 530px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
+  flex-direction: column;
+}
+.Login_img {
+  width: 270px;
+  transform: translateY(-50px); /* 위로 올리기 */
+  cursor: pointer;
+}
+.Login_button {
+  margin-bottom: 40px;
+}
