@@ -3,8 +3,8 @@ import { Routes, Route, Router } from "react-router-dom";
 import Notfound from "./pages/NotFound";
 import Login from "./pages/auth/Login";
 import SignUp from "./pages/auth/SignUp";
-import CalendarAddEvent from "./pages/calendar/CalendarAddEvent";
-import CalendarView from "./pages/calendar/CalendarView";
+import CalendarAddEvent from "./features/\bcalendar/calendarAddEvent/CalendarAddEvent";
+import CalendarView from "./features/\bcalendar/calendarView/CalendarView";
 import LocationDetail from "./pages/location/LocationDetail";
 import LocationList from "./pages/location/LocationList";
 import LocationReview from "./pages/location/LocationReview";
@@ -15,10 +15,13 @@ import Profile from "./pages/mypage/Profile";
 import ReviewDetail from "./pages/mypage/ReviewDetail";
 import ReceiptCheck from "./pages/receipt/ReceiptCheck";
 import MainView from "./views/MainView";
+import CalendarEventModal from "./features/\bcalendar/component/CalendarEventModal";
 function App() {
+  // localStorage.clear();
   return (
     <>
       <Routes>
+        <Route path="/modal" element={<CalendarEventModal />} />
         <Route path="/" element={<MainView />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signUp" element={<SignUp />} />

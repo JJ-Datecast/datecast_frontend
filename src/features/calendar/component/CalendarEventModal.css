@@ -1,0 +1,42 @@
+.CalendarEventModal {
+  position: fixed;
+  background-color: #fff;
+  border: 1px solid #ccc;
+
+  box-shadow: 0 4px 8px rgba(177, 177, 177, 0.1);
+  width: 400px;
+  max-width: 90%;
+  padding: 0 20px 20px 20px 20px;
+  display: flex;
+  flex-direction: column;
+}
+.CalendarEventModal_title {
+  border-bottom: 1px solid #cecece;
+  display: flex;
+}
+.CalendarEventModal_title h3 {
+  margin: 14px;
+  left: auto;
+}
+.CalendarEventModal_content {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  gap: 10px;
+}
+.CalendarEventModal_content_item {
+  display: flex;
+  gap: 15px;
+}
+.CalendarEventModal_content_item label {
+  width: 100px;
+  font-weight: 400;
+  color: #8a8a8a;
+}
+.CalendarEventModal_content_item p {
+  flex: 1; /* 남은 공간 차지 */
+  overflow: hidden; /* 넘치는 텍스트 숨김 */
+  text-overflow: ellipsis; /* ... 으로 표시 */
+  white-space: nowrap; /* 한 줄로 유지 */
+  text-align: left;
+}

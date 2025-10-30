@@ -1,0 +1,194 @@
+.CalendarAddEvent {
+  background-color: #fff;
+  font-family: "Pretendard", sans-serif;
+  color: #333;
+}
+
+/* 🔹 헤더 */
+.CalendarAddEvent_header {
+  background-color: #fcc2c2;
+  padding: 10px 16px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.CalendarAddEvent_header-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+.CalendarAddEvent_header-btn:hover {
+  opacity: 0.8;
+  transform: translateY(-1px);
+  text-decoration: underline;
+}
+
+.CalendarAddEvent_header-btn.active {
+  font-weight: 800;
+}
+
+.CalendarAddEvent_divider {
+  color: #fff;
+  opacity: 0.9;
+}
+
+/* 🔹 폼 전체 */
+.CalendarAddEvent_form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+  padding: 12px;
+}
+
+.CalendarAddEvent_form label {
+  font-size: 20px;
+  font-weight: 500;
+  text-align: left;
+}
+
+/* 🔹 인풋 공통 스타일 */
+.CalendarAddEvent_input,
+.CalendarAddEvent_date-group input[type="date"],
+.custom-select-trigger {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 16px;
+  height: 40px;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+.CalendarAddEvent_input {
+  margin-bottom: 15px;
+  padding: 25px 15px;
+}
+
+/* 🔹 날짜 + 시간 그룹 */
+.CalendarAddEvent_date-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+/* 날짜 input */
+.CalendarAddEvent_date-group input[type="date"] {
+  width: 160px;
+  text-align: center;
+}
+
+/* CustomSelect wrapper */
+.custom-select {
+  position: relative;
+  width: 120px;
+}
+
+/* 버튼 (현재 선택된 시간) */
+.custom-select-trigger {
+  width: 100%;
+  cursor: pointer;
+  text-align: center;
+}
+
+/* 드롭다운 목록 */
+.custom-select-list {
+  position: absolute;
+  top: 105%;
+  left: 0;
+  width: 100%;
+  max-height: 220px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  z-index: 10;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 항목 */
+.custom-select-list li {
+  padding: 8px 0;
+  font-size: 15px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.custom-select-list li:hover {
+  background-color: #f5f5f5;
+}
+
+/* 선택된 항목 */
+.custom-select-list li.selected {
+  background-color: #ffecec;
+  color: #d43c3c;
+  font-weight: 600;
+}
+
+/* 초기 기본 강조 */
+.custom-select-list li.default-highlight {
+  background-color: #f9f9f9;
+}
+
+/* 🔹 텍스트 영역 */
+.CalendarAddEvent_textarea {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 10px 12px;
+  resize: none;
+  height: 130px;
+  font-size: 16px;
+}
+
+/* 🔹 버튼 그룹 */
+.CalendarAddEvent_buttons {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* 버튼 스타일 */
+.save-btn {
+  background-color: #fcc2c2;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.save-btn:hover {
+  background-color: #f89b9b;
+}
+
+.cancel-btn {
+  background-color: white;
+  color: #444;
+  border: 1px solid #ccc;
+  padding: 8px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.cancel-btn:hover {
+  background-color: #ffecec;
+}
+.CalendarAddEvent_buttons {
+  margin-bottom: 10px;
+}

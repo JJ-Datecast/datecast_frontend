@@ -14,13 +14,13 @@
 }
 .CalendarView_img {
   position: absolute; /* 배경처럼 깔기 */
-  top: 240px;
+  top: 260px;
   left: 150;
-  width: 380px;
+  width: 390px;
   height: 320px;
   z-index: 0; /* 맨 뒤로 보내기 */
   margin: 0 auto;
-  opacity: 0.6; /* 이미지 투명도 조절 (선택사항) */
+  opacity: 0.5; /* 이미지 투명도 조절 (선택사항) */
 }
 
 /* ===== react-calendar 기본 구조 ===== */
@@ -110,31 +110,14 @@
   border-right: 1px solid #eee;
 }
 .react-calendar__tile abbr {
-  font-weight: 600;
+  font-weight: 500;
   color: #333;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   margin-bottom: 4px;
-}
-/* 일정 텍스트 (예: 백현생파~) */
-.event-text {
-  font-size: 0.8rem;
-  color: #d48d9f;
-  margin-top: 4px;
-}
-
-.react-calendar__tile:hover {
-  background-color: #fff3f6;
 }
 
 .react-calendar__tile--now {
-  background-color: #ffeaf0;
-  border: 1px solid #ffc4d3;
-  border-radius: 10px;
-}
-
-.react-calendar__tile--active {
-  background-color: #ffdde8;
-  color: #ff7b9c;
+  background-color: #f0f2ff;
   border-radius: 10px;
 }
 
@@ -211,4 +194,39 @@
 .event-popup button:last-child {
   background: #ff7b9c;
   color: white;
+}
+
+/* 하루 안의 일정 컨테이너 */
+.day-events {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 2px;
+  align-items: flex-start;
+}
+
+/* 일정 제목 (캘린더 칸 안의 텍스트) */
+.event-title {
+  max-width: 80px;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 1px solid #e7e7e7;
+  border-left: 4px solid #6d9eff;
+  border-radius: 4px;
+  padding: 2px 4px;
+  margin-top: 2px;
+  font-size: 0.8rem;
+  position: relative;
+}
+
+/* 마우스 오버 시 강조 */
+.event-title:hover {
+  background-color: #a5c2ff;
+  transform: translateY(-1px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
