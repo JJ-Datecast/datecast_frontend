@@ -1,6 +1,6 @@
 import "../css/Login.css";
 import mainLogo from "../../assets/header/logo.png";
-import LoginButton from "../../shared/\bcomponents/LoginButton";
+import LoginButton from "../../features/login/component/LoginButton";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {

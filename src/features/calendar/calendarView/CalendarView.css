@@ -117,7 +117,7 @@
 }
 
 .react-calendar__tile--now {
-  background-color: #f0f2ff;
+  background-color: rgba(209, 215, 255, 0.6); /* 0.6은 투명도 (0~1) */
   border-radius: 10px;
 }
 

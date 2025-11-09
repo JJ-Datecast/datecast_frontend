@@ -1,0 +1,24 @@
+.MyPageLayout {
+  display: flex;
+  align-items: flex-start;
+}
+
+.MyPageLayout_left {
+  flex-shrink: 0;
+}
+
+.mypage-sidebar {
+  width: 215px;
+  padding: 30px 20px;
+  box-sizing: border-box;
+}
+
+.MyPageLayout_right {
+  flex: 1; /*남는 공간 다 차지 */
+  padding: 0px 20px;
+}
+
+.MyPageLayout-title {
+  text-align: left;
+  font-size: 25px;
+}

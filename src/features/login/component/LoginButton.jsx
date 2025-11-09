@@ -1,4 +1,4 @@
-import googleLogo from "../../assets/logo/googleLogo.png";
+import googleLogo from "../../../assets/logo/googleLogo.png";
 import "../css/LoginButton.css";
 const LoginButton = ({ onClick }) => {
   return (

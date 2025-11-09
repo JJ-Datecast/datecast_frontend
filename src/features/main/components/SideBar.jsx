@@ -1,5 +1,5 @@
 import "../css/SideBar.css";
-import AuthButton from "./AuthButton";
+import AuthButton from "../../login/component/AuthButton";
 import { useNavigate } from "react-router-dom";
 
 const SideBar = ({ isLoggedIn, onRequireLogin }) => {

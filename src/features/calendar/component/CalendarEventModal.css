@@ -13,9 +13,10 @@
 .CalendarEventModal_title {
   border-bottom: 1px solid #cecece;
   display: flex;
+  align-items: center;
+  gap: 10px;
 }
 .CalendarEventModal_title h3 {
-  margin: 14px;
   left: auto;
 }
 .CalendarEventModal_content {
@@ -29,14 +30,27 @@
   gap: 15px;
 }
 .CalendarEventModal_content_item label {
-  width: 100px;
+  margin-left: 20px;
   font-weight: 400;
   color: #8a8a8a;
 }
 .CalendarEventModal_content_item p {
-  flex: 1; /* 남은 공간 차지 */
-  overflow: hidden; /* 넘치는 텍스트 숨김 */
-  text-overflow: ellipsis; /* ... 으로 표시 */
-  white-space: nowrap; /* 한 줄로 유지 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   text-align: left;
+  width: 320px;
+}
+
+.CalendarEventModal_actions {
+  display: flex;
+  justify-content: center;
+  gap: 13px;
+  margin-top: 20px;
+  margin-bottom: 13px;
+}
+.CalendarEventModal_title_img {
+  width: 28px;
+  height: 28px;
+  margin-left: 10px;
 }

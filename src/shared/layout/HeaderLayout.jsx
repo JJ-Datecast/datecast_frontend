@@ -1,13 +1,13 @@
-import Header from "../\bcomponents/Header";
+import Header from "../../features/header/components/Header";
 import { useState, useEffect } from "react";
-import SideBar from "../\bcomponents/SideBar";
+import SideBar from "../../features/main/components/SideBar";
 import AlterModal from "../\bcomponents/AlterModal";
 import { useNavigate } from "react-router-dom";
 
 const HeaderLayout = ({ children }) => {
   const [showSidebar, setShowSidebar] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 여부 상태
-  const [showModal, setShowModal] = useState(false); // 모달 표시 여부
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const nav = useNavigate();
 
   useEffect(() => {
@@ -33,25 +33,28 @@ const HeaderLayout = ({ children }) => {
   };
 
   return (
-    <>
+    <div className="HeaderLayout">
       <Header
-        isLoggedIn={false}
+        isLoggedIn={isLoggedIn}
         onSidebarClick={() => setShowSidebar(!showSidebar)}
       />
+
       {showSidebar && (
         <SideBar
           isLoggedIn={isLoggedIn}
           onRequireLogin={() => setShowModal(true)}
         />
       )}
+
       {showModal && (
         <AlterModal
           title="로그인 후 이용해주세요."
-          onClick={() => handleModalConfirm()}
+          onClick={handleModalConfirm}
         />
       )}
-      <main style={{ marginTop: "20px" }}>{children}</main>
-    </>
+
+      <main className="HeaderLayout_content">{children}</main>
+    </div>
   );
 };
 

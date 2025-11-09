@@ -1,43 +1,32 @@
-// features/calendarView/view/CalendarView.jsx
 import "../calendarView/CalendarView.css";
 import Calendar from "react-calendar";
 import logo from "../../../assets/header/logo.png";
 import { useCalendarViewModel } from "./useCalendarViewModel";
-// import EventModal from "./EventModal";
+import CalendarEventModal from "../component/CalendarEventModal";
+import { createPortal } from "react-dom";
 
 const CalendarView = () => {
-  const {
-    date,
-    setDate,
-    getEventsForDate,
-    onClickDate,
-    openModal,
-    closeModal,
-    isModalOpen,
-    selectedEvent,
-  } = useCalendarViewModel();
+  const vm = useCalendarViewModel();
 
   return (
-    <div className="CalendarView">
+    <div className="CalendarView" onClick={vm.onBackgroundClick}>
       <img src={logo} className="CalendarView_img" alt="로고" />
+
       <Calendar
         locale="ko-KR"
         calendarType="gregory"
-        onClickDay={onClickDate}
-        value={date}
-        onChange={setDate}
+        onClickDay={vm.onClickDate}
+        value={vm.date}
+        onChange={vm.setDate}
         tileContent={({ date }) => {
-          const dayEvents = getEventsForDate(date);
+          const dayEvents = vm.getEventsForDate(date);
           return (
             <div className="day-events">
               {dayEvents.map((e) => (
                 <div
                   key={e.id}
                   className={`event-title event-${e.position}`}
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    openModal(e);
-                  }}
+                  onClick={(ev) => vm.onClickEvent(e, ev)}
                 >
                   {e.title}
                 </div>
@@ -47,8 +36,18 @@ const CalendarView = () => {
         }}
       />
 
-      {/* 모달 */}
-      {isModalOpen && console.log("모달 클릭")}
+      {/* Portal로 body에 모달 띄우기 (좌표 정확/레이어 충돌 방지) */}
+      {vm.isModalOpen &&
+        createPortal(
+          <CalendarEventModal
+            event={vm.selectedEvent}
+            position={vm.modalPosition}
+            onDelete={vm.handleDelete}
+            onDetail={vm.handleDetail}
+            onClose={vm.closeModal}
+          />,
+          document.body
+        )}
     </div>
   );
 };

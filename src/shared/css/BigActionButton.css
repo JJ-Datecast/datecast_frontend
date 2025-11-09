@@ -1,0 +1,11 @@
+.big-action-button {
+  width: 350px;
+  height: 45px;
+  cursor: pointer;
+  background-color: #fcc2c2;
+  color: white;
+  border: none;
+  font-size: 20px;
+  padding: 10px 20px;
+  border-radius: 8px;
+}

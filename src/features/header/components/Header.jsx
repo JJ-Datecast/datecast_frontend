@@ -1,8 +1,8 @@
-import logo from "../../assets/header/logo.png";
-import sidebarBtn from "../../assets/header/sidebarButton.png";
+import logo from "../../../assets/header/logo.png";
+import sidebarBtn from "../../../assets/header/sidebarButton.png";
 import "../css/Header.css";
 import { useNavigate } from "react-router-dom";
-import InitialButton from "./InitialButton";
+import InitialButton from "../../../shared/components/InitialButton";
 
 const Header = ({ isLoggedIn, onSidebarClick }) => {
   const nav = useNavigate();
@@ -10,7 +10,12 @@ const Header = ({ isLoggedIn, onSidebarClick }) => {
     <>
       <header className="Header">
         <div className="header_left">
-          <img src={logo} onClick={() => window.location.reload()} />
+          <img
+            src={logo}
+            onClick={() => {
+              window.location.href = "/";
+            }}
+          />
         </div>
         <div className="header_right">
           <div className="header_right_left">

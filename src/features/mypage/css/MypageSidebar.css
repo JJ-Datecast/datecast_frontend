@@ -1,0 +1,95 @@
+.mypage-sidebar {
+  width: 260px;
+  border-right: 1px solid rgb(234, 234, 234);
+  box-sizing: border-box;
+}
+
+.profile-section {
+  text-align: center;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.profile-img {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid rgb(220, 220, 220);
+}
+
+.profile-name {
+  margin-top: 12px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.sidebar-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-title {
+  font-size: 17px;
+  margin-top: 25px;
+  margin-bottom: 6px;
+  font-weight: 600;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin-right: 28px;
+}
+
+.menu-item {
+  padding: 8px 0;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-item.active {
+  background: #fcc2c2;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-weight: 600;
+  color: white;
+}
+.menu-icon-box {
+  width: 23px;
+  display: flex;
+  justify-content: center;
+}
+
+.menu-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+.edit-icon-btn {
+  position: absolute;
+  bottom: 40px;
+  right: 28px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  background-color: #616161;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.edit-icon-btn:hover {
+  background-color: #353535;
+}

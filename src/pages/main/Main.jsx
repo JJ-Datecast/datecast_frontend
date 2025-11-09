@@ -1,37 +1,38 @@
-import "../../shared/css/Main.css";
+import "./Main.css";
 import RegionCard from "../../shared/\bcomponents/RegionCard";
 import region from "../../util/get-regionCard";
-import PromoBannerList from "../../shared/\bcomponents/PromoBannerList";
-import PopularPlacesSection from "../../shared/\bcomponents/PopularPlacesSection";
-import AllViewButton from "../../shared/\bcomponents/AllViewButton";
-import MainFooter from "../../shared/\bcomponents/MainFooter";
-
+import PromoBannerList from "../../features/main/components/PromoBannerList";
+import PopularPlacesSection from "../../features/main/components/PopularPlacesSection";
+import AllViewButton from "../../features/main/components/AllViewButton";
+import MainFooter from "../../features/main/components/MainFooter";
 
 const Main = () => {
-    return(
-       <>
-        <div className="main">
-            <div className="main_region">
-                {region.map((row, rowIndex) => (
-                    <div key={rowIndex} className="regionRow">
-                        {row.map((region) => (
-                            <RegionCard key={region.name} {...region}  />
-                        ))}
-                    </div>
-                ))}
+  return (
+    <>
+      <div className="main">
+        <div className="main_region">
+          {region.map((row, rowIndex) => (
+            <div key={rowIndex} className="regionRow">
+              {row.map((region) => (
+                <RegionCard key={region.name} {...region} />
+              ))}
             </div>
-            <div className="main_banner">
-                <PromoBannerList/>
-            </div>
-            <div className="main_popularPlace">
-                <PopularPlacesSection/>
-                <p className="main_allViewBtn"><AllViewButton/></p>
-            </div>
-            <div className="main_foot">
-                <MainFooter/>
-            </div>
+          ))}
         </div>
-       </>
-    )
-}
+        <div className="main_banner">
+          <PromoBannerList />
+        </div>
+        <div className="main_popularPlace">
+          <PopularPlacesSection />
+          <p className="main_allViewBtn">
+            <AllViewButton />
+          </p>
+        </div>
+        <div className="main_foot">
+          <MainFooter />
+        </div>
+      </div>
+    </>
+  );
+};
 export default Main;
