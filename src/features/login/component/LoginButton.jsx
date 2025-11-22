@@ -2,7 +2,7 @@ import googleLogo from "../../../assets/logo/googleLogo.png";
 import "../css/LoginButton.css";
 const LoginButton = () => {
   const handleGoogleLogin = () => {
-    window.location.href = "https://datecast.site/api/auth/social/login/google";
+    window.location.href = "https://datecast.site/oauth2/authorization/google";
   };
   return (
     <button className="LoginButton" onClick={handleGoogleLogin}>
