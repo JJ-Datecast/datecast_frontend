@@ -1,0 +1,45 @@
+.review-card {
+  position: relative;
+  width: 165px;
+  aspect-ratio: 4 / 5; /* 카드 비율 */
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #f5f5f5;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
+.review-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 아래 텍스트 영역 */
+.review-info {
+  position: absolute;
+  bottom: 0;
+  padding: 6px;
+  color: #fff;
+  text-align: left;
+}
+
+.review-location {
+  font-size: 13px;
+
+  margin-bottom: 3px;
+  font-weight: 600;
+}
+
+.review-title {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.review-info p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 155px;
+  text-shadow: 0 3px 6px rgba(0, 0, 0, 1.5);
+}

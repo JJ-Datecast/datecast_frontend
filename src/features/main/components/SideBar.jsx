@@ -1,31 +1,40 @@
 import "../css/SideBar.css";
 import AuthButton from "../../login/component/AuthButton";
 import { useNavigate } from "react-router-dom";
+import { useProfileStore } from "../../../store/profileStore";
 
 const SideBar = ({ isLoggedIn, onRequireLogin }) => {
   const nav = useNavigate();
+  const { nickname } = useProfileStore(); // 🔥 Zustand에서 닉네임 받기
 
   const handleClick = (path) => {
     if (!isLoggedIn) {
-      // ✅ 로그인 안 되어있으면 모달 띄우기
       onRequireLogin();
       return;
     }
-    // ✅ 로그인되어 있으면 바로 이동
     nav(path);
   };
 
   return (
     <div className="SideBar">
       <div className="SideBar_AuthBtn">
-        <AuthButton onClick={() => nav("/login")} />
+        {isLoggedIn ? (
+          <div className="welcome-text">
+            어서오세요, <strong>{nickname}</strong>님!
+          </div>
+        ) : (
+          <AuthButton onClick={() => nav("/login")} />
+        )}
       </div>
 
       <div className="SideBar_content">
         <ul>
-          <li onClick={() => handleClick("/calendarAddEvent")}>캘린더</li>
-          <li onClick={() => handleClick("/profile")}>마이페이지</li>
+          <li onClick={() => handleClick("/calendarView")}>캘린더</li>
+          <li onClick={() => handleClick("/mypageVIEW")}>마이페이지</li>
           <li onClick={() => handleClick("/profile")}>저장된 장소</li>
+          <li>
+            {isLoggedIn && <button className="logout-button">로그아웃</button>}
+          </li>
         </ul>
       </div>
     </div>

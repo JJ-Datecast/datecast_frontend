@@ -1,0 +1,65 @@
+.review-detail {
+  box-sizing: border-box;
+}
+
+/* ← 버튼 */
+.back-btn {
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  text-align: left;
+  display: flex;
+  color: #333;
+}
+
+.back-btn:hover {
+  color: #000;
+}
+
+/* 이미지 센터 정렬 */
+.detail-img-box {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.detail-img {
+  width: 50%;
+  height: 300px;
+  max-width: 600px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* 제목 & 위치 */
+.detail-content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.detail-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.detail-location {
+  font-size: 15px;
+  color: #888;
+  margin-bottom: 20px;
+}
+
+/* 본문 영역 */
+.detail-text {
+  line-height: 1.7;
+  font-size: 16px;
+  color: #444;
+  white-space: pre-line; /* 줄바꿈 유지 가능 */
+}
+
+/* 태그 등 확장 영역 시 여백 확보 */
+.detail-tags {
+  margin-top: 20px;
+}

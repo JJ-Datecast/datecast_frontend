@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import "../css/MyInfo.css";
+import { useProfileStore } from "../../../store/profileStore";
 
 const MyInfo = () => {
-  const [nickname, setNickname] = useState("나는야 김땡땡");
+  const { nickname, setNickname } = useProfileStore();
   const [isEditing, setIsEditing] = useState(false);
+  const [tempNickname, setTempNickname] = useState(nickname);
 
   const handleSave = () => {
+    setNickname(tempNickname);
     setIsEditing(false);
   };
 
@@ -30,8 +33,8 @@ const MyInfo = () => {
               <input
                 className="nickname-input"
                 type="text"
-                value={nickname}
-                onChange={(e) => setNickname(e.target.value)}
+                value={tempNickname}
+                onChange={(e) => setTempNickname(e.target.value)}
               />
               <button className="info-btn" onClick={handleSave}>
                 저장

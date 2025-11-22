@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 const HeaderLayout = ({ children }) => {
   const [showSidebar, setShowSidebar] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // TODO: 나중에 true -> false로 바꾸기
   const [showModal, setShowModal] = useState(false);
   const nav = useNavigate();
 

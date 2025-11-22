@@ -1,0 +1,38 @@
+/* 화면 전체가 아니라 상단에만 나타나도록 */
+.modalTopContainer {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  z-index: 9999 !important;
+}
+
+/* 모달 UI */
+.modalTopContent {
+  background: white;
+  padding: 18px 32px;
+  border-radius: 50px;
+  border: 4px solid #f3aeb1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 20px;
+  font-weight: 600;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
+  min-width: 600px;
+}
+
+.checkIcon {
+  font-size: 26px;
+  color: #4e9385;
+}
+
+.message {
+  flex: 1;
+  text-align: center;
+}
+
+.emoji {
+  font-size: 26px;
+}

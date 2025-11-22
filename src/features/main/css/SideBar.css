@@ -45,3 +45,12 @@
 .SideBar_content li:hover {
   background-color: #f8f8f8;
 }
+.logout-button {
+  width: 100px;
+  padding: 5px;
+  border: none;
+  background-color: #ffa3a3;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}

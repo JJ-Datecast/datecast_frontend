@@ -4,11 +4,14 @@ import "../css/MyPageLayout.css";
 import MyInfo from "../components/MyInfo";
 import PreConnect from "../components/PreConnect";
 import CoupleConnect from "../components/CoupleConnect";
+import Review from "../components/Review";
+import ReviewDetail from "../components/ReviewDetail"; // ⭐ import OK
 
 const MyPageLayout = () => {
-  const [activeMenu, setActiveMenu] = useState("basic");
-  const isCoupleConnected = false; // 나중에 API 결과로 대체
+  const [activeMenu, setActiveMenu] = useState("review");
+  const isCoupleConnected = false;
   const [showConnect, setShowConnect] = useState(false);
+  const [selectedReview, setSelectedReview] = useState(null);
 
   const titles = {
     basic: "기본 정보",
@@ -18,6 +21,7 @@ const MyPageLayout = () => {
       ? "커플 연결"
       : "커플 현황",
     review: "후기 보기",
+    reviewDetail: "후기 상세보기",
     place: "장소 보기",
   };
 
@@ -28,11 +32,7 @@ const MyPageLayout = () => {
           activeMenu={activeMenu}
           onMenuSelect={(menu) => {
             setActiveMenu(menu);
-
-            // 커플현황 클릭하면 항상 기본 화면으로 돌아오게
-            if (menu === "status") {
-              setShowConnect(false);
-            }
+            if (menu === "status") setShowConnect(false);
           }}
         />
       </div>
@@ -40,10 +40,8 @@ const MyPageLayout = () => {
       <div className="MyPageLayout_right">
         <h3 className="MyPageLayout-title">{titles[activeMenu]}</h3>
 
-        {/* 기본 정보 */}
         {activeMenu === "basic" && <MyInfo />}
 
-        {/*  커플 현황 */}
         {activeMenu === "status" &&
           (isCoupleConnected ? (
             <h3>커플 연결된 화면</h3>
@@ -53,10 +51,25 @@ const MyPageLayout = () => {
             <PreConnect setShowConnect={setShowConnect} />
           ))}
 
-        {/* 후기 */}
-        {activeMenu === "review" && <div>후기 보기 화면</div>}
+        {activeMenu === "review" && (
+          <Review
+            onSelectReview={(review) => {
+              setSelectedReview(review);
+              setActiveMenu("reviewDetail"); // 상세 페이지로 이동
+            }}
+          />
+        )}
 
-        {/* 장소 */}
+        {activeMenu === "reviewDetail" && selectedReview && (
+          <ReviewDetail
+            review={selectedReview}
+            onBack={() => {
+              setActiveMenu("review");
+              setSelectedReview(null);
+            }}
+          />
+        )}
+
         {activeMenu === "place" && <div>장소 보기 화면</div>}
       </div>
     </div>

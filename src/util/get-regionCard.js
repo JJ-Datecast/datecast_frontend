@@ -1,11 +1,11 @@
-import incheon from "../assets/region/incheon.png";
-import seoulGgido from "../assets/region/seoulGgido.png";
-import gangwan from "../assets/region/gangwon.png";
-import daegu from "../assets/region/daegu.png";
-import daejeon from "../assets/region/daejeon.png";
-import busan from "../assets/region/busan.png";
-import jeju from "../assets/region/jeju.png";
-import gwangju from "../assets/region/gwangju.png";
+import incheon from "../assets/region/metropolitanCity/incheon.png";
+import seoulGgido from "../assets/region/metropolitanCity/seoulGgido.png";
+import gangwan from "../assets/region/metropolitanCity/gangwon.png";
+import daegu from "../assets/region/metropolitanCity/daegu.png";
+import daejeon from "../assets/region/metropolitanCity/daejeon.png";
+import busan from "../assets/region/metropolitanCity/busan.png";
+import jeju from "../assets/region/metropolitanCity/jeju.png";
+import gwangju from "../assets/region/metropolitanCity/gwangju.png";
 
 const region = [
     [

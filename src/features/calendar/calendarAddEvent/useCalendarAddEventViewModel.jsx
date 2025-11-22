@@ -117,13 +117,15 @@ export const useCalendarAddEventViewModel = (initial) => {
 
     if (isEdit) {
       updateEvent(payload);
-      alert("일정이 수정되었습니다.");
     } else {
       addEvent(payload);
-      alert("일정이 등록되었습니다.");
     }
 
-    navRef.current?.("/calendarView");
+    // ⛔ alert 제거!
+    // ✔️ 대신 캘린더 화면으로 이동 + 토스트 메시지 전달
+    navRef.current?.("/calendarView", {
+      state: { toast: isEdit ? "edit" : "add" },
+    });
   }, [
     isEdit,
     form,

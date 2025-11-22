@@ -1,18 +1,22 @@
 import "../calendarAddEvent/CalendarAddEvent.css";
 import ActionButton from "../../../shared/components/ActionButton";
 import CustomSelect from "../component/CustomSelect";
+
 import { useCalendarAddEventViewModel } from "./useCalendarAddEventViewModel";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const CalendarAddEvent = () => {
   const nav = useNavigate();
   const loc = useLocation();
 
-  // ✅ ViewModel 단 한 번만 생성
+  // ViewModel 생성
   const viewModel = useCalendarAddEventViewModel(loc.state);
 
-  // ✅ 내비게이터 전달
+  // 모달 상태
+  const [openModal, setOpenModal] = useState(false);
+
+  // Navigator 전달
   useEffect(() => {
     viewModel.setNavigator(nav);
   }, [nav]);
@@ -39,7 +43,9 @@ const CalendarAddEvent = () => {
         <h3 className="CalendarAddEvent_header-btn active">
           {isEdit ? "일정 수정" : "일정 등록"}
         </h3>
+
         <span className="CalendarAddEvent_divider">|</span>
+
         <button
           className="CalendarAddEvent_header-btn"
           onClick={() => nav("/calendarView")}
@@ -50,9 +56,20 @@ const CalendarAddEvent = () => {
 
       <form
         className="CalendarAddEvent_form"
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
-          handleSave();
+
+          const result = await handleSave();
+
+          // 🔥 저장 성공 시 → 토스트 띄우기
+          if (result !== false) {
+            setOpenModal(true);
+
+            // 🔥 모달이 보이도록 딜레이 후 이동
+            setTimeout(() => {
+              nav("/calendarView");
+            }, 1200);
+          }
         }}
       >
         {/* 제목 */}
@@ -78,7 +95,7 @@ const CalendarAddEvent = () => {
           onChange={(e) => setFormValue("place", e.target.value)}
         />
 
-        {/* 날짜 & 시간 */}
+        {/* 날짜 + 시간 */}
         <label>일시</label>
         <div className="CalendarAddEvent_date-group">
           <input
