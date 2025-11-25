@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "http://54.180.105.226:8080/api",
+  baseURL: import.meta.env.VITE_API_URL,   // 환경 자동 적용
   headers: { "Content-Type": "application/json" },
   withCredentials: true, // refreshToken cookie 전달
 });
@@ -16,7 +16,9 @@ const processQueue = (error, token = null) => {
 
 apiClient.interceptors.request.use((config) => {
   const token = localStorage.getItem("accessToken");
-  if (token) config.headers.Authorization = `Bearer ${token}`;
+  if (token && !config.url.includes("/auth/logout")) {            // 로그아웃 요청은 Authorization 제거
+    config.headers.Authorization = `Bearer ${token}`;
+  }
   return config;
 });
 
@@ -24,6 +26,11 @@ apiClient.interceptors.response.use(
   (res) => res,
   async (err) => {
     const original = err.config;
+
+    // 🚫 /auth/logout은 refresh 처리하지 않음
+    if (original.url.includes("/auth/logout")) {
+      return Promise.reject(err);
+    }
 
     if (err.response?.status === 401 && !original._retry) {
       original._retry = true;
