@@ -3,12 +3,14 @@ import "../css/MyInfo.css";
 import { useProfileStore } from "../../../store/profileStore";
 
 const MyInfo = () => {
-  const { nickname, setNickname } = useProfileStore();
+  // Zustand에서 email, nickname 가져오기
+  const { email, nickname, setNickname } = useProfileStore();
+
   const [isEditing, setIsEditing] = useState(false);
   const [tempNickname, setTempNickname] = useState(nickname);
 
   const handleSave = () => {
-    setNickname(tempNickname);
+    setNickname(tempNickname); // Zustand 업데이트
     setIsEditing(false);
   };
 
@@ -16,12 +18,13 @@ const MyInfo = () => {
     <div className="myinfo">
       <div className="info-row">
         <span className="info-label">이메일</span>
-        <span className="info-value">pulse@naver.com</span>
+        <span className="info-value">{email}</span> {/* 🔥 email 출력 */}
       </div>
 
       <div className="info-row">
         <span className="info-label">이름</span>
-        <span className="info-value">김땡땡</span>
+        <span className="info-value">{nickname}</span>{" "}
+        {/* 🔥 이름도 nickname 사용 */}
       </div>
 
       <div className="info-row">

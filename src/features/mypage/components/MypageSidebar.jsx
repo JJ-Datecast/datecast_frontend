@@ -6,7 +6,7 @@ import { useProfileStore } from "../../../store/profileStore";
 
 const MyPageSidebar = ({ activeMenu, onMenuSelect }) => {
   const fileInputRef = useRef(null);
-  const { profileImage, nickname, setProfileImage } = useProfileStore();
+  const { profileImageUrl, nickname, setProfileImage } = useProfileStore();
 
   const handleEditClick = () => fileInputRef.current?.click();
 
@@ -22,7 +22,7 @@ const MyPageSidebar = ({ activeMenu, onMenuSelect }) => {
   return (
     <aside className="mypage-sidebar">
       <div className="profile-section">
-        <img src={profileImage} alt="profile" className="profile-img" />
+        <img src={profileImageUrl} alt="profile" className="profile-img" />
 
         <input
           type="file"

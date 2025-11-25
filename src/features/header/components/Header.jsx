@@ -7,7 +7,9 @@ import { useProfileStore } from "../../../store/profileStore";
 
 const Header = ({ isLoggedIn, onSidebarClick }) => {
   const nav = useNavigate();
-  const { profileImage } = useProfileStore();
+  const { profileImageUrl } = useProfileStore();
+  console.log("🔥 Header 상태 profileImageUrl:", profileImageUrl);
+
   return (
     <>
       <header className="Header">
@@ -21,12 +23,12 @@ const Header = ({ isLoggedIn, onSidebarClick }) => {
         </div>
         <div className="header_right">
           <div className="header_right_left">
-            {isLoggedIn ? (
+            {isLoggedIn && profileImageUrl ? (
               <img
-                src={profileImage}
-                alt="프로필 이미지"
+                src={profileImageUrl}
                 className="header-profile-img"
                 style={{ width: "35px" }}
+                alt="프로필 이미지"
               />
             ) : (
               <InitialButton
