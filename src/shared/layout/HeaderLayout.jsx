@@ -14,6 +14,7 @@ const HeaderLayout = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     if (token) {
+      console.log("localStorage token:", localStorage.getItem("accessToken"));
       setIsLoggedIn(true); // 로그인 상태로 변경
     } else {
       setIsLoggedIn(false);
