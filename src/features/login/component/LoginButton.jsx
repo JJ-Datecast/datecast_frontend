@@ -3,9 +3,12 @@ import "../css/LoginButton.css";
 
 const LoginButton = () => {
   const handleGoogleLogin = () => {
+    const currentOrigin = window.location.origin;
+    const redirectPath = "/oauth/callback";
+
     window.location.href = `${
       import.meta.env.VITE_API_URL
-    }/oauth2/authorization/google`;
+    }/oauth2/authorization/google?redirect_uri=${currentOrigin}${redirectPath}`;
   };
 
   return (

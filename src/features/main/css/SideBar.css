@@ -10,6 +10,7 @@
 
   background-color: white;
   left: calc(100% - 615px);
+  z-index: 9999; /* 🚀 추가 */
 }
 /* 상단 로그인/회원가입 버튼 영역 */
 .SideBar_AuthBtn {
