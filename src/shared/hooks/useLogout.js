@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation,useQueryClient } from "@tanstack/react-query";
 import { logoutRequest } from "../../networks/apis/authApi";
 
 export const useLogout = () => {
