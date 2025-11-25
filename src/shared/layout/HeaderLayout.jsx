@@ -10,6 +10,16 @@ const HeaderLayout = ({ children }) => {
   const [showModal, setShowModal] = useState(false);
   const nav = useNavigate();
 
+  // 최초 렌더링 시 localStorage의 토큰 확인
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      setIsLoggedIn(true); // 로그인 상태로 변경
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
+
   useEffect(() => {
     if (showModal) {
       const scrollBarWidth =
