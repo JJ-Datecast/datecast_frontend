@@ -16,7 +16,7 @@ const processQueue = (error, token = null) => {
 
 apiClient.interceptors.request.use((config) => {
   const token = localStorage.getItem("accessToken");
-  if (token && !config.url.includes("/auth/logout")) {            // 로그아웃 요청은 Authorization 제거
+  if (token && !config.url.includes("/api/auth/logout")) {            // 로그아웃 요청은 Authorization 제거
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
@@ -28,7 +28,7 @@ apiClient.interceptors.response.use(
     const original = err.config;
 
     // 🚫 /auth/logout은 refresh 처리하지 않음
-    if (original.url.includes("/auth/logout")) {
+    if (original.url.includes("/api/auth/logout")) {
       return Promise.reject(err);
     }
 
