@@ -2,10 +2,12 @@ import "../css/SideBar.css";
 import AuthButton from "../../login/component/AuthButton";
 import { useNavigate } from "react-router-dom";
 import { useProfileStore } from "../../../store/profileStore";
+import { useLogout } from "../../../shared/hooks/useLogout";
 
 const SideBar = ({ isLoggedIn, onRequireLogin }) => {
   const nav = useNavigate();
   const { nickname } = useProfileStore(); // 🔥 Zustand에서 닉네임 받기
+  const { mutate: logout } = useLogout(); // ⬅ logout 함수 가져오기
 
   const handleClick = (path) => {
     if (!isLoggedIn) {
@@ -33,7 +35,11 @@ const SideBar = ({ isLoggedIn, onRequireLogin }) => {
           <li onClick={() => handleClick("/mypageVIEW")}>마이페이지</li>
           <li onClick={() => handleClick("/profile")}>저장된 장소</li>
           <li>
-            {isLoggedIn && <button className="logout-button">로그아웃</button>}
+            {isLoggedIn && (
+              <button className="logout-button" onClick={() => logout()}>
+                로그아웃
+              </button>
+            )}
           </li>
         </ul>
       </div>

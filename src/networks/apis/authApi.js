@@ -1,4 +1,4 @@
-import { apiClient } from "../client/apiClient";
+import apiClient from "../client/apiClient";
 
-export const socialLoginGoogle = (code) =>
-  apiClient.post("/auth/social/login/google", { code });
+export const logoutRequest = () => apiClient.post("/auth/logout");
+export const getMyInfo = () => apiClient.get("/users/me");

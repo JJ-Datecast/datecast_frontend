@@ -1,90 +1,64 @@
-// import axios from "axios";
+import axios from "axios";
 
-// const apiClient = axios.create({
-//   baseURL: "http://54.180.105.226:8080/api",
-//   headers: {
-//     "Content-Type": "application/json",
-//   },
-// });
+const apiClient = axios.create({
+  baseURL: "http://54.180.105.226:8080/api",
+  headers: { "Content-Type": "application/json" },
+  withCredentials: true, // refreshToken cookie 전달
+});
 
-// let isRefreshing = false;
-// let failedQueue = [];
+let isRefreshing = false;
+let queue = [];
 
-// const processQueue = (error, token = null) => {
-//   failedQueue.forEach((prom) => {
-//     if (error) prom.reject(error);
-//     else prom.resolve(token);
-//   });
-//   failedQueue = [];
-// };
+const processQueue = (error, token = null) => {
+  queue.forEach(p => error ? p.reject(error) : p.resolve(token));
+  queue = [];
+};
 
-// apiClient.interceptors.request.use(
-//   (config) => {
-//     const token = localStorage.getItem("accessToken");
-//     if (token) config.headers.Authorization = `Bearer ${token}`;
-//     return config;
-//   },
-//   (err) => Promise.reject(err)
-// );
+apiClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem("accessToken");
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
 
-// apiClient.interceptors.response.use(
-//   (res) => res,
+apiClient.interceptors.response.use(
+  (res) => res,
+  async (err) => {
+    const original = err.config;
 
-//   async (error) => {
-//     const originalRequest = error.config;
+    if (err.response?.status === 401 && !original._retry) {
+      original._retry = true;
 
-//     // accessToken 만료 → 401
-//     if (error.response?.status === 401 && !originalRequest._retry) {
-//       const refreshToken = localStorage.getItem("refreshToken");
-//       if (!refreshToken) {
-//         return Promise.reject(error);
-//       }
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          queue.push({ resolve, reject });
+        }).then((token) => {
+          original.headers.Authorization = `Bearer ${token}`;
+          return apiClient(original);
+        });
+      }
 
-//       if (isRefreshing) {
-//         // refreshToken 요청 중이면 큐에 대기
-//         return new Promise((resolve, reject) => {
-//           failedQueue.push({ resolve, reject });
-//         })
-//           .then((token) => {
-//             originalRequest.headers.Authorization = `Bearer ${token}`;
-//             return apiClient(originalRequest);
-//           })
-//           .catch((err) => Promise.reject(err));
-//       }
+      isRefreshing = true;
 
-//       originalRequest._retry = true;
-//       isRefreshing = true;
+      try {
+        const res = await apiClient.post("/auth/refresh");
+        const newToken = res.data.accessToken;
 
-//       try {
-//         // 🔁 Refresh API 문서에 맞게 수정됨
-//         const refreshResponse = await axios.post(
-//           "http://54.180.105.226:8080/api/auth/refresh",
-//           { refreshToken }
-//         );
+        localStorage.setItem("accessToken", newToken);
+        apiClient.defaults.headers.Authorization = `Bearer ${newToken}`;
 
-//         const newAccessToken = refreshResponse.data.accessToken;
+        processQueue(null, newToken);
+        return apiClient(original);
+      } catch (refreshError) {
+        processQueue(refreshError, null);
+        localStorage.removeItem("accessToken");
+        window.location.href = "/login";
+      } finally {
+        isRefreshing = false;
+      }
+    }
 
-//         localStorage.setItem("accessToken", newAccessToken);
-//         apiClient.defaults.headers.Authorization = `Bearer ${newAccessToken}`;
+    return Promise.reject(err);
+  }
+);
 
-//         processQueue(null, newAccessToken);
-
-//         return apiClient(originalRequest);
-//       } catch (err) {
-//         processQueue(err, null);
-
-//         // refresh 실패 → 강제 로그아웃
-//         localStorage.removeItem("accessToken");
-//         localStorage.removeItem("refreshToken");
-
-//         return Promise.reject(err);
-//       } finally {
-//         isRefreshing = false;
-//       }
-//     }
-
-//     return Promise.reject(error);
-//   }
-// );
-
-// export default apiClient;
+export default apiClient;
