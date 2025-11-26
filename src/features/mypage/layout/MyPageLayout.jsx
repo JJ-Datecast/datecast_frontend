@@ -5,7 +5,7 @@ import MyInfo from "../components/MyInfo";
 import PreConnect from "../components/PreConnect";
 import CoupleConnect from "../components/CoupleConnect";
 import Review from "../components/Review";
-import ReviewDetail from "../components/ReviewDetail"; // ⭐ import OK
+import ReviewDetail from "../components/ReviewDetail"; // import OK
 
 const MyPageLayout = () => {
   const [activeMenu, setActiveMenu] = useState("basic");

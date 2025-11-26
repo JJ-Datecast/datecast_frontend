@@ -24,12 +24,9 @@ const Header = ({ isLoggedIn, onSidebarClick }) => {
         <div className="header_right">
           <div className="header_right_left">
             {isLoggedIn && profileImageUrl ? (
-              <img
-                src={profileImageUrl}
-                className="header-profile-img"
-                style={{ width: "35px" }}
-                alt="프로필 이미지"
-              />
+              <div className="profile-circle">
+                <img src={profileImageUrl} alt="프로필 이미지" />
+              </div>
             ) : (
               <InitialButton
                 childern={"로그인/회원가입"}
