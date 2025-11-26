@@ -6,8 +6,8 @@ import { useLogout } from "../../../shared/hooks/useUser";
 
 const SideBar = ({ isLoggedIn, onRequireLogin }) => {
   const nav = useNavigate();
-  const { nickname } = useProfileStore(); // 🔥 Zustand에서 닉네임 받기
-  const { mutate: logout } = useLogout(); // ⬅ logout 함수 가져오기
+  const { nickname } = useProfileStore();
+  const { mutate: logout } = useLogout();
 
   const handleClick = (path) => {
     if (!isLoggedIn) {

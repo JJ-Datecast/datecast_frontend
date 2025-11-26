@@ -8,7 +8,7 @@ import Review from "../components/Review";
 import ReviewDetail from "../components/ReviewDetail"; // ⭐ import OK
 
 const MyPageLayout = () => {
-  const [activeMenu, setActiveMenu] = useState("review");
+  const [activeMenu, setActiveMenu] = useState("basic");
   const isCoupleConnected = false;
   const [showConnect, setShowConnect] = useState(false);
   const [selectedReview, setSelectedReview] = useState(null);

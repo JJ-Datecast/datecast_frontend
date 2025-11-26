@@ -1,30 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../css/MyInfo.css";
 import { useProfileStore } from "../../../store/profileStore";
 
 const MyInfo = () => {
-  // Zustand에서 email, nickname 가져오기
-  const { email, nickname, setNickname } = useProfileStore();
+  const email = useProfileStore((state) => state.email);
+  const nickname = useProfileStore((state) => state.nickname);
+  const updateNickname = useProfileStore((state) => state.updateNickname);
 
   const [isEditing, setIsEditing] = useState(false);
   const [tempNickname, setTempNickname] = useState(nickname);
 
-  const handleSave = () => {
-    setNickname(tempNickname); // Zustand 업데이트
-    setIsEditing(false);
+  // nickname이 바뀌면 입력 값도 맞춰주기
+  useEffect(() => {
+    setTempNickname(nickname);
+  }, [nickname]);
+
+  const handleSave = async () => {
+    try {
+      await updateNickname(tempNickname); // 🔥 이 순간 UI는 이미 바뀜
+      setIsEditing(false);
+    } catch (err) {
+      alert("닉네임 수정 실패");
+    }
   };
 
   return (
     <div className="myinfo">
       <div className="info-row">
         <span className="info-label">이메일</span>
-        <span className="info-value">{email}</span> {/* 🔥 email 출력 */}
+        <span className="info-value">{email}</span>
       </div>
 
       <div className="info-row">
         <span className="info-label">이름</span>
-        <span className="info-value">{nickname}</span>{" "}
-        {/* 🔥 이름도 nickname 사용 */}
+        <span className="info-value">{nickname}</span>
       </div>
 
       <div className="info-row">
