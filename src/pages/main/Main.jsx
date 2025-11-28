@@ -12,13 +12,13 @@ const Main = () => {
   const handleRegionClick = (name) => {
     const routeMap = {
       인천: "incheon",
-      "서울 경기": "seoul",
+      서울: "seoul",
+      경기: "gyeonggi",
       강원: "gangwon",
       광주: "gwangju",
       대구: "daegu",
       대전: "daejeon",
       부산: "busan",
-      제주: "jeju",
     };
 
     const regionKey = routeMap[name];

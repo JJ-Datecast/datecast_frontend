@@ -1,16 +1,15 @@
 .regionRow {
-    display: flex;
-    justify-content: center;
-    gap: 55px;
-    margin-bottom: 25px;
-    
-  }
-  .main_popularPlace{
-    margin-left: 8px;
-  }
-  .main_allViewBtn{
-    margin-top: 50px;
-  }
-  .main_foot{
-    margin-top: 50px;
-  }
+  display: flex;
+  justify-content: center;
+  gap: 55px;
+  margin-bottom: 25px;
+}
+.main_popularPlace {
+  margin-left: 8px;
+}
+.main_allViewBtn {
+  margin-top: 50px;
+}
+.main_foot {
+  margin-top: 50px;
+}

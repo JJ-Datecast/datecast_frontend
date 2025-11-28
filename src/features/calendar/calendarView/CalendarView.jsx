@@ -1,3 +1,5 @@
+// CalendarView.jsx
+
 import "../calendarView/CalendarView.css";
 import Calendar from "react-calendar";
 import logo from "../../../assets/header/logo.png";
@@ -6,33 +8,31 @@ import CalendarEventModal from "../component/CalendarEventModal";
 import { createPortal } from "react-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import ToastMessage from "../../../shared/components/ToastMessage";
+import ToastMessage from "../../../shared/\bcomponents/ToastMessage";
+import { useSchedules } from "../../../networks/hooks/useSchedule";
 
 const CalendarView = () => {
   const vm = useCalendarViewModel();
   const nav = useNavigate();
-  const loc = useLocation();
 
-  // 🔥 토스트 모달 상태
+  // ✔ 현재 선택된 달의 year, month 구하기
+  const year = vm.date.getFullYear();
+  const month = vm.date.getMonth() + 1;
+
+  // ✔ year/month 전달
+  const { data: schedules, isLoading } = useSchedules({ year, month });
+
   const [openModal, setOpenModal] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
 
-  // 🔥 navigate()에서 보내온 state 읽기
   useEffect(() => {
-    if (loc.state?.toast) {
-      if (loc.state.toast === "add") {
-        setToastMessage("밤에는 날씨가 추우니 겉옷을 챙기세요 ☔️");
-      } else if (loc.state.toast === "edit") {
-        setToastMessage("밤에는 날씨가 추우니 겉옷을 챙기세요.");
-      }
-
-      setOpenModal(true);
+    if (schedules) {
+      vm.setEvents(schedules);
     }
-  }, [loc.state]);
+  }, [schedules]);
 
   return (
     <div className="CalendarView" onClick={vm.onBackgroundClick}>
-      {/* 상단 토스트 모달 */}
       {openModal && (
         <ToastMessage
           message={toastMessage}
@@ -46,6 +46,8 @@ const CalendarView = () => {
       </button>
 
       <img src={logo} className="CalendarView_img" alt="로고" />
+
+      {isLoading && <p>일정을 불러오는 중...</p>}
 
       <Calendar
         locale="ko-KR"
@@ -71,7 +73,6 @@ const CalendarView = () => {
         }}
       />
 
-      {/* Portal로 body에 모달 띄우기 */}
       {vm.isModalOpen &&
         createPortal(
           <CalendarEventModal

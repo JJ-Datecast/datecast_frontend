@@ -10,13 +10,10 @@ const CalendarAddEvent = () => {
   const nav = useNavigate();
   const loc = useLocation();
 
-  // ViewModel 생성
   const viewModel = useCalendarAddEventViewModel(loc.state);
 
-  // 모달 상태
   const [openModal, setOpenModal] = useState(false);
 
-  // Navigator 전달
   useEffect(() => {
     viewModel.setNavigator(nav);
   }, [nav]);
@@ -61,14 +58,9 @@ const CalendarAddEvent = () => {
 
           const result = await handleSave();
 
-          // 🔥 저장 성공 시 → 토스트 띄우기
           if (result !== false) {
             setOpenModal(true);
-
-            // 🔥 모달이 보이도록 딜레이 후 이동
-            setTimeout(() => {
-              nav("/calendarView");
-            }, 1200);
+            setTimeout(() => nav("/calendarView"), 1200);
           }
         }}
       >
@@ -135,7 +127,6 @@ const CalendarAddEvent = () => {
           onChange={(e) => setFormValue("desc", e.target.value)}
         />
 
-        {/* 버튼 */}
         <div className="CalendarAddEvent_buttons">
           <ActionButton children={"저장"} type={"save"} />
           <button type="button" className="cancel-btn" onClick={() => nav(-1)}>

@@ -1,48 +1,45 @@
 .PlaceCard {
-    cursor: pointer;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 한 줄에 3개 */
-    
-    justify-items: center; /* 중앙 정렬 */
-  
+  width: 100%;
+  max-width: 320px;
+  cursor: pointer;
 }
-.PlaceCard a{
-    text-decoration: none;
-    color: black;
-    
+.PlaceCard a {
+  text-decoration: none;
+  color: black;
 }
 
-.PlaceCard_image{
-    width: 230px;
-    height: 300px;
-    border-radius: 10px;
+.PlaceCard_image {
+  width: 230px;
+  height: 300px;
+  border-radius: 10px;
 }
 
-.PlaceCard_content{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-    margin: 10px 0 0 10px;
-
+.PlaceCard_content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 10px 0 0 10px;
 }
-.PlaceCard_title:hover{
-    text-decoration: underline;
+.PlaceCard_title:hover {
+  text-decoration: underline;
 }
-.PlaceCard_price:hover{
-    text-decoration: underline;
-}
-
-
-
-.PlaceCard_content h3, p{
-    margin: 0;
+.PlaceCard_price:hover {
+  text-decoration: underline;
 }
 
-.PlaceCard_title{
-  font-size: larger;
+.PlaceCard_content h3,
+p {
+  margin: 0;
 }
 
-.PlaceCard_price{
-    font-size: x-large;
+.PlaceCard_title {
+  font-size: 21px;
+  font-weight: 600;
+  text-align: left;
+  width: 217px;
+}
+
+.PlaceCard_price {
+  font-size: x-large;
 }

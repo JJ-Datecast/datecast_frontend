@@ -5,7 +5,16 @@ import logo from "../../../assets/modal/moalIMG.png";
 const CalendarEventModal = ({ event, position, onDelete, onDetail }) => {
   if (!event) return null;
 
-  const { title, desc, place, startDate, endDate, startTime, endTime } = event;
+  const {
+    title,
+    description, // 🔥 수정
+    place,
+    startDate,
+    endDate,
+    startTime,
+    endTime,
+  } = event;
+
   const isSameDate = startDate === endDate;
   const displayDateTime = isSameDate
     ? `${startDate} ${startTime} ~ ${endTime}`
@@ -43,17 +52,15 @@ const CalendarEventModal = ({ event, position, onDelete, onDetail }) => {
 
           <div className="CalendarEventModal_content_item">
             <label>내용</label>
-            <p>{desc}</p>
+            <p>{description}</p> {/* 🔥 수정됨 */}
           </div>
         </div>
 
         <div className="CalendarEventModal_actions">
-          <CalendarEventModalBtn onClick={onDelete} children={"삭제"} />
-          <CalendarEventModalBtn
-            type="pink"
-            onClick={onDetail}
-            children={"상세보기"}
-          />
+          <CalendarEventModalBtn onClick={onDelete}>삭제</CalendarEventModalBtn>
+          <CalendarEventModalBtn type="pink" onClick={onDetail}>
+            상세보기
+          </CalendarEventModalBtn>
         </div>
       </div>
     </div>

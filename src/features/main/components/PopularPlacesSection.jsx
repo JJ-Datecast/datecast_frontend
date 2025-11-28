@@ -1,16 +1,17 @@
 import "../css/PopularPlacesSection.css";
-import CategoryBtn from "./CategoryButton";
+import CategoryBtn from "../../../shared/components/CategoryButton";
 import category from "../../../util/get-categoryButton";
 import { useState } from "react";
 import PlaceCard from "../../../shared/components/PlaceCard";
-import mainCard from "../../../util/get-placeCard";
+import { usePopularPlacesQuery } from "../../../networks/hooks/usePlace";
+
 const PopularPlacesSection = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState(1);
 
-  const filteredCards =
-    selectedCategoryId === 1
-      ? mainCard.filter((item) => item.categoryId === 1)
-      : mainCard.filter((item) => item.categoryId === selectedCategoryId);
+  const selectedCategory = category.find((c) => c.id === selectedCategoryId);
+  const categoryParam = selectedCategory?.apiValue || null;
+
+  const { data, isLoading, error } = usePopularPlacesQuery(categoryParam);
 
   return (
     <div className="PopularPlacesSection">
@@ -20,6 +21,7 @@ const PopularPlacesSection = () => {
           최근 한 주간 많이 저장된 순
         </p>
       </div>
+
       <div className="PopularPlacesSection_filters">
         {category.map((item) => (
           <CategoryBtn
@@ -30,18 +32,21 @@ const PopularPlacesSection = () => {
           />
         ))}
       </div>
+
       <div className="PopularPlacesSection_list">
-        {filteredCards.map((item, index) => (
+        {isLoading && <p>불러오는 중...</p>}
+        {error && <p>에러 발생!</p>}
+
+        {data?.map((item) => (
           <PlaceCard
-            key={index}
-            image={item.image}
-            title={item.title}
-            price={item.price}
-            url={item.url}
+            key={item.placeId}
+            image={item.imageUrl}
+            title={item.name}
           />
         ))}
       </div>
     </div>
   );
 };
+
 export default PopularPlacesSection;

@@ -1,0 +1,8 @@
+.placeDetailPrev_button {
+  margin-right: auto;
+  padding: 5px 10px;
+  cursor: pointer;
+  background: #ffffff;
+  border: 1px solid rgb(220, 220, 220);
+  border-radius: 10px;
+}

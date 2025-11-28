@@ -5,15 +5,15 @@ import Login from "./pages/auth/Login";
 import SignUp from "./pages/auth/SignUp";
 import CalendarAddEvent from "./features/\bcalendar/calendarAddEvent/CalendarAddEvent";
 import CalendarView from "./features/\bcalendar/calendarView/CalendarView";
-import LocationDetail from "./pages/place/LocationDetail";
-import LocationList from "./pages/place/LocationList";
-import LocationReview from "./pages/place/LocationReview";
+
 import MainView from "./views/MainView";
 
 import MyPageView from "./views/MyPageView";
 
 import DistrictView from "./views/DistrictView";
 import AuthCallback from "./pages/auth/AuthCallback";
+import PlaceList from "./pages/place/PlaceList";
+import PlaceDetail from "./pages/place/PlaceDetail";
 function App() {
   // localStorage.clear();
   return (
@@ -21,6 +21,8 @@ function App() {
       <Routes>
         <Route path="/" element={<MainView />} />
         <Route path="/oauth/callback" element={<AuthCallback />} />
+        <Route path="/places/:region/:district" element={<PlaceList />} />
+        <Route path="/place/:placeId" element={<PlaceDetail />} />
 
         <Route path="/login" element={<Login />} />
         <Route path="/signUp" element={<SignUp />} />
@@ -30,9 +32,6 @@ function App() {
         <Route path="/calendarView" element={<CalendarView />} />
         <Route path="/mypageView" element={<MyPageView />} />
         <Route path="/district/:region" element={<DistrictView />} />
-        <Route path="/locationDetail" element={<LocationDetail />} />
-        <Route path="locationList" element={<LocationList />} />
-        <Route path="locationReview" element={<LocationReview />} />
 
         <Route path="*" element={<Notfound />} />
       </Routes>

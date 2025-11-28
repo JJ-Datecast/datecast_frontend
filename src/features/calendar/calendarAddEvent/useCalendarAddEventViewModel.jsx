@@ -1,57 +1,54 @@
 import { useEffect, useMemo, useState, useCallback, useRef } from "react";
-import { useCalendarStore } from "../store/useCalendarStore";
+import {
+  useCreateSchedule,
+  useUpdateSchedule,
+} from "../../../networks/hooks/useSchedule";
 
 export const useCalendarAddEventViewModel = (initial) => {
-  const userId = localStorage.getItem("userId") || "guest";
-  const { addEvent, updateEvent } = useCalendarStore(userId)();
-
   const navRef = useRef(null);
   const setNavigator = (nav) => (navRef.current = nav);
 
+  // 초기값
   const isEdit = !!initial?.event;
   const eventData = initial?.event || null;
   const selectedDate = initial?.date || null;
 
-  // --------------------------
-  // ✅ Form State
-  // --------------------------
+  // 서버 mutation
+  const { mutateAsync: createSchedule } = useCreateSchedule();
+  const { mutateAsync: updateSchedule } = useUpdateSchedule();
+
+  // Form State
   const [form, setForm] = useState({
     title: "",
     place: "",
     desc: "",
   });
 
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
-
   const setFormValue = (key, value) =>
     setForm((prev) => ({ ...prev, [key]: value }));
 
-  // --------------------------
-  // ✅ 시간 옵션 — useMemo로 고정
-  // --------------------------
+  // 날짜/시간 상태
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+
+  // 시간 선택 옵션
   const timeOptions = useMemo(() => {
     return Array.from({ length: 48 }).map((_, i) => {
       const hh = String(Math.floor(i / 2)).padStart(2, "0");
       const mm = i % 2 === 0 ? "00" : "30";
       const t = `${hh}:${mm}`;
-      return { label: t, value: t }; // ✅ CustomSelect가 기대하는 구조!
+      return { label: t, value: t };
     });
   }, []);
 
-  // --------------------------
-  // ✅ 기본 시간 — 현재 시간 반올림해서 설정
-  // --------------------------
+  // 현재 시간을 30분 단위로 반올림
   const getRoundedCurrentTime = () => {
     const now = new Date();
     let hour = now.getHours();
     let minute = now.getMinutes();
 
-    // ✅ 0~29 → 30분
-    // ✅ 30~59 → 다음 시간 정각
     if (minute < 30) {
       minute = 30;
     } else {
@@ -65,77 +62,80 @@ export const useCalendarAddEventViewModel = (initial) => {
     )}`;
   };
 
-  // --------------------------
-  // ✅ Init Logic (수정 모드 + 신규 등록 모드)
-  // --------------------------
+  // 초기 데이터 세팅 (등록 / 수정)
   useEffect(() => {
     if (isEdit && eventData) {
-      // ✅ 기존 일정 불러오기
       setFormValue("title", eventData.title);
       setFormValue("place", eventData.place);
-      setFormValue("desc", eventData.desc);
+      setFormValue("desc", eventData.description);
 
       setStartDate(eventData.startDate);
       setEndDate(eventData.endDate);
 
       setStartTime(eventData.startTime);
       setEndTime(eventData.endTime);
+      return;
     }
 
     if (!isEdit && selectedDate) {
-      // ✅ 신규 일정 등록 모드
       setStartDate(selectedDate);
       setEndDate(selectedDate);
 
       const time = getRoundedCurrentTime();
       setStartTime(time);
 
-      // 기본 종료 시간 = 시작 시간 + 1시간
       const [h, m] = time.split(":").map(Number);
       const end = `${String((h + 1) % 24).padStart(2, "0")}:${String(
         m
       ).padStart(2, "0")}`;
-
       setEndTime(end);
     }
   }, [isEdit, selectedDate]);
 
-  // --------------------------
-  // ✅ Save
-  // --------------------------
-  const handleSave = useCallback(() => {
-    const payload = {
-      ...(isEdit ? { id: eventData.id } : {}),
-      title: form.title.trim(),
-      place: form.place.trim(),
-      desc: form.desc.trim(),
-      startDate,
-      startTime,
-      endDate,
-      endTime,
-    };
+  // 저장 (등록 / 수정)
+  const handleSave = useCallback(async () => {
+    try {
+      const payload = {
+        title: form.title.trim(),
+        description: form.desc.trim(),
+        placeName: form.place.trim(),
+        latitude: 0,
+        longitude: 0,
+        startAt: `${startDate}T${startTime}:00`,
+        endAt: `${endDate}T${endTime}:00`,
+        geofenceRadiusM: 0,
+        canReview: true,
+      };
 
-    if (isEdit) {
-      updateEvent(payload);
-    } else {
-      addEvent(payload);
+      let result;
+
+      if (isEdit) {
+        result = await updateSchedule({ id: eventData.id, body: payload });
+      } else {
+        result = await createSchedule(payload);
+      }
+
+      console.log("🎉 일정 저장 성공!");
+
+      navRef.current?.("/calendarView", {
+        state: { toast: isEdit ? "edit" : "add" },
+      });
+
+      return result;
+    } catch (err) {
+      console.error("일정 저장 실패:", err.response?.data || err);
+      return false;
     }
-
-    // ⛔ alert 제거!
-    // ✔️ 대신 캘린더 화면으로 이동 + 토스트 메시지 전달
-    navRef.current?.("/calendarView", {
-      state: { toast: isEdit ? "edit" : "add" },
-    });
   }, [
-    isEdit,
     form,
     startDate,
     startTime,
     endDate,
     endTime,
-    addEvent,
-    updateEvent,
+    isEdit,
     eventData,
+    updateSchedule,
+    createSchedule,
   ]);
 
   return {
@@ -150,7 +150,7 @@ export const useCalendarAddEventViewModel = (initial) => {
     setEndDate,
     setStartTime,
     setEndTime,
-    timeOptions, // ✅ 드롭다운 옵션
+    timeOptions,
     handleSave,
     setNavigator,
   };

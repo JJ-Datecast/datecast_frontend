@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiClient = axios.create({
+export const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL,   // 환경 자동 적용
   headers: { "Content-Type": "application/json" },
   withCredentials: true, // refreshToken cookie 전달
@@ -58,7 +58,6 @@ apiClient.interceptors.response.use(
       } catch (refreshError) {
         processQueue(refreshError, null);
         localStorage.removeItem("accessToken");
-        window.location.href = "/login";
       } finally {
         isRefreshing = false;
       }

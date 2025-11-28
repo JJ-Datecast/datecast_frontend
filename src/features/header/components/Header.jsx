@@ -8,7 +8,7 @@ import { useProfileStore } from "../../../store/profileStore";
 const Header = ({ isLoggedIn, onSidebarClick }) => {
   const nav = useNavigate();
   const { profileImageUrl } = useProfileStore();
-  console.log("🔥 Header 상태 profileImageUrl:", profileImageUrl);
+  // console.log("🔥 Header 상태 profileImageUrl:", profileImageUrl);
 
   return (
     <>
@@ -17,7 +17,7 @@ const Header = ({ isLoggedIn, onSidebarClick }) => {
           <img
             src={logo}
             onClick={() => {
-              window.location.href = "/";
+              nav("/");
             }}
           />
         </div>

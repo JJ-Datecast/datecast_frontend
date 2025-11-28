@@ -2,7 +2,7 @@ import "../css/SideBar.css";
 import AuthButton from "../../login/component/AuthButton";
 import { useNavigate } from "react-router-dom";
 import { useProfileStore } from "../../../store/profileStore";
-import { useLogout } from "../../../shared/hooks/useUser";
+import { useLogout } from "../../../networks/hooks/useUser";
 
 const SideBar = ({ isLoggedIn, onRequireLogin }) => {
   const nav = useNavigate();
