@@ -21,6 +21,7 @@ const CalendarView = () => {
 
   // ✔ year/month 전달
   const { data: schedules, isLoading } = useSchedules({ year, month });
+  const { state } = useLocation();
 
   const [openModal, setOpenModal] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -30,6 +31,15 @@ const CalendarView = () => {
       vm.setEvents(schedules);
     }
   }, [schedules]);
+
+  useEffect(() => {
+    if (state?.weatherMessage) {
+      console.log("🔥 weatherMessage 감지됨:", state.weatherMessage);
+      setToastMessage(state.weatherMessage);
+      setOpenModal(true);
+      window.history.replaceState({}, document.title);
+    }
+  }, [state]);
 
   return (
     <div className="CalendarView" onClick={vm.onBackgroundClick}>

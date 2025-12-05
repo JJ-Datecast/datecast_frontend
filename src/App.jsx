@@ -14,6 +14,8 @@ import DistrictView from "./views/DistrictView";
 import AuthCallback from "./pages/auth/AuthCallback";
 import PlaceList from "./pages/place/PlaceList";
 import PlaceDetail from "./pages/place/PlaceDetail";
+import AcceptInvitePage from "./features/\bmypage/components/WaitingConnect";
+
 function App() {
   // localStorage.clear();
   return (
@@ -32,6 +34,7 @@ function App() {
         <Route path="/calendarView" element={<CalendarView />} />
         <Route path="/mypageView" element={<MyPageView />} />
         <Route path="/district/:region" element={<DistrictView />} />
+        <Route path="/accept-invite" element={<AcceptInvitePage />} />
 
         <Route path="*" element={<Notfound />} />
       </Routes>

@@ -90,7 +90,7 @@ export const useCalendarAddEventViewModel = (initial) => {
       ).padStart(2, "0")}`;
       setEndTime(end);
     }
-  }, [isEdit, selectedDate]);
+  }, [isEdit, selectedDate, eventData]);
 
   // 저장 (등록 / 수정)
   const handleSave = useCallback(async () => {
@@ -109,19 +109,43 @@ export const useCalendarAddEventViewModel = (initial) => {
 
       let result;
 
+      /* ------------------------------
+         🔥 수정 모드
+        ------------------------------ */
       if (isEdit) {
         result = await updateSchedule({ id: eventData.id, body: payload });
-      } else {
-        result = await createSchedule(payload);
+
+        console.log("🎉 일정 수정 성공!", result);
+
+        navRef.current?.("/calendarView", {
+          state: { toast: "edit" },
+        });
+
+        return result;
       }
 
-      console.log("🎉 일정 저장 성공!");
+      /* ------------------------------
+         🔥 신규 생성 모드
+        ------------------------------ */
+      result = await createSchedule(payload);
 
+      console.log("🎉 일정 생성 성공!", result);
+
+      // axios 응답 구조 → result.data.weatherMessage
+      const weatherMessage = result?.data?.weatherMessage;
+
+      console.log("🌤 weatherMessage:", weatherMessage);
+
+      // CalendarView로 메시지 전달
       navRef.current?.("/calendarView", {
-        state: { toast: isEdit ? "edit" : "add" },
+        state: {
+          toast: "add",
+          weatherMessage,
+        },
       });
 
-      return result;
+      // 상위에서도 사용할 수 있게 return
+      return weatherMessage;
     } catch (err) {
       console.error("일정 저장 실패:", err.response?.data || err);
       return false;

@@ -4,9 +4,11 @@ import category from "../../../util/get-categoryButton";
 import { useState } from "react";
 import PlaceCard from "../../../shared/components/PlaceCard";
 import { usePopularPlacesQuery } from "../../../networks/hooks/usePlace";
+import { useNavigate } from "react-router-dom";
 
 const PopularPlacesSection = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState(1);
+  const nav = useNavigate();
 
   const selectedCategory = category.find((c) => c.id === selectedCategoryId);
   const categoryParam = selectedCategory?.apiValue || null;
@@ -42,6 +44,7 @@ const PopularPlacesSection = () => {
             key={item.placeId}
             image={item.imageUrl}
             title={item.name}
+            onClick={() => nav(`/place/${item.placeId}`)}
           />
         ))}
       </div>

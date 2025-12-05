@@ -1,8 +1,63 @@
 .placeDetailPrev_button {
-  margin-right: auto;
   padding: 5px 10px;
   cursor: pointer;
   background: #ffffff;
   border: 1px solid rgb(220, 220, 220);
   border-radius: 10px;
+  display: flex;
+  margin: 10px 0px 0px 5px;
+}
+.PlaceDetail-image {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.placeDetail-content-title-space {
+  width: 95%;
+  margin: 0 auto;
+}
+
+.placeDetail-content-title-top {
+  display: flex;
+  justify-content: space-between; /* 좌측 글씨 / 우측 버튼 띄우기 */
+  align-items: center; /* 세로 가운데 정렬 */
+  width: 100%;
+}
+.placeDetail-content-title-top h2 {
+  margin: 5px;
+}
+.title-group {
+  display: flex;
+  align-items: flex-start; /* 왼쪽 정렬 */
+  gap: 10px;
+  align-items: center;
+}
+.title-group .placeDetail-category {
+  color: gray;
+  font-size: 18px;
+}
+
+.placeDetail-button-space {
+  display: flex;
+  align-items: center;
+  /* 버튼 사이 간격 */
+}
+
+/* 버튼 스타일(임시) */
+.placeDetail-review-button,
+.placeDetail-save-button {
+  border: none;
+  background: transparent;
+  cursor: pointerx;
+}
+
+.placeDetail-content-title-bottom {
+  border-top: 1px solid rgb(215, 215, 215);
+  display: flex;
+  gap: 3px;
+  padding: 13px 0px 13px 0px;
+  align-items: center;
+}
+.placeDetail-content-title-bottom span {
+  font-size: 18px;
 }

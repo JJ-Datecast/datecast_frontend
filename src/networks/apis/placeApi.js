@@ -1,6 +1,8 @@
 // src/api/placeApi.js
 
-const BASE_URL = "https://datecast.site/api";
+import apiClient from "../../networks/client/apiClient";
+
+const BASE_URL = "/api";  // apiClient가 baseURL을 이미 들고 있으므로 상대경로 사용 가능
 
 /* -----------------------
    인기 장소 조회
@@ -10,35 +12,63 @@ export const getPopularPlaces = async (category) => {
     ? `${BASE_URL}/places/popular?category=${category}`
     : `${BASE_URL}/places/popular`;
 
-  const response = await fetch(url);
-  if (!response.ok) throw new Error("인기 장소 API 실패");
-
-  return response.json();
+  const res = await apiClient.get(url);
+  return res.data;
 };
 
 /* -----------------------
    지역별 장소 조회
-   GET /regions/{regionCode}/places?district=..&category=..
 ------------------------ */
 export const getPlacesByRegion = async ({ regionCode, district, category }) => {
-  const url = new URL(`${BASE_URL}/regions/${regionCode}/places`);
-
-  if (district) url.searchParams.append("district", district);
-  if (category) url.searchParams.append("category", category);
-
-  const response = await fetch(url);
-
-  if (!response.ok) throw new Error("지역별 장소 리스트 조회 실패");
-
-  return response.json();
+  const res = await apiClient.get(
+    `${BASE_URL}/regions/${regionCode}/places`,
+    {
+      params: { district, category },
+    }
+  );
+  return res.data;
 };
+
 /* -----------------------
    장소 상세 조회
-   GET /places/{placeId}
 ------------------------ */
 export const getPlaceDetail = async (placeId) => {
-  const response = await fetch(`${BASE_URL}/places/${placeId}`);
-  if (!response.ok) throw new Error("장소 상세 조회 실패");
-
-  return response.json();
+  const res = await apiClient.get(`${BASE_URL}/places/${placeId}`);
+  return res.data;
 };
+
+/* -----------------------
+   장소 저장 (북마크 추가)
+   POST /api/bookmarked-places
+------------------------ */
+export const saveBookmarkedPlace = async (placeData) => {
+  const res = await apiClient.post(
+    `${BASE_URL}/bookmarked-places`,
+    placeData
+  );
+  return res.data;  // { bookmarkedPlaceId: number }
+};
+
+/* -----------------------
+   장소 저장 삭제 (북마크 해제)
+   DELETE /api/bookmarked-places/{id}
+------------------------ */
+export const deleteBookmarkedPlace = async (bookmarkedPlaceId) => {
+  await apiClient.delete(
+    `${BASE_URL}/bookmarked-places/${bookmarkedPlaceId}`
+  );
+  return true;
+};
+
+/* -----------------------
+   저장된 장소 목록 조회
+   GET /api/bookmarked-places
+------------------------ */
+export const getBookmarkedPlaces = async () => {
+  console.log("📡 GET /bookmarked-places 요청 보냄");    // <- 여기
+  const res = await apiClient.get(`${BASE_URL}/bookmarked-places`);
+  console.log("✅ GET /bookmarked-places 응답:", res.data);  // <- 여기
+  return res.data;
+};
+
+
