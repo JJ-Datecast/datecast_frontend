@@ -14,7 +14,7 @@ import DistrictView from "./views/DistrictView";
 import AuthCallback from "./pages/auth/AuthCallback";
 import PlaceList from "./pages/place/PlaceList";
 import PlaceDetail from "./pages/place/PlaceDetail";
-import AcceptInvitePage from "./features/\bmypage/components/WaitingConnect";
+import AcceptInvitePage from "./features/mypage/components/AcceptInvitePage";
 import AfterConnect from "./features/\bmypage/components/AfterConnect";
 
 function App() {
