@@ -20,16 +20,16 @@ const AcceptInvitePage = () => {
     const run = async () => {
       try {
         console.log("🏹 초대 수락 요청 시작", token);
-        await acceptInvitation({ token }); // 🔥 일단 시도
+        await acceptInvitation({ token }); // 먼저 시도
 
         console.log("🎉 초대 수락 성공 → accept-invite로 이동");
         navigate("/accept-invite", { replace: true });
-      } catch (err: any) {
+      } catch (err) {
         console.error("커플 초대 수락 실패:", err);
 
         const status = err?.response?.status;
 
-        // 🔥 인증 안 된 상태라면 → 로그인으로 보내면서 토큰 저장
+        // 🔥 인증 안 된 상태 → 로그인으로 보내면서 토큰 저장
         if (status === 401 || status === 403) {
           console.log("⚠️ 인증 안 된 상태 → 로그인으로 이동");
           localStorage.setItem("inviteTokenPending", token);
