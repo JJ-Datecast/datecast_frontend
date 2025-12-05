@@ -1,0 +1,55 @@
+.after-wrap {
+  position: relative; /* 버튼 위치 위해 필요 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 70px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  width: 90%;
+  margin: 0 auto;
+  padding: 50px 0;
+  background: white;
+}
+
+.profile-box {
+  text-align: center;
+}
+
+.profile-img {
+  width: 170px;
+  height: 170px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.profile-text {
+  margin-top: 15px;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.heart {
+  font-size: 50px;
+}
+.breakBtn-area {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 35px;
+  margin-top: 10px;
+}
+
+/* 커플 끊기 버튼 스타일 */
+.break-btn {
+  background: #eee;
+  border: none;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.break-btn:hover {
+  background: #d8d8d8;
+}

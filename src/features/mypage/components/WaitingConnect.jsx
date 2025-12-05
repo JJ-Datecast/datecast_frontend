@@ -19,18 +19,17 @@ const AcceptInvitePage = () => {
 
     const checkLoginAndAccept = async () => {
       try {
-        console.log("🚀 로그인 여부(userMe) 확인 요청");
         const user = await getUserMe();
-        console.log("✔ 로그인 상태 확인 성공:", user);
 
-        console.log("🏹 커플 초대 수락 요청");
+        if (user.isCoupleComplete) {
+          // 이미 커플인 상태면 다시 accept 요청하지 말기!
+          navigate("/", { replace: true });
+          return;
+        }
+
         await acceptInvitation({ token });
-
-        console.log("🎉 초대 수락 성공 → waiting 이동");
         navigate("/waiting-connect", { replace: true });
       } catch (err) {
-        console.log("❌ 로그인 상태 아님 → 로그인 페이지로 이동");
-        console.error(err);
         localStorage.setItem("inviteTokenPending", token);
         navigate("/login", { replace: true });
       }

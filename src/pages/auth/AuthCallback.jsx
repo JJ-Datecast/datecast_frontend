@@ -10,54 +10,66 @@ const AuthCallback = () => {
   const qc = useQueryClient();
   const setProfileFromServer = useProfileStore((s) => s.setProfileFromServer);
 
-  // ⭐ 수락 API mutation
   const { mutateAsync: acceptInvitation } = useCoupleInvitationAccept();
 
   useEffect(() => {
-    let isRun = false;
-    if (isRun) return;
-    isRun = true;
+    let executed = false;
+    if (executed) return;
+    executed = true;
 
     const params = new URLSearchParams(window.location.search);
     const accessToken = params.get("token");
-    const inviteToken = params.get("inviteToken"); // ⭐ 여기서 토큰 받음
+    const inviteToken = params.get("inviteToken");
 
-    const loginFlow = async () => {
+    const runAuthFlow = async () => {
       try {
-        // 1️⃣ 토큰 저장
+        // 1️⃣ AccessToken 저장
+        if (!accessToken) {
+          nav("/login", { replace: true });
+          return;
+        }
         localStorage.setItem("accessToken", accessToken);
 
-        // 2️⃣ 사용자 정보 요청
+        // 2️⃣ 유저 정보 요청
         const user = await getUserMe();
         qc.setQueryData(["userMe"], user);
         setProfileFromServer(user);
 
-        // 3️⃣ 초대 토큰 존재하면 → 수락 처리
+        // 3️⃣ 이미 커플 연결 완료 상태라면?
+        if (user.isCoupleComplete) {
+          // ⭐ 여기가 핵심: accept를 다시 호출하지 않음
+          localStorage.removeItem("inviteTokenPending");
+          nav("/", { replace: true });
+          return;
+        }
+
+        // ⭐ 초대 토큰 처리
         if (inviteToken) {
           try {
+            console.log("초대 토큰 발견 → 자동 수락 시작");
             await acceptInvitation({ token: inviteToken });
 
-            // 사용 완료 → 삭제
+            // 성공적으로 소모된 토큰 제거
             localStorage.removeItem("inviteTokenPending");
 
-            // 4️⃣ waiting 화면 이동
+            console.log("초대 자동 수락 완료 → waiting 이동");
             nav("/waiting-connect", { replace: true });
             return;
           } catch (err) {
-            console.error("초대 자동 수락 실패:", err);
+            console.error("자동 초대 수락 실패:", err);
+            // 실패해도 앱 사용은 가능해야함
           }
         }
 
-        // 5️⃣ 평상 시에는 메인 이동
+        // 4️⃣ 일반 로그인 시 진입
         nav("/", { replace: true });
       } catch (err) {
-        console.error(err);
-        nav("/login");
+        console.error("AuthCallback 처리 실패:", err);
+        nav("/login", { replace: true });
       }
     };
 
-    if (accessToken) loginFlow();
-    else nav("/login");
+    runAuthFlow();
   }, []);
 
   return <div>로그인 처리 중...</div>;

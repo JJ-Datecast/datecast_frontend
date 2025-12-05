@@ -15,6 +15,7 @@ import AuthCallback from "./pages/auth/AuthCallback";
 import PlaceList from "./pages/place/PlaceList";
 import PlaceDetail from "./pages/place/PlaceDetail";
 import AcceptInvitePage from "./features/\bmypage/components/WaitingConnect";
+import AfterConnect from "./features/\bmypage/components/AfterConnect";
 
 function App() {
   // localStorage.clear();
@@ -33,6 +34,7 @@ function App() {
         <Route path="/calendarAddEvent" element={<CalendarAddEvent />} />
         <Route path="/calendarView" element={<CalendarView />} />
         <Route path="/mypageView" element={<MyPageView />} />
+        <Route path="/couple" element={<AfterConnect />} />
         <Route path="/district/:region" element={<DistrictView />} />
         <Route path="/accept-invite" element={<AcceptInvitePage />} />
 
