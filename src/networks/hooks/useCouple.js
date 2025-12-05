@@ -36,16 +36,20 @@ export const useCoupleInvitation = () => {
 /* =========================================================
    3) 커플 초대 수락 훅
    ========================================================= */
-export const useCoupleInvitationAccept = () => {
-  const qc = useQueryClient();
-
-  return useMutation({
-    mutationFn: postCoupleInvitationAccept,
-    onSuccess: () => {
-      qc.invalidateQueries(["coupleMe"]);
-    },
-  });
-};
+   export const useCoupleInvitationAccept = () => {
+    const qc = useQueryClient();
+  
+    return useMutation({
+      mutationFn: postCoupleInvitationAccept,
+      onSuccess: () => {
+        qc.invalidateQueries(["coupleMe"]);
+      },
+      onError: (err) => {
+        console.error("커플 초대 수락 실패:", err);
+      }
+    });
+  };
+  
 
 /* =========================================================
    4) 커플 해제 훅

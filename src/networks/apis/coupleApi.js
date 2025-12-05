@@ -11,9 +11,18 @@ export const postCoupleInvitation = (payload) => {
 /* =========================================================
    2) 커플 초대 수락
    ========================================================= */
-   export const postCoupleInvitationAccept = ({ token }) => {
-    return apiClient.post(`/api/couple-invitations/accept?token=${token}`);
+   export const postCoupleInvitationAccept = async ({ token }) => {
+    const res = await apiClient.post("/api/couple-invitations/accept", { token });
+  
+    // 서버 응답 형태가 예시로 아래라 가정
+    // { success: true, coupleId: 4 } 또는 { success: false, message: "..."}
+    if (!res.data || res.data.success === false) {
+      throw new Error(res.data?.message || "커플 수락 실패");
+    }
+  
+    return res.data;
   };
+  
   
 /* =========================================================
    3) 내 커플 정보 조회
