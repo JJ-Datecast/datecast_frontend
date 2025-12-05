@@ -34,7 +34,7 @@ const AcceptInvitePage = () => {
         await acceptInvitation({ token });
 
         console.log("🎉 초대 수락 성공 → waiting-connect로 이동");
-        navigate("/waiting-connect", { replace: true });
+        navigate("/accept-invite", { replace: true });
       } catch (err) {
         console.error("❌ 초대 수락 실패:", err);
 
