@@ -48,7 +48,7 @@ const AcceptInvitePage = () => {
 
         // 4️⃣ 커플이 아니면 accept 실행
         await acceptInvitation({ token });
-        navigate("/waiting-connect", { replace: true });
+        navigate("/accept-invite", { replace: true });
       } catch (err) {
         localStorage.setItem("inviteTokenPending", token);
         navigate("/login", { replace: true });
