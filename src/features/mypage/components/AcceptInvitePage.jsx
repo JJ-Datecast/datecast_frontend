@@ -18,32 +18,30 @@ const AcceptInvitePage = () => {
     }
 
     const run = async () => {
-      const accessToken = localStorage.getItem("accessToken");
-
-      // 1️⃣ 로그인 안 된 상태 → 초대 토큰 저장하고 로그인으로
-      if (!accessToken) {
-        console.log("⚠️ accessToken 없음 → 로그인으로 이동");
-        localStorage.setItem("inviteTokenPending", token);
-        navigate("/login", { replace: true });
-        return;
-      }
-
-      // 2️⃣ 로그인 된 상태 → 바로 초대 수락 요청
       try {
         console.log("🏹 초대 수락 요청 시작", token);
-        await acceptInvitation({ token });
+        await acceptInvitation({ token }); // 🔥 일단 시도
 
         console.log("🎉 초대 수락 성공 → accept-invite로 이동");
         navigate("/accept-invite", { replace: true });
-      } catch (err) {
-        console.error(err);
+      } catch (err: any) {
+        console.error("커플 초대 수락 실패:", err);
+
+        const status = err?.response?.status;
+
+        // 🔥 인증 안 된 상태라면 → 로그인으로 보내면서 토큰 저장
+        if (status === 401 || status === 403) {
+          console.log("⚠️ 인증 안 된 상태 → 로그인으로 이동");
+          localStorage.setItem("inviteTokenPending", token);
+          navigate("/login", { replace: true });
+          return;
+        }
 
         const msg =
-          err.response?.data?.message ||
+          err?.response?.data?.message ||
           "초대 처리 중 문제가 발생했습니다. 이미 처리된 초대일 수 있어요.";
 
         alert(msg);
-
         navigate("/", { replace: true });
       }
     };
