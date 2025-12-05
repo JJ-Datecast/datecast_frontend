@@ -13,19 +13,28 @@ const AuthCallback = () => {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const accessTokenFromUrl = params.get("token"); // 구글 로그인 후 백엔드가 넘겨준 accessToken
-    const inviteTokenFromUrl = params.get("inviteToken"); // redirect_uri에 같이 딸려온 초대 토큰
+
+    // ⭐ URL 전체 파라미터 확인
+    const paramsObj = Object.fromEntries(params.entries());
+    console.log("paramsObj 👉", paramsObj);
+
+    // ⭐ accessToken으로 올 가능성이 큰 키들 대응
+    const accessTokenFromUrl =
+      paramsObj.token || paramsObj.accessToken || paramsObj.jwt || null;
+
+    // ⭐ 초대 토큰도 동일 방식 적용
+    const inviteTokenFromUrl =
+      paramsObj.inviteToken || paramsObj.pendingInviteToken || null;
+
     const pendingInviteToken = localStorage.getItem("inviteTokenPending");
 
-    // URL에 온 토큰이 우선, 없으면 localStorage에 저장된 초대 토큰 사용
     const inviteToken = inviteTokenFromUrl || pendingInviteToken || null;
 
     const runAuthFlow = async () => {
       try {
         console.log("🔐 AuthCallback 진입");
-        console.log("URL accessToken:", accessTokenFromUrl);
-        console.log("URL inviteToken:", inviteTokenFromUrl);
-        console.log("localStorage pendingInviteToken:", pendingInviteToken);
+        console.log("▶ accessTokenFromUrl =", accessTokenFromUrl);
+        console.log("▶ inviteToken =", inviteToken);
 
         // 1️⃣ accessToken 없으면 로그인 실패로 간주
         if (!accessTokenFromUrl) {
@@ -48,9 +57,9 @@ const AuthCallback = () => {
         if (inviteToken) {
           try {
             console.log("🏹 초대 토큰 발견 → 자동 수락 시작", inviteToken);
+
             await acceptInvitation({ token: inviteToken });
 
-            // 사용 완료 → pending 토큰 제거
             localStorage.removeItem("inviteTokenPending");
 
             console.log("🎉 초대 자동 수락 성공 → waiting-connect 이동");
@@ -58,14 +67,13 @@ const AuthCallback = () => {
             return;
           } catch (err) {
             console.error("❌ 자동 초대 수락 실패:", err);
-            // 실패해도 로그인은 된 상태 → 메인으로 보내기
             localStorage.removeItem("inviteTokenPending");
             nav("/", { replace: true });
             return;
           }
         }
 
-        // 5️⃣ 초대 없는 일반 로그인 → 메인으로
+        // 5️⃣ 초대 없는 일반 로그인 → 홈 이동
         console.log("✨ 초대 없이 일반 로그인 → 홈 이동");
         nav("/", { replace: true });
       } catch (err) {
