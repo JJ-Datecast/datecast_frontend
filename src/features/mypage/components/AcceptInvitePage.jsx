@@ -36,12 +36,14 @@ const AcceptInvitePage = () => {
         console.log("🎉 초대 수락 성공 → waiting-connect로 이동");
         navigate("/accept-invite", { replace: true });
       } catch (err) {
-        console.error("❌ 초대 수락 실패:", err);
+        console.error(err);
 
-        // 이미 처리된 초대 등일 수 있으니 일단 메인으로 돌려보내기
-        alert(
-          "초대 처리가 정상적으로 완료되지 않았습니다.\n이미 처리된 초대일 수 있어요."
-        );
+        const msg =
+          err.response?.data?.message ||
+          "초대 처리 중 문제가 발생했습니다. 이미 처리된 초대일 수 있어요.";
+
+        alert(msg);
+
         navigate("/", { replace: true });
       }
     };
