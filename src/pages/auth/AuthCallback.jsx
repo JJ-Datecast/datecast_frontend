@@ -15,79 +15,90 @@ const AuthCallback = () => {
     const params = new URLSearchParams(window.location.search);
     const paramsObj = Object.fromEntries(params.entries());
 
-    // ⭐ 1) URL에서 올 수도 있고 아닐 수도 있는 token들 대응
+    console.log("paramsObj 👉", paramsObj);
+
+    /**
+     * 1) URL에서 accessToken이 왔을 수도 있고 아닐 수도 있음
+     */
     const accessTokenFromUrl =
       paramsObj.token || paramsObj.accessToken || paramsObj.jwt || null;
 
-    // ⭐ 2) 기존 로그인으로 저장된 localStorage 토큰
+    /**
+     * 2) 로컬스토리지 기존 로그인 토큰
+     */
     const storedToken = localStorage.getItem("accessToken");
 
-    // ⭐ 3) 최종 사용할 토큰
-    const finalAccessToken = accessTokenFromUrl || storedToken;
-
-    // ⭐ 초대 토큰 처리
+    /**
+     * 3) 초대 토큰 처리
+     */
     const inviteTokenFromUrl =
       paramsObj.inviteToken || paramsObj.pendingInviteToken || null;
 
     const pendingInviteToken = localStorage.getItem("inviteTokenPending");
-
     const inviteToken = inviteTokenFromUrl || pendingInviteToken || null;
 
     const runAuthFlow = async () => {
+      console.log("🔐 AuthCallback 진입");
+      console.log("accessTokenFromUrl =", accessTokenFromUrl);
+      console.log("storedToken =", storedToken);
+
+      /**
+       * 🔥 accessToken 저장 정책
+       * 👉 URL로 왔으면 무조건 갱신 저장
+       * 👉 없으면 기존 저장된 값 유지
+       */
+      if (accessTokenFromUrl) {
+        localStorage.setItem("accessToken", accessTokenFromUrl);
+        console.log("🌟 URL token 저장 완료");
+      }
+
+      /**
+       * 🚨 여기서 핵심 조건 변경
+       * 기존에는 token 없으면 무조건 로그인 보내버렸지?
+       * 이제 getUserMe() 성공 여부로 판단함
+       */
+      let user = null;
+
       try {
-        console.log("🔐 AuthCallback 진입");
-        console.log("finalAccessToken =", finalAccessToken);
-        console.log("inviteToken =", inviteToken);
-
-        // 🔥 로그인 상태가 아닌 경우에만 로그인으로 보냄
-        if (!finalAccessToken) {
-          console.log("❌ finalAccessToken 없음 → 로그인 이동");
-          nav("/login", { replace: true });
-          return;
-        }
-
-        // 🔥 URL로 새 토큰이 왔으면 갱신 저장
-        if (accessTokenFromUrl) {
-          localStorage.setItem("accessToken", accessTokenFromUrl);
-          console.log("🌟 URL에서 받은 token 저장 완료");
-        } else {
-          console.log("🌟 기존 로그인된 token 사용");
-        }
-
-        // ⭐ 최종 토큰을 기반으로 내 정보 요청
-        const user = await getUserMe();
+        user = await getUserMe(); // ⭐ 로그인 여부의 유일한 진실
         console.log("👤 getUserMe 성공:", user);
 
         qc.setQueryData(["userMe"], user);
         setProfileFromServer(user);
-
-        // 초대 토큰이 존재하면 자동 수락 시도
-        if (inviteToken) {
-          try {
-            console.log("🏹 초대 수락 시작:", inviteToken);
-
-            await acceptInvitation({ token: inviteToken });
-
-            localStorage.removeItem("inviteTokenPending");
-
-            console.log("🎉 초대 자동 수락 성공 → 대기 페이지 이동");
-            nav("/waiting-connect", { replace: true });
-            return;
-          } catch (err) {
-            console.error("❌ 초대 수락 실패:", err);
-            localStorage.removeItem("inviteTokenPending");
-            nav("/", { replace: true });
-            return;
-          }
-        }
-
-        // ⭐ 초대 없이 로그인한 경우
-        console.log("✨ 일반 로그인 → 홈 이동");
-        nav("/", { replace: true });
       } catch (err) {
-        console.error("❌ AuthCallback 처리중 오류:", err);
+        console.log("❌ getUserMe 실패 → 로그인 필요");
         nav("/login", { replace: true });
+        return;
       }
+
+      /**
+       * 초대 토큰 있으면 바로 수락 요청
+       */
+      if (inviteToken) {
+        try {
+          console.log("🏹 초대 토큰 발견 → 자동 수락 실행", inviteToken);
+
+          await acceptInvitation({ token: inviteToken });
+          localStorage.removeItem("inviteTokenPending");
+
+          console.log("🎉 초대 자동 수락 성공 → waiting-connect 이동");
+          nav("/waiting-connect", { replace: true });
+          return;
+        } catch (err) {
+          console.error("❌ 초대 수락 실패:", err);
+          localStorage.removeItem("inviteTokenPending");
+
+          // 로그인은 성공한 상태 → 홈으로 이동
+          nav("/", { replace: true });
+          return;
+        }
+      }
+
+      /**
+       * 정상 로그인 & 초대 없음
+       */
+      console.log("✨ 초대 없이 일반 로그인 → 홈 이동");
+      nav("/", { replace: true });
     };
 
     runAuthFlow();
