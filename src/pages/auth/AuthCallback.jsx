@@ -13,16 +13,21 @@ const AuthCallback = () => {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-
-    // ⭐ URL 전체 파라미터 확인
     const paramsObj = Object.fromEntries(params.entries());
+
     console.log("paramsObj 👉", paramsObj);
 
-    // ⭐ accessToken으로 올 가능성이 큰 키들 대응
+    // 1️⃣ URL로 전달될 수도 있고 아닐 수도 있음
     const accessTokenFromUrl =
       paramsObj.token || paramsObj.accessToken || paramsObj.jwt || null;
 
-    // ⭐ 초대 토큰도 동일 방식 적용
+    // 2️⃣ 로컬스토리지 토큰도 확인
+    const storedToken = localStorage.getItem("accessToken");
+
+    // 3️⃣ 최종 사용할 토큰 결정
+    const finalAccessToken = accessTokenFromUrl || storedToken;
+
+    // 초대 토큰 처리
     const inviteTokenFromUrl =
       paramsObj.inviteToken || paramsObj.pendingInviteToken || null;
 
@@ -33,33 +38,37 @@ const AuthCallback = () => {
     const runAuthFlow = async () => {
       try {
         console.log("🔐 AuthCallback 진입");
-        console.log("▶ accessTokenFromUrl =", accessTokenFromUrl);
+        console.log("▶ finalAccessToken =", finalAccessToken);
         console.log("▶ inviteToken =", inviteToken);
 
-        // 1️⃣ accessToken 없으면 로그인 실패로 간주
-        if (!accessTokenFromUrl) {
+        // 🔥 진짜 로그인 안 된 상태
+        if (!finalAccessToken) {
           console.log("❌ accessToken 없음 → 로그인 페이지로 이동");
           nav("/login", { replace: true });
           return;
         }
 
-        // 2️⃣ accessToken 저장
-        localStorage.setItem("accessToken", accessTokenFromUrl);
-        console.log("✅ accessToken 저장 완료");
+        // 🔥 URL에서 새 token이 왔으면 새로 저장
+        if (accessTokenFromUrl) {
+          localStorage.setItem("accessToken", accessTokenFromUrl);
+          console.log("🌟 URL에서 받은 token 저장 완료");
+        }
 
-        // 3️⃣ 내 정보 가져오기
+        // 🔥 기존 토큰 사용
+        console.log("🌟 finalAccessToken 사용 중");
+
+        // 3️⃣ 내 정보 조회
         const user = await getUserMe();
         console.log("👤 getUserMe 성공:", user);
         qc.setQueryData(["userMe"], user);
         setProfileFromServer(user);
 
-        // 4️⃣ 초대 토큰 있으면 자동 수락 시도
+        // 초대 자동 수락
         if (inviteToken) {
           try {
             console.log("🏹 초대 토큰 발견 → 자동 수락 시작", inviteToken);
 
             await acceptInvitation({ token: inviteToken });
-
             localStorage.removeItem("inviteTokenPending");
 
             console.log("🎉 초대 자동 수락 성공 → waiting-connect 이동");
@@ -73,8 +82,7 @@ const AuthCallback = () => {
           }
         }
 
-        // 5️⃣ 초대 없는 일반 로그인 → 홈 이동
-        console.log("✨ 초대 없이 일반 로그인 → 홈 이동");
+        console.log("✨ 초대 없이 로그인 → 홈으로 이동");
         nav("/", { replace: true });
       } catch (err) {
         console.error("❌ AuthCallback 처리 중 에러:", err);
