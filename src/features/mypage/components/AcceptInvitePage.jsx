@@ -33,7 +33,7 @@ const AcceptInvitePage = () => {
         console.log("🏹 초대 수락 요청 시작", token);
         await acceptInvitation({ token });
 
-        console.log("🎉 초대 수락 성공 → waiting-connect로 이동");
+        console.log("🎉 초대 수락 성공 → accept-invite로 이동");
         navigate("/accept-invite", { replace: true });
       } catch (err) {
         console.error(err);
