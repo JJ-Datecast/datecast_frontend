@@ -73,20 +73,25 @@ const AuthCallback = () => {
       /** 초대 토큰이 있는 경우 → 실제 처리 */
       if (finalInvitationToken) {
         console.log("🏹 초대 토큰 확인됨 →", finalInvitationToken);
-        alert("❤️ 커플이 연결되었습니다!");
 
         try {
           await acceptInvitation({ token: finalInvitationToken });
           localStorage.removeItem("inviteTokenPending");
 
           alert("❤️ 커플이 연결되었습니다!");
-          nav("/accept-invite", { replace: true });
+
+          setTimeout(() => {
+            nav("/accept-invite", { replace: true });
+          }, 10);
+
           return;
         } catch (err) {
           alert("❤️ 이미 초대가 처리된 상태입니다!");
           localStorage.removeItem("inviteTokenPending");
 
-          nav("/accept-invite", { replace: true });
+          setTimeout(() => {
+            nav("/accept-invite", { replace: true });
+          }, 10);
           return;
         }
       }
