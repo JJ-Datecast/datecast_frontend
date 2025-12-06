@@ -13,76 +13,105 @@ const AuthCallback = () => {
   const qc = useQueryClient();
   const setProfile = useProfileStore((s) => s.setProfileFromServer);
   const { mutateAsync: acceptInvitation } = useCoupleInvitationAccept();
-  const { refetch: refetchCouple } = useCoupleMe(); // 커플 연결 상태 확인
+  const { refetch: refetchCouple } = useCoupleMe();
 
   useEffect(() => {
+    console.log("🌀 AuthCallback 실행됨!");
+
     const params = new URLSearchParams(window.location.search);
     const paramsObj = Object.fromEntries(params.entries());
+    console.log("📌 paramsObj:", paramsObj);
+
     const accessTokenFromUrl =
       paramsObj.token || paramsObj.accessToken || paramsObj.jwt || null;
 
     const pendingInviteToken = localStorage.getItem("inviteTokenPending");
+    console.log(
+      "📌 pendingInviteToken from localStorage =",
+      pendingInviteToken
+    );
 
     const runFlow = async () => {
-      console.log("🔐 AuthCallback 진입");
+      console.log("🔥 runFlow 시작");
 
-      // 로그인 토큰 저장
+      // ▶ AccessToken 저장 여부 확인
       if (accessTokenFromUrl) {
         localStorage.setItem("accessToken", accessTokenFromUrl);
-        console.log("🌟 access token 저장 완료");
+        console.log("🟢 accessToken 저장 완료");
+      } else {
+        console.log("⚠️ URL에서 토큰 안 왔음, 기존 토큰 사용 예정");
       }
 
-      // 사용자 정보 확인
-      let user;
+      // ▶ 로그인 유저 조회
+      let user = null;
       try {
         user = await getUserMe();
+        console.log("🟢 getUserMe 성공 → user:", user);
+
         qc.setQueryData(["userMe"], user);
         setProfile(user);
       } catch (err) {
-        console.log("❌ 로그인 실패 → 로그인으로 이동");
-        nav("/login", { replace: true });
+        console.log("🔴 getUserMe 실패 → 로그인 실패 처리");
+        console.error(err);
+        nav("/login");
         return;
       }
 
-      // 커플 상태 조회
-      const coupleResult = await refetchCouple();
-      const isAlreadyCoupled = !!coupleResult.data?.data?.partner;
+      console.log("🧠 로그인 확인된 사용자 ID:", user?.id);
 
-      // 🍀 이미 커플이면
+      // ▶ 커플 정보 확인
+      console.log("🔍 커플 정보 refetch 시작!");
+      const coupleResult = await refetchCouple();
+      console.log("🟣 coupleResult = ", coupleResult);
+
+      const isAlreadyCoupled = !!coupleResult?.data?.data?.partner;
+      console.log("💍 현재 커플 여부:", isAlreadyCoupled);
+
       if (isAlreadyCoupled) {
+        console.log("🔴 이미 커플 연결되어 있음");
         alert("이미 커플로 등록된 사용자입니다 💗");
         nav("/mypage");
         return;
       }
 
-      // 초대 토큰이 있을 경우 → 사용자의 동의 필요
+      // ▶ 초대가 있을 때만 수락 여부 확인
       if (pendingInviteToken) {
+        console.log("🟢 초대 토큰 존재 → alert 표시 준비");
+
         const confirmed = window.confirm(
-          "커플 요청이 도착했습니다! 수락하시겠습니까?"
+          "커플 요청이 도착했습니다!\n수락하시겠습니까?"
         );
 
-        if (confirmed) {
-          try {
-            await acceptInvitation({ token: pendingInviteToken });
-            localStorage.removeItem("inviteTokenPending");
+        console.log("🔍 confirm 결과:", confirmed);
 
-            alert("🎉 커플 연결이 완료되었습니다!");
-            nav("/waiting-connect");
-            return;
-          } catch (err) {
-            alert("수락 처리 중 오류 발생. 다시 시도해주세요.");
-            nav("/");
-            return;
-          }
-        } else {
-          alert("요청이 취소되었습니다.");
+        if (!confirmed) {
+          console.log("❌ 사용자가 거절함");
           localStorage.removeItem("inviteTokenPending");
+          alert("요청이 취소되었습니다.");
+          nav("/");
+          return;
+        }
+
+        // ▶ 수락 처리
+        try {
+          console.log("📌 accept API 실행!");
+          await acceptInvitation({ token: pendingInviteToken });
+
+          console.log("🎉 초대 수락 성공");
+          localStorage.removeItem("inviteTokenPending");
+          alert("커플 연결 완료!");
+          nav("/waiting-connect");
+          return;
+        } catch (err) {
+          console.log("🔴 accept API 실패");
+          console.error(err);
+          alert("수락 처리 중 오류 발생");
           nav("/");
           return;
         }
       }
 
-      // 🚀 초대 없는 일반 로그인 → 홈 이동
+      console.log("✨ 초대 없이 로그인 완료 → 홈 이동");
       nav("/");
     };
 
