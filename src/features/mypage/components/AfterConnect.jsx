@@ -11,10 +11,10 @@ const AfterConnect = ({ coupleData }) => {
     const confirmCheck = window.confirm("정말 커플을 해제하시겠습니까? 🥺");
 
     if (confirmCheck) {
-      deleteCouple(); // 실제 API 호출
+      deleteCouple();
       console.log("커플 해제 요청 보냄", coupleData);
       alert("커플이 해제되었습니다. 😭");
-      window.location.reload(); // 🔥 강제 새로고침
+      window.location.reload();
     }
   };
 
