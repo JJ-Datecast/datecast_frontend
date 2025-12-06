@@ -26,10 +26,12 @@ const AfterConnect = ({ coupleData }) => {
           <p className="profile-text">정재현와이프</p>
         </div>
 
-        <div className="heart">💗</div>
+        <div className="heart">
+          💗<div className=""></div>
+        </div>
 
         <div className="profile-box">
-          <img src={img} className="profile-img" alt="profile" />
+          <img src={img} className="profile-img" alt="profilee" />
           <p className="profile-text">{partnerNickname}</p>
         </div>
       </div>
