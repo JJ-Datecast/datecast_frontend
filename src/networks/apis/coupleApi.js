@@ -14,14 +14,14 @@ export const postCoupleInvitation = (payload) => {
    export const postCoupleInvitationAccept = async ({ token }) => {
     const res = await apiClient.post("/api/couple-invitations/accept", { token });
   
-    // 서버 응답 형태가 예시로 아래라 가정
-    // { success: true, coupleId: 4 } 또는 { success: false, message: "..."}
-    if (!res.data || res.data.success === false) {
-      throw new Error(res.data?.message || "커플 수락 실패");
+    // 백이 성공 시 보통 200, 201, 204 반환
+    if (![200, 201, 204].includes(res.status)) {
+      throw new Error("커플 수락 실패");
     }
   
     return res.data;
   };
+  
   
   
 /* =========================================================
