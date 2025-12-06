@@ -25,7 +25,7 @@ const AcceptInvitePage = () => {
 
         localStorage.setItem("invitationAccepted", "true");
 
-        navigate("/invite-complete", { replace: true });
+        navigate("/accept-invite", { replace: true });
       } catch (err) {
         const status = err?.response?.status;
 
