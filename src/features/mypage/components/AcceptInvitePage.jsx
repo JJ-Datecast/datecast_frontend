@@ -26,7 +26,7 @@ const AcceptInvitePage = () => {
         // 🔥 수락 완료된 토큰 기록 (다시 재요청 막기)
         localStorage.setItem("invitationAccepted", "true");
 
-        navigate("/waiting-connect", { replace: true });
+        navigate("/accept-invite", { replace: true });
       } catch (err) {
         const status = err?.response?.status;
 
