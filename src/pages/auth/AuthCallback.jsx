@@ -25,79 +25,62 @@ const AuthCallback = () => {
     const accessTokenFromUrl =
       paramsObj.token || paramsObj.accessToken || paramsObj.jwt || null;
 
-    const pendingInviteToken = localStorage.getItem("pendingInviteToken");
-    console.log("📌 pendingInviteToken =", pendingInviteToken);
+    /** URL에서 온 초대 토큰 */
+    const inviteTokenFromUrl = paramsObj.inviteToken || null;
 
-    const run = async () => {
-      console.log("🔐 AuthCallback 진입");
+    /** 로그인 전 저장된 초대 토큰 */
+    const pendingInviteToken = localStorage.getItem("inviteTokenPending");
 
-      // 1) accessToken 저장
+    /** 최종 확정되는 초대 토큰 */
+    const finalInvitationToken =
+      inviteTokenFromUrl || pendingInviteToken || null;
+
+    const runFlow = async () => {
+      console.log("🔐 AuthCallback 실행됨!");
+
       if (accessTokenFromUrl) {
         localStorage.setItem("accessToken", accessTokenFromUrl);
-        console.log("🌟 accessToken 저장 완료");
+        console.log("🔥 accessToken 저장 완료");
       }
 
-      // 2) 로그인된 사용자 정보 가져오기
       let user;
       try {
         user = await getUserMe();
-        console.log("👤 getUserMe 성공:", user);
+        console.log("🟢 getUserMe 성공 → user:", user);
 
         qc.setQueryData(["userMe"], user);
         setProfile(user);
       } catch (err) {
-        console.log("❌ getUserMe 실패 → 다시 로그인 필요");
+        console.log("🔴 user 정보 조회 실패 → 로그인 필요");
         nav("/login", { replace: true });
         return;
       }
 
-      // 3) 초대 토큰이 아예 없으면 → 일반 로그인 흐름
-      if (!pendingInviteToken) {
-        console.log("✨ 초대 없이 일반 로그인 → 홈 이동");
-        nav("/", { replace: true });
-        return;
+      /** 초대 토큰 최종 실행 */
+      if (finalInvitationToken) {
+        console.log("🏹 초대 토큰 확인됨 →", finalInvitationToken);
+
+        try {
+          await acceptInvitation({ token: finalInvitationToken });
+          localStorage.removeItem("inviteTokenPending");
+
+          alert("❤️ 커플이 연결되었습니다!");
+          nav("/waiting-connect", { replace: true });
+          return;
+        } catch (err) {
+          alert("이미 처리되었거나 유효하지 않은 초대입니다.");
+          localStorage.removeItem("inviteTokenPending");
+          nav("/", { replace: true });
+          return;
+        }
       }
 
-      // 4) 현재 로그인한 유저의 커플 여부 확인
-      console.log("🔍 커플 정보 조회 시작");
-      const coupleResult = await refetchCouple();
-      console.log("🟣 coupleResult:", coupleResult);
-
-      const alreadyCoupled = !!coupleResult?.data?.data?.partner;
-      console.log("💍 이미 커플 여부 =", alreadyCoupled);
-
-      // 5) 이미 커플이면 → 초대 무시
-      if (alreadyCoupled) {
-        alert("이미 커플로 등록된 사용자입니다.");
-        localStorage.removeItem("pendingInviteToken");
-        nav("/", { replace: true });
-        return;
-      }
-
-      // 6) 아직 커플이 아니면 → 초대 수락 API 호출
-      try {
-        console.log("🏹 초대 수락 API 호출 시작:", pendingInviteToken);
-        await acceptInvitation({ token: pendingInviteToken });
-
-        alert("커플 매칭 성공! 💕");
-
-        localStorage.removeItem("pendingInviteToken");
-        nav("/", { replace: true });
-        return;
-      } catch (err) {
-        console.error("❌ 커플 초대 수락 실패:", err);
-        const msg =
-          err?.response?.data?.message || "초대 처리 중 문제가 발생했습니다.";
-        alert(msg);
-
-        localStorage.removeItem("pendingInviteToken");
-        nav("/", { replace: true });
-        return;
-      }
+      console.log("✨ 초대 없이 로그인 완료 → 홈 이동");
+      nav("/", { replace: true });
     };
 
-    run();
-  }, [nav, qc, setProfile, acceptInvitation, refetchCouple]);
+    runFlow();
+  }, [nav, qc, setProfile, acceptInvitation]);
 
   return <div>로그인 처리 중...</div>;
 };

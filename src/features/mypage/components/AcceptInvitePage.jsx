@@ -1,39 +1,50 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useCoupleInvitationAccept } from "../../../networks/hooks/useCouple";
 
 const AcceptInvitePage = () => {
   const { search } = useLocation();
   const navigate = useNavigate();
+  const { mutateAsync: acceptInvitation } = useCoupleInvitationAccept();
 
   useEffect(() => {
-    const params = new URLSearchParams(search);
-
-    let token = params.get("token") || params.get("inviteToken");
-
-    // Gmail 링크가 인코딩되어 올 경우
-    if (!token) {
-      const q = params.get("q");
-      if (q && q.includes("token=")) {
-        token = q.split("token=")[1];
-      }
-    }
-
-    console.log("📌 초대 링크 접근 — 토큰 저장:", token);
+    const token = new URLSearchParams(search).get("token");
 
     if (!token) {
-      alert("잘못된 초대입니다.");
       navigate("/", { replace: true });
       return;
     }
 
-    // 여기에서는 절대 accept API 호출하지 말기!!
-    localStorage.setItem("inviteTokenPending", token);
+    const run = async () => {
+      try {
+        console.log("🏹 초대 수락 요청 시작", token);
 
-    // 로그인으로 이동시키기
-    navigate("/login");
-  }, [search, navigate]);
+        await acceptInvitation({ token });
 
-  return <p>초대 처리 중...</p>;
+        console.log("🎉 초대 수락 성공 → waiting-connect 이동");
+
+        // 🔥 수락 완료된 토큰 기록 (다시 재요청 막기)
+        localStorage.setItem("invitationAccepted", "true");
+
+        navigate("/waiting-connect", { replace: true });
+      } catch (err) {
+        const status = err?.response?.status;
+
+        if (status === 401 || status === 403) {
+          localStorage.setItem("inviteTokenPending", token);
+          navigate("/login", { replace: true });
+          return;
+        }
+
+        alert("잘못된 초대입니다.");
+        navigate("/", { replace: true });
+      }
+    };
+
+    run();
+  }, [search, navigate, acceptInvitation]);
+
+  return <div>처리 중...</div>;
 };
 
 export default AcceptInvitePage;
