@@ -6,6 +6,8 @@ import { useCoupleInvitation } from "../../../networks/hooks/useCouple";
 
 const CoupleConnect = () => {
   const [email, setEmail] = useState("");
+  const [resetKey, setResetKey] = useState(0);
+
   const { mutate: sendInvitation, isPending } = useCoupleInvitation();
 
   // 이메일 형식 검증 정규식
@@ -28,8 +30,8 @@ const CoupleConnect = () => {
       {
         onSuccess: () => {
           alert("초대 이메일을 보냈습니다!");
-          setEmail(""); // 🔥 입력된 값 초기화
-          document.activeElement.blur();
+          setEmail("");
+          setResetKey((prev) => prev + 1); // 🔥 input 강제 리렌더링
         },
         onError: (err) => {
           alert("초대 전송에 실패했습니다.");
@@ -49,6 +51,7 @@ const CoupleConnect = () => {
         />
         <h3>상대의 이메일을 입력하세요.</h3>
         <input
+          key={resetKey}
           className="couple-connect-input"
           placeholder="abc1234@naver.com"
           onChange={(e) => setEmail(e.target.value)}
