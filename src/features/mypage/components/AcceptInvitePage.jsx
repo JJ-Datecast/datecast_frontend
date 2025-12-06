@@ -34,28 +34,27 @@ const AcceptInvitePage = () => {
         return;
       } catch (err) {
         const status = err?.response?.status;
-        console.log("❌ 초대 수락 실패:", status, err);
+        console.log("❌ 초대 수락 실패:", status);
 
-        // 1) 로그인 필요
+        // 1) 로그인 필요한 경우
         if (status === 401 || status === 403) {
           localStorage.setItem("inviteTokenPending", token);
+          alert("로그인이 필요합니다.");
           navigate("/login", { replace: true });
           return;
         }
 
-        // 2) 초대 실패 → 커플 상태 확인
+        // 2) 커플 상태 확인
         try {
           const coupleResult = await refetchCouple();
           const coupleData = coupleResult?.data;
 
-          console.log("👀 커플 상태 확인:", coupleData);
-
           const isCoupled =
-            !!coupleData && !!coupleData.coupleId && !!coupleData.partnerId;
+            coupleData && coupleData.coupleId && coupleData.partnerId;
 
           if (isCoupled) {
             alert(
-              `이미 연결된 커플이에요 ❤️\n상대방 닉네임: ${coupleData.partnerNickname}`
+              "이미 처리된 초대입니다!\n현재 커플 상태로 잘 연결되어 있어요 ❤️"
             );
             navigate("/", { replace: true });
             return;
@@ -66,9 +65,9 @@ const AcceptInvitePage = () => {
           );
           navigate("/", { replace: true });
           return;
-        } catch (e) {
-          alert("유효하지 않은 초대입니다.");
-          navigate("/", { replace: true });
+        } catch (err2) {
+          alert("세션이 만료되었습니다. 다시 로그인해주세요!");
+          navigate("/login", { replace: true });
           return;
         }
       }
