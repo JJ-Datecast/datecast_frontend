@@ -3,11 +3,18 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useCoupleInvitationAccept } from "../../../networks/hooks/useCouple";
 
 const AcceptInvitePage = () => {
-  const { search } = useLocation();
+  const { search, state } = useLocation();
   const navigate = useNavigate();
   const { mutateAsync: acceptInvitation } = useCoupleInvitationAccept();
 
   useEffect(() => {
+    /** 이미 수락 완료 후 navigated 된 경우 */
+    if (state?.acceptSuccess) {
+      alert("❤️ 커플 연결되었습니다!");
+      localStorage.removeItem("invitationAccepted");
+      return;
+    }
+
     const token = new URLSearchParams(search).get("token");
 
     if (!token) {
@@ -23,11 +30,8 @@ const AcceptInvitePage = () => {
 
         console.log("🎉 초대 수락 성공");
 
-        // 수락 상태 기록
         localStorage.setItem("invitationAccepted", "true");
-        localStorage.setItem("inviteTokenPending", token);
 
-        // 여기서는 navigate만 함
         navigate("/accept-invite", {
           replace: true,
           state: { acceptSuccess: true },
@@ -37,13 +41,7 @@ const AcceptInvitePage = () => {
 
         if (status === 401 || status === 403) {
           localStorage.setItem("inviteTokenPending", token);
-
-          // 로그인 후 다시 돌아오도록 redirect
-          navigate("/login", {
-            replace: true,
-            state: { redirectTo: "/accept-invite" },
-          });
-
+          navigate("/login", { replace: true });
           return;
         }
 
@@ -53,7 +51,7 @@ const AcceptInvitePage = () => {
     };
 
     run();
-  }, [search, navigate, acceptInvitation]);
+  }, [search, state, navigate, acceptInvitation]);
 
   return <div>처리 중...</div>;
 };
