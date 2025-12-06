@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useCoupleInvitationAccept } from "../../../networks/hooks/useCouple";
-import { apiClient } from "../../../networks/apiClient"; // couples/me 조회 위해 import
+import { apiClient } from "../../../networks/client/apiClient"; // couples/me 조회 위해 import
 
 const AcceptInvitePage = () => {
   const { search } = useLocation();

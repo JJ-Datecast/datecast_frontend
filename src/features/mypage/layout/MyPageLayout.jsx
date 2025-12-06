@@ -6,21 +6,20 @@ import PreConnect from "../components/PreConnect";
 import CoupleConnect from "../components/CoupleConnect";
 import Review from "../components/Review";
 import ReviewDetail from "../components/ReviewDetail";
-import AfterConnect from "../components/AfterConnect"; // 💡 추가
-import { useCoupleMe } from "../../../networks/hooks/useCouple"; // 💡 추가
+import AfterConnect from "../components/AfterConnect";
+import { useCoupleMe } from "../../../networks/hooks/useCouple";
 
 const MyPageLayout = () => {
   const [activeMenu, setActiveMenu] = useState("basic");
   const [showConnect, setShowConnect] = useState(false);
   const [selectedReview, setSelectedReview] = useState(null);
 
-  // 💡 커플 상태 로드
+  // 커플 상태 로드
   const { data, isLoading, error } = useCoupleMe();
-  console.log("Couple Me Data:", data, "Error:", error);
+  const coupleData = data?.data; // 실제 응답 데이터
+  const isCoupleConnected = !!coupleData?.coupleId;
 
-  // 💡 커플 연결 여부 판단
-  // getCoupleMe API 응답에 따라 수정 가능
-  const isCoupleConnected = !!data?.coupleId;
+  console.log("Couple Me Data:", data, "Error:", error);
 
   const titles = {
     basic: "기본 정보",
@@ -55,8 +54,15 @@ const MyPageLayout = () => {
 
         {activeMenu === "status" && (
           <>
+            {/* 로딩 중 */}
             {isLoading && <div>로딩중...</div>}
 
+            {/* 연결된 상태 (최우선 조건) */}
+            {!isLoading && isCoupleConnected && (
+              <AfterConnect coupleData={coupleData} />
+            )}
+
+            {/* 연결 안 되어 있을 때 */}
             {!isLoading &&
               !isCoupleConnected &&
               (showConnect ? (
@@ -64,10 +70,6 @@ const MyPageLayout = () => {
               ) : (
                 <PreConnect setShowConnect={setShowConnect} />
               ))}
-
-            {!isLoading && isCoupleConnected && (
-              <AfterConnect coupleData={data} /> // 💡 데이터도 넘길 수 있음
-            )}
           </>
         )}
 
