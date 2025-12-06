@@ -29,6 +29,7 @@ const CoupleConnect = () => {
         onSuccess: () => {
           alert("초대 이메일을 보냈습니다!");
           setEmail(""); // 🔥 입력된 값 초기화
+          document.activeElement.blur();
         },
         onError: (err) => {
           alert("초대 전송에 실패했습니다.");
