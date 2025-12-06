@@ -18,6 +18,7 @@ const MyPageLayout = () => {
   const { data, isLoading, error } = useCoupleMe();
   const coupleData = data?.data; // 실제 응답 데이터
   const isCoupleConnected = !!coupleData?.coupleId;
+  console.log("Is Couple Connected:", isCoupleConnected);
 
   console.log("Couple Me Data:", data, "Error:", error);
 
