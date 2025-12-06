@@ -21,7 +21,7 @@ const AcceptInvitePage = () => {
 
         await acceptInvitation({ token });
 
-        console.log("🎉 초대 수락 성공 → waiting-connect 이동");
+        console.log("🎉 초대 수락 성공");
 
         // 🔥 수락 완료된 토큰 기록 (다시 재요청 막기)
         localStorage.setItem("invitationAccepted", "true");

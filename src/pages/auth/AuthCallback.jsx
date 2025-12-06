@@ -38,14 +38,17 @@ const AuthCallback = () => {
     const runFlow = async () => {
       console.log("🔐 AuthCallback 실행됨!");
 
+      /** 토큰이 URL에 있으면 저장 */
       if (accessTokenFromUrl) {
         localStorage.setItem("accessToken", accessTokenFromUrl);
         console.log("🔥 accessToken 저장 완료");
       }
 
+      /** 사용자 정보 조회 */
       let user;
       try {
         user = await getUserMe();
+
         console.log("🟢 getUserMe 성공 → user:", user);
 
         qc.setQueryData(["userMe"], user);
@@ -56,8 +59,7 @@ const AuthCallback = () => {
         return;
       }
 
-      /** 초대 토큰 최종 실행 */
-      /** 초대 토큰 최종 실행 */
+      /** 초대 토큰이 있을 때만 accept 실행 */
       if (finalInvitationToken) {
         console.log("🏹 초대 토큰 확인됨 →", finalInvitationToken);
 
@@ -69,9 +71,7 @@ const AuthCallback = () => {
           nav("/accept-invite", { replace: true });
           return;
         } catch (err) {
-          // 이 catch는 "이미 처리된 초대" 케이스도 포함됨
-
-          // 👉 여기서도 alert 발생시키자
+          // 이미 수락된 경우 포함됨 → 여기서 UX 처리
           alert("❤️ 이미 커플 연결이 완료된 상태입니다!");
           localStorage.removeItem("inviteTokenPending");
 
@@ -80,13 +80,19 @@ const AuthCallback = () => {
         }
       }
 
-      // ⭐⭐ 여기 부분 새로 추가 ⭐⭐
+      /**
+       * 여기까지 오면 초대 실행 과정을 타지 않은 상태
+       *
+       * 즉, 로컬에 초대 토큰만 남아있다가 getUserMe 성공한 경우
+       * → 이미 수락된 상태일 가능성 높음
+       */
       if (pendingInviteToken) {
         alert("❤️ 커플 연결이 완료되었습니다!");
         localStorage.removeItem("inviteTokenPending");
       }
 
-      /** 초대 없으면 홈 이동 */
+      /** 초대 없이 로그인 완료 → 홈 이동 */
+      console.log("✨ 초대 없이 로그인 완료 → 홈 이동");
       nav("/", { replace: true });
     };
 
