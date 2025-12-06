@@ -57,6 +57,7 @@ const AuthCallback = () => {
       }
 
       /** 초대 토큰 최종 실행 */
+      /** 초대 토큰 최종 실행 */
       if (finalInvitationToken) {
         console.log("🏹 초대 토큰 확인됨 →", finalInvitationToken);
 
@@ -68,14 +69,24 @@ const AuthCallback = () => {
           nav("/accept-invite", { replace: true });
           return;
         } catch (err) {
-          alert("이미 처리되었거나 유효하지 않은 초대입니다.");
+          // 이 catch는 "이미 처리된 초대" 케이스도 포함됨
+
+          // 👉 여기서도 alert 발생시키자
+          alert("❤️ 이미 커플 연결이 완료된 상태입니다!");
           localStorage.removeItem("inviteTokenPending");
-          nav("/", { replace: true });
+
+          nav("/accept-invite", { replace: true });
           return;
         }
       }
 
-      console.log("✨ 초대 없이 로그인 완료 → 홈 이동");
+      // ⭐⭐ 여기 부분 새로 추가 ⭐⭐
+      if (pendingInviteToken) {
+        alert("❤️ 커플 연결이 완료되었습니다!");
+        localStorage.removeItem("inviteTokenPending");
+      }
+
+      /** 초대 없으면 홈 이동 */
       nav("/", { replace: true });
     };
 
