@@ -64,7 +64,7 @@ const AuthCallback = () => {
           localStorage.removeItem("inviteTokenPending");
 
           alert("❤️ 커플이 연결되었습니다!");
-          nav("/waiting-connect", { replace: true });
+          nav("/accept-invite", { replace: true });
           return;
         } catch (err) {
           alert("이미 처리되었거나 유효하지 않은 초대입니다.");
