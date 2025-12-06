@@ -25,41 +25,52 @@ const AuthCallback = () => {
     const accessTokenFromUrl =
       paramsObj.token || paramsObj.accessToken || paramsObj.jwt || null;
 
-    /** URL에서 온 초대 토큰 */
+    /** URL에서 전달된 초대 토큰 */
     const inviteTokenFromUrl = paramsObj.inviteToken || null;
 
-    /** 로그인 전 저장된 초대 토큰 */
+    /** 로그인 전에 저장되어있던 초대 토큰 */
     const pendingInviteToken = localStorage.getItem("inviteTokenPending");
 
-    /** 최종 확정되는 초대 토큰 */
+    /** 최종적으로 사용할 초대 토큰 */
     const finalInvitationToken =
       inviteTokenFromUrl || pendingInviteToken || null;
 
     const runFlow = async () => {
       console.log("🔐 AuthCallback 실행됨!");
 
-      /** 토큰이 URL에 있으면 저장 */
+      /** URL로 accessToken 전달 된 경우 로컬에 저장 */
       if (accessTokenFromUrl) {
         localStorage.setItem("accessToken", accessTokenFromUrl);
         console.log("🔥 accessToken 저장 완료");
       }
 
-      /** 사용자 정보 조회 */
       let user;
       try {
         user = await getUserMe();
-
         console.log("🟢 getUserMe 성공 → user:", user);
 
         qc.setQueryData(["userMe"], user);
         setProfile(user);
+
+        /**
+         *
+         * [💡 핵심 로직]
+         * URL에 token이 없고
+         * 로컬에는 이전에 초대 토큰이 남아있는 상태라면
+         *
+         * → 자동 로그인된 상태에서 초대가 이미 처리된 것으로 판단
+         */
+        if (!inviteTokenFromUrl && pendingInviteToken) {
+          alert("❤️ 커플이 연결이 완료되었습니다!");
+          localStorage.removeItem("inviteTokenPending");
+        }
       } catch (err) {
-        console.log("🔴 user 정보 조회 실패 → 로그인 필요");
+        console.log("🔴 사용자 정보 조회 실패 → 로그인 필요");
         nav("/login", { replace: true });
         return;
       }
 
-      /** 초대 토큰이 있을 때만 accept 실행 */
+      /** 초대 토큰이 있는 경우 → 실제 처리 */
       if (finalInvitationToken) {
         console.log("🏹 초대 토큰 확인됨 →", finalInvitationToken);
 
@@ -71,8 +82,7 @@ const AuthCallback = () => {
           nav("/accept-invite", { replace: true });
           return;
         } catch (err) {
-          // 이미 수락된 경우 포함됨 → 여기서 UX 처리
-          alert("❤️ 이미 커플 연결이 완료된 상태입니다!");
+          alert("❤️ 이미 초대가 처리된 상태입니다!");
           localStorage.removeItem("inviteTokenPending");
 
           nav("/accept-invite", { replace: true });
@@ -80,18 +90,7 @@ const AuthCallback = () => {
         }
       }
 
-      /**
-       * 여기까지 오면 초대 실행 과정을 타지 않은 상태
-       *
-       * 즉, 로컬에 초대 토큰만 남아있다가 getUserMe 성공한 경우
-       * → 이미 수락된 상태일 가능성 높음
-       */
-      if (pendingInviteToken) {
-        alert("❤️ 커플 연결이 완료되었습니다!");
-        localStorage.removeItem("inviteTokenPending");
-      }
-
-      /** 초대 없이 로그인 완료 → 홈 이동 */
+      /** 초대 없는 일반 로그인 */
       console.log("✨ 초대 없이 로그인 완료 → 홈 이동");
       nav("/", { replace: true });
     };
