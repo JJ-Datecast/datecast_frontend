@@ -85,11 +85,11 @@ const AuthCallback = () => {
               replace: true,
               state: { justAccepted: true },
             });
-          }, 10);
+          }, 3);
 
           return;
         } catch (err) {
-          alert("❤️ 이미 초대가 처리된 상태입니다!");
+          alert("❤️ 이미 커플 연결이 처리된 상태입니다!");
           localStorage.removeItem("inviteTokenPending");
 
           setTimeout(() => {

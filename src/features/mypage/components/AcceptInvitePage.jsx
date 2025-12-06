@@ -3,18 +3,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useCoupleInvitationAccept } from "../../../networks/hooks/useCouple";
 
 const AcceptInvitePage = () => {
-  const { search, state } = useLocation();
+  const { search } = useLocation();
   const navigate = useNavigate();
   const { mutateAsync: acceptInvitation } = useCoupleInvitationAccept();
 
   useEffect(() => {
-    /** 이미 수락 완료 후 navigated 된 경우 */
-    if (state?.acceptSuccess) {
-      alert("❤️ 커플 연결되었습니다!");
-      localStorage.removeItem("invitationAccepted");
-      return;
-    }
-
     const token = new URLSearchParams(search).get("token");
 
     if (!token) {
@@ -32,10 +25,7 @@ const AcceptInvitePage = () => {
 
         localStorage.setItem("invitationAccepted", "true");
 
-        navigate("/accept-invite", {
-          replace: true,
-          state: { acceptSuccess: true },
-        });
+        navigate("/invite-complete", { replace: true });
       } catch (err) {
         const status = err?.response?.status;
 
@@ -45,13 +35,14 @@ const AcceptInvitePage = () => {
           return;
         }
 
-        alert("잘못된 초대입니다.");
+        alert("이미 처리된 초대입니다! ❤️");
         navigate("/", { replace: true });
+        return;
       }
     };
 
     run();
-  }, [search, state, navigate, acceptInvitation]);
+  }, [search, navigate, acceptInvitation]);
 
   return <div>처리 중...</div>;
 };
