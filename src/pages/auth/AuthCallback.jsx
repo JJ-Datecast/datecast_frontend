@@ -81,7 +81,10 @@ const AuthCallback = () => {
           alert("❤️ 커플이 연결되었습니다!");
 
           setTimeout(() => {
-            nav("/accept-invite", { replace: true });
+            nav("/accept-invite", {
+              replace: true,
+              state: { justAccepted: true },
+            });
           }, 10);
 
           return;
@@ -90,8 +93,12 @@ const AuthCallback = () => {
           localStorage.removeItem("inviteTokenPending");
 
           setTimeout(() => {
-            nav("/accept-invite", { replace: true });
+            nav("/accept-invite", {
+              replace: true,
+              state: { justAccepted: true },
+            });
           }, 10);
+
           return;
         }
       }
