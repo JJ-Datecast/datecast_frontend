@@ -73,6 +73,7 @@ const AuthCallback = () => {
       /** 초대 토큰이 있는 경우 → 실제 처리 */
       if (finalInvitationToken) {
         console.log("🏹 초대 토큰 확인됨 →", finalInvitationToken);
+        alert("❤️ 커플이 연결되었습니다!");
 
         try {
           await acceptInvitation({ token: finalInvitationToken });
