@@ -20,46 +20,32 @@ const AuthCallback = () => {
     const params = new URLSearchParams(window.location.search);
     const paramsObj = Object.fromEntries(params.entries());
 
-    console.log("paramsObj 👉", paramsObj);
-
     const accessTokenFromUrl =
       paramsObj.token || paramsObj.accessToken || paramsObj.jwt || null;
 
-    /** URL에서 전달된 초대 토큰 */
     const inviteTokenFromUrl = paramsObj.inviteToken || null;
-
-    /** 로그인 전에 저장되어있던 초대 토큰 */
     const pendingInviteToken = localStorage.getItem("inviteTokenPending");
 
-    /** 최종적으로 사용할 초대 토큰 */
     const finalInvitationToken =
       inviteTokenFromUrl || pendingInviteToken || null;
 
     const runFlow = async () => {
       console.log("🔐 AuthCallback 실행됨!");
 
-      /** URL로 accessToken 전달 된 경우 로컬에 저장 */
+      /** 토큰 저장 */
       if (accessTokenFromUrl) {
         localStorage.setItem("accessToken", accessTokenFromUrl);
         console.log("🔥 accessToken 저장 완료");
       }
 
+      /** 로그인 체크 */
       let user;
       try {
         user = await getUserMe();
         console.log("🟢 getUserMe 성공 → user:", user);
-
         qc.setQueryData(["userMe"], user);
         setProfile(user);
 
-        /**
-         *
-         * [💡 핵심 로직]
-         * URL에 token이 없고
-         * 로컬에는 이전에 초대 토큰이 남아있는 상태라면
-         *
-         * → 자동 로그인된 상태에서 초대가 이미 처리된 것으로 판단
-         */
         if (!inviteTokenFromUrl && pendingInviteToken) {
           alert("❤️ 커플이 연결이 완료되었습니다!");
           localStorage.removeItem("inviteTokenPending");
@@ -70,7 +56,7 @@ const AuthCallback = () => {
         return;
       }
 
-      /** 초대 토큰이 있는 경우 → 실제 처리 */
+      /** 초대 토큰이 실제 있는 경우 */
       if (finalInvitationToken) {
         console.log("🏹 초대 토큰 확인됨 →", finalInvitationToken);
 
@@ -85,17 +71,33 @@ const AuthCallback = () => {
               replace: true,
               state: { justAccepted: true },
             });
-          }, 3);
+          }, 10);
 
           return;
         } catch (err) {
-          alert("❤️ 이미 커플 연결이 처리된 상태입니다!");
+          const errorStatus = err?.response?.data?.status;
+          console.log("❌ 초대 처리 실패 status:", errorStatus);
+
           localStorage.removeItem("inviteTokenPending");
+
+          switch (errorStatus) {
+            case "disconnected":
+              alert("잘못된 초대 링크예요! 다시 요청해주세요 🥲");
+              break;
+            case "expired":
+              alert("초대 링크가 만료되었어요! 다시 초대를 요청해주세요 ⏰");
+              break;
+            case "alreadyAccepted":
+              alert("이미 커플이 연결된 상태예요 ❤️");
+              break;
+            default:
+              alert("초대 처리 중 오류가 발생했어요! 다시 시도해주세요.");
+          }
 
           setTimeout(() => {
             nav("/accept-invite", {
               replace: true,
-              state: { justAccepted: true },
+              state: { justAccepted: false },
             });
           }, 10);
 
@@ -103,7 +105,7 @@ const AuthCallback = () => {
         }
       }
 
-      /** 초대 없는 일반 로그인 */
+      /** 초대 없이 로그인한 경우 */
       console.log("✨ 초대 없이 로그인 완료 → 홈 이동");
       nav("/", { replace: true });
     };

@@ -1,15 +1,15 @@
 .after-wrap {
-  position: relative; /* 버튼 위치 위해 필요 */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 70px;
-  border: 1px solid #ddd;
+  border: 1px solid #cfcfcf;
+  border-radius: 5px;
+  width: 100%;
+  padding: 30px 40px;
+  box-sizing: border-box;
+  background: #fff;
   border-radius: 10px;
-  width: 90%;
-  margin: 0 auto;
-  padding: 50px 0;
-  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
 }
 
 .profile-box {
@@ -35,7 +35,6 @@
 .breakBtn-area {
   display: flex;
   justify-content: flex-end;
-  margin-right: 35px;
   margin-top: 10px;
 }
 

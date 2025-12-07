@@ -14,7 +14,6 @@ export const useCoupleMe = () => {
     queryKey: ["coupleMe"],
     queryFn: getCoupleMe,
     staleTime: 1000 * 60 * 5,
-    refetchInterval: 5000, // 5초마다 자동 요청 🔥
     retry: 1,
   });
 };
