@@ -8,6 +8,7 @@ import Review from "../components/Review";
 import ReviewDetail from "../components/ReviewDetail";
 import AfterConnect from "../components/AfterConnect";
 import { useCoupleMe } from "../../../networks/hooks/useCouple";
+import SavedPlace from "../components/SavedPlace";
 
 const MyPageLayout = () => {
   const [activeMenu, setActiveMenu] = useState("basic");
@@ -93,7 +94,11 @@ const MyPageLayout = () => {
           />
         )}
 
-        {activeMenu === "place" && <div>장소 보기 화면</div>}
+        {activeMenu === "place" && (
+          <div>
+            <SavedPlace />
+          </div>
+        )}
       </div>
     </div>
   );
