@@ -77,6 +77,12 @@ const AuthCallback = () => {
         } catch (err) {
           const errorStatus = err?.response?.data?.status;
           console.log("❌ 초대 처리 실패 status:", errorStatus);
+          console.log("📌 err.response:", err?.response);
+          console.log("📌 err.response.data:", err?.response?.data);
+          console.log(
+            "📌 err.response.data.status:",
+            err?.response?.data?.status
+          );
 
           localStorage.removeItem("inviteTokenPending");
 
