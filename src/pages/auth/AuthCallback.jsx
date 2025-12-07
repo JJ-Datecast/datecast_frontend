@@ -87,17 +87,18 @@ const AuthCallback = () => {
           localStorage.removeItem("inviteTokenPending");
 
           switch (errorStatus) {
-            case "disconnected":
-              alert("잘못된 초대 링크예요! 다시 요청해주세요 🥲");
+            case "alreadyAccepted":
+              alert("유효하지 않은 초대 링크예요 🔗 다시 확인해주세요!");
               break;
             case "expired":
-              alert("초대 링크가 만료되었어요! 다시 초대를 요청해주세요 ⏰");
+              alert("초대 링크가 만료되었어요 ⏰ 다시 요청해주세요!");
               break;
-            case "alreadyAccepted":
-              alert("이미 커플이 연결된 상태예요 ❤️");
+            case "alreadyCoupled":
+              alert("이미 처리된 초대입니다 ❤️");
               break;
             default:
-              alert("초대 처리 중 오류가 발생했어요! 다시 시도해주세요.");
+              alert("초대 처리 중 문제가 발생했어요. 다시 시도해주세요!");
+              break;
           }
 
           setTimeout(() => {
