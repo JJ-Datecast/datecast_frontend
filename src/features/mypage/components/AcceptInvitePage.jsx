@@ -55,13 +55,13 @@ const AcceptInvitePage = () => {
 
         /** API에서 보내준 status를 기준으로 분기 */
         switch (errorStatus) {
-          case "disconnected":
-            alert("잘못된 초대 링크입니다 🥲 다시 공유받아주세요!");
+          case "alreadyAccepted":
+            alert("유효하지 않은 초대 링크예요 🔗 다시 확인해주세요!");
             break;
           case "expired":
             alert("초대 링크가 만료되었어요 ⏰ 다시 요청해주세요!");
             break;
-          case "alreadyAccepted":
+          case "alreadyCoupled":
             alert("이미 처리된 초대입니다 ❤️");
             break;
           default:
