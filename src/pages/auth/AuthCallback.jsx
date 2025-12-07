@@ -100,7 +100,6 @@ const AuthCallback = () => {
               alert("초대 처리 중 문제가 발생했어요. 다시 시도해주세요!");
               break;
           }
-
           setTimeout(() => {
             nav("/accept-invite", {
               replace: true,
