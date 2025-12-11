@@ -16,6 +16,7 @@ import PlaceList from "./pages/place/PlaceList";
 import PlaceDetail from "./pages/place/PlaceDetail";
 import AcceptInvitePage from "./features/mypage/components/AcceptInvitePage";
 import AfterConnect from "./features/\bmypage/components/AfterConnect";
+import SavedPlace from "./features/\bmypage/components/SavedPlace";
 
 function App() {
   // localStorage.clear();
@@ -34,10 +35,10 @@ function App() {
         <Route path="/calendarAddEvent" element={<CalendarAddEvent />} />
         <Route path="/calendarView" element={<CalendarView />} />
         <Route path="/mypageView" element={<MyPageView />} />
-        <Route path="/couple" element={<AfterConnect />} />
+        <Route path="/" />
         <Route path="/district/:region" element={<DistrictView />} />
         <Route path="/accept-invite" element={<AcceptInvitePage />} />
-
+        <Route path="/savedPlace" element={<SavedPlace />} />
         <Route path="*" element={<Notfound />} />
       </Routes>
     </>

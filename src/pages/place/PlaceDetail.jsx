@@ -1,7 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./PlaceDetail.css";
-
+import { useProfileStore } from "../../store/profileStore";
+import AlterModal from "../../shared/\bcomponents/AlterModal";
 import {
   usePlaceDetailQuery,
   useSavePlaceMutation,
@@ -20,19 +21,23 @@ const PlaceDetail = () => {
   const { placeId } = useParams();
   const nav = useNavigate();
 
-  // 1️⃣ 장소 상세 조회
+  // 장소 상세 조회
   const { data, isLoading, isError } = usePlaceDetailQuery(placeId);
 
-  // 2️⃣ 북마크 목록 조회
+  // 북마크 목록 조회
   const bookmarkedQuery = useBookmarkedPlacesQuery();
 
-  // 3️⃣ 로컬 상태
+  // 로컬 상태
   const [isSaved, setIsSaved] = useState(false);
   const [bookmarkId, setBookmarkId] = useState(null); // ← 북마크 ID 저장
 
-  // 4️⃣ 저장/삭제 Mutation
+  // 저장/삭제 Mutation
   const saveMutation = useSavePlaceMutation();
   const deleteMutation = useDeletePlaceMutation();
+
+  const userId = useProfileStore((s) => s.userId);
+  const isLoggedIn = !!userId;
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     if (!data || !bookmarkedQuery.data) return;
@@ -42,7 +47,7 @@ const PlaceDetail = () => {
 
     // ⭐ savedItem 매칭: 네이버 placeId 기준으로 비교
     const savedItem = bookmarkedQuery.data.find(
-      (item) => String(item.naverPlaceId) === String(data.placeId)
+      (item) => String(item.placeId) === String(data.placeId)
     );
 
     console.log("🔎 savedItem 결과:", savedItem);
@@ -60,8 +65,11 @@ const PlaceDetail = () => {
        저장 버튼 클릭
   ------------------------------ */
   const handleSaveClick = () => {
-    console.log("현재 isSaved 상태:", isSaved);
-    console.log("현재 bookmarkId:", bookmarkId);
+    // ⭐ 로그인 여부 확인 → 로그인 안 되어 있으면 모달 오픈
+    if (!isLoggedIn) {
+      setShowModal(true);
+      return;
+    }
 
     if (isSaved) {
       // ⭐ 삭제
@@ -106,6 +114,9 @@ const PlaceDetail = () => {
       },
     });
   };
+  const handleModalConfirm = () => {
+    setShowModal(false);
+  };
 
   if (isLoading || bookmarkedQuery.isLoading) return <p>로딩중...</p>;
   if (isError) return <p>에러 발생!</p>;
@@ -132,7 +143,10 @@ const PlaceDetail = () => {
               </div>
 
               <div className="placeDetail-button-space">
-                <button className="placeDetail-review-button">
+                <button
+                  className="placeDetail-review-button"
+                  onClick={handleSaveClick}
+                >
                   <img src={reviewIcon} style={{ width: "25px" }} alt="" />
                 </button>
 
@@ -156,6 +170,16 @@ const PlaceDetail = () => {
           </div>
         </div>
       </div>
+      {/* ⭐ 로그인 안내 모달 */}
+      {showModal && (
+        <AlterModal
+          title="로그인이 필요한 서비스입니다"
+          content="장소를 저장하려면 로그인 해주세요."
+          confirmText="로그인 하러가기"
+          onClick={handleModalConfirm}
+          onClose={() => setShowModal(false)}
+        />
+      )}
     </HeaderLayout>
   );
 };

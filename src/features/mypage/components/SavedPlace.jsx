@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import "../css/SavedPlace.css";
 import ReviewCard from "../components/ReviewCard";
 import { useBookmarkedPlacesQuery } from "../../../networks/hooks/usePlace";
+import { useNavigate } from "react-router-dom";
 
 const SavedPlace = () => {
   const { data, isLoading, isError } = useBookmarkedPlacesQuery();
   const [currentPage, setCurrentPage] = useState(1);
+  const nav = useNavigate();
 
   const itemsPerPage = 6;
 
@@ -30,7 +32,7 @@ const SavedPlace = () => {
             image={item.imageUrl} // API 필드 매핑
             title={item.name} // 장소 이름
             location={item.address} // 주소
-            onClick={() => console.log("클릭된 장소:", item)}
+            onClick={() => nav(`/place/${item.placeId}`)}
           />
         ))}
       </div>

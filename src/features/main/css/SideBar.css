@@ -1,17 +1,48 @@
 .SideBar {
-  position: fixed;
+  position: absolute;
   border: 1px solid #e6e6e6;
   border-radius: 10px;
   width: 250px;
-  height: 260px;
+  height: 220px;
   display: flex;
   flex-direction: column;
   align-items: center;
-
   background-color: white;
-  left: calc(100% - 615px);
-  z-index: 9999; /* 🚀 추가 */
+  z-index: 2000;
+
+  right: 365px; /* 👉 데스크탑 기준 위치 */
+  top: 99px;
 }
+
+/* 노트북 수준 (작은 데스크탑) */
+@media screen and (max-width: 1440px) {
+  .SideBar {
+    right: 20px;
+  }
+}
+
+/* 일반 노트북 */
+@media screen and (max-width: 1200px) {
+  .SideBar {
+    right: 170px;
+  }
+}
+
+/* 태블릿 */
+@media screen and (max-width: 900px) {
+  .SideBar {
+    right: 20px;
+  }
+}
+
+/* 모바일 */
+@media screen and (max-width: 600px) {
+  .SideBar {
+    right: 165px;
+    transform: translateX(50%);
+  }
+}
+
 /* 상단 로그인/회원가입 버튼 영역 */
 .SideBar_AuthBtn {
   margin-top: 10px;

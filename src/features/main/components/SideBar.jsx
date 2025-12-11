@@ -33,7 +33,6 @@ const SideBar = ({ isLoggedIn, onRequireLogin }) => {
         <ul>
           <li onClick={() => handleClick("/calendarView")}>캘린더</li>
           <li onClick={() => handleClick("/mypageVIEW")}>마이페이지</li>
-          <li onClick={() => handleClick("/profile")}>저장된 장소</li>
           <li>
             {isLoggedIn && (
               <button className="logout-button" onClick={() => logout()}>
