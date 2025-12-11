@@ -117,6 +117,13 @@ const PlaceDetail = () => {
   const handleModalConfirm = () => {
     setShowModal(false);
   };
+  const handleReviewClick = () => {
+    if (!isLoggedIn) {
+      setShowModal(true);
+      return;
+    }
+    nav(`/places/${placeId}/review-waiting`);
+  };
 
   if (isLoading || bookmarkedQuery.isLoading) return <p>로딩중...</p>;
   if (isError) return <p>에러 발생!</p>;
@@ -145,7 +152,7 @@ const PlaceDetail = () => {
               <div className="placeDetail-button-space">
                 <button
                   className="placeDetail-review-button"
-                  onClick={handleSaveClick}
+                  onClick={handleReviewClick}
                 >
                   <img src={reviewIcon} style={{ width: "25px" }} alt="" />
                 </button>
@@ -166,6 +173,8 @@ const PlaceDetail = () => {
             <div className="placeDetail-content-title-bottom">
               <img src={locationIcon} style={{ width: "23px" }} alt="" />
               <span>{data.address}</span>
+              <span>{data.lat}</span>
+              <span>{data.lng}</span>
             </div>
           </div>
         </div>
@@ -173,9 +182,7 @@ const PlaceDetail = () => {
       {/* ⭐ 로그인 안내 모달 */}
       {showModal && (
         <AlterModal
-          title="로그인이 필요한 서비스입니다"
-          content="장소를 저장하려면 로그인 해주세요."
-          confirmText="로그인 하러가기"
+          title="로그인이 필요한 서비스입니다."
           onClick={handleModalConfirm}
           onClose={() => setShowModal(false)}
         />

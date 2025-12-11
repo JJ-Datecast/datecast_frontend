@@ -15,8 +15,9 @@ import AuthCallback from "./pages/auth/AuthCallback";
 import PlaceList from "./pages/place/PlaceList";
 import PlaceDetail from "./pages/place/PlaceDetail";
 import AcceptInvitePage from "./features/mypage/components/AcceptInvitePage";
-import AfterConnect from "./features/\bmypage/components/AfterConnect";
+import WritingReview from "./features/\bmypage/components/WritingReview";
 import SavedPlace from "./features/\bmypage/components/SavedPlace";
+import ReviewWaiting from "./features/\bmypage/components/ReviewWaiting";
 
 function App() {
   // localStorage.clear();
@@ -35,10 +36,20 @@ function App() {
         <Route path="/calendarAddEvent" element={<CalendarAddEvent />} />
         <Route path="/calendarView" element={<CalendarView />} />
         <Route path="/mypageView" element={<MyPageView />} />
-        <Route path="/" />
+
         <Route path="/district/:region" element={<DistrictView />} />
         <Route path="/accept-invite" element={<AcceptInvitePage />} />
         <Route path="/savedPlace" element={<SavedPlace />} />
+        <Route
+          path="/places/:placeId/review-waiting"
+          element={<ReviewWaiting />}
+        />
+        {/* <Route
+          path="/places/:placeId/review/write"
+          element={<WritingReview />}
+        /> */}
+        <Route path="/place/review" element={<WritingReview />} />
+
         <Route path="*" element={<Notfound />} />
       </Routes>
     </>
