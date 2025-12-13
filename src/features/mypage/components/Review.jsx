@@ -1,19 +1,25 @@
 import React, { useState } from "react";
 import "../css/Review.css";
 import ReviewCard from "../components/ReviewCard";
-import reviewCardData from "../../../util/get-reviewCard";
+import { useMyReviewsQuery } from "../../../networks/hooks/useReview";
 
 const Review = ({ onSelectReview }) => {
+  // 내가 작성한 후기 전체 조회
+  const { data, isLoading, isError } = useMyReviewsQuery(0, 100); // 100개 정도 넉넉하게 가져오기
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
 
-  // 전체 페이지 수
-  const totalPages = Math.ceil(reviewCardData.length / itemsPerPage);
+  if (isLoading) return <p>로딩 중...</p>;
+  if (isError) return <p>리뷰를 불러오는 중 오류가 발생했습니다.</p>;
 
-  // 현재 페이지 데이터 잘라내기
+  // 백엔드 페이지 응답 구조에 맞춰 content 가져오기
+  const reviewList = data?.data?.content || [];
+
+  const totalPages = Math.ceil(reviewList.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = reviewCardData.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = reviewList.slice(indexOfFirstItem, indexOfLastItem);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -24,10 +30,10 @@ const Review = ({ onSelectReview }) => {
       <div className="review-list">
         {currentItems.map((item) => (
           <ReviewCard
-            key={item.id}
-            image={item.image}
-            title={item.title}
-            location={item.location}
+            key={item.reviewId}
+            image={`${import.meta.env.VITE_API_URL}${item.imageUrl}`}
+            title={item.placeName}
+            location={item.content}
             onClick={() => onSelectReview(item)}
           />
         ))}

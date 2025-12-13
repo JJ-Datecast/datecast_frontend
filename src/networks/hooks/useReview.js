@@ -1,4 +1,3 @@
-// src/networks/hooks/useReview.js
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   getPlaceReviews,
@@ -7,20 +6,22 @@ import {
   getPlaceReviewDetail,
   deletePlaceReview,
   patchPlaceReview,
+  getMyReviews,
 } from "../../networks/apis/reviewApi";
 
 /* -----------------------------
    1) 장소 후기 리스트 조회
 ----------------------------- */
-export const usePlaceReviewsQuery = () => {
+export const usePlaceReviewsQuery = (placeId) => {
   return useQuery({
-    queryKey: ["placeReviews"],
-    queryFn: getPlaceReviews,
+    queryKey: ["placeReviews", placeId],
+    queryFn: () => getPlaceReviews(placeId),
+    enabled: !!placeId,
   });
 };
 
 /* -----------------------------
-   2) 장소 후기 상세 조회
+   2) 후기 상세 조회
 ----------------------------- */
 export const usePlaceReviewDetailQuery = (reviewId) => {
   return useQuery({
@@ -33,19 +34,19 @@ export const usePlaceReviewDetailQuery = (reviewId) => {
 /* -----------------------------
    3) 후기 작성 Mutation
 ----------------------------- */
-export const useCreateReviewMutation = () => {
+export const useCreateReviewMutation = (placeId) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: postPlaceReview,
     onSuccess: () => {
-      queryClient.invalidateQueries(["placeReviews"]);
+      queryClient.invalidateQueries(["placeReviews", placeId]);
     },
   });
 };
 
 /* -----------------------------
-   4) 방문 인증 Mutation (GPS 인증)
+   4) 방문 인증(GPS)
 ----------------------------- */
 export const useVerifyReviewMutation = () => {
   return useMutation({
@@ -54,30 +55,39 @@ export const useVerifyReviewMutation = () => {
 };
 
 /* -----------------------------
-   5) 후기 삭제 Mutation
+   5) 후기 삭제
 ----------------------------- */
-export const useDeleteReviewMutation = () => {
+export const useDeleteReviewMutation = (placeId) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: deletePlaceReview,
     onSuccess: () => {
-      queryClient.invalidateQueries(["placeReviews"]);
+      queryClient.invalidateQueries(["placeReviews", placeId]);
     },
   });
 };
 
 /* -----------------------------
-   6) 후기 수정 Mutation
+   6) 후기 수정
 ----------------------------- */
 export const useUpdateReviewMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: patchPlaceReview,
-    onSuccess: (_, { reviewId }) => {
-      queryClient.invalidateQueries(["placeReviews"]);
+    onSuccess: (_, { reviewId, placeId }) => {
+      queryClient.invalidateQueries(["placeReviews", placeId]);
       queryClient.invalidateQueries(["placeReviewDetail", reviewId]);
     },
+  });
+};
+/* -----------------------------
+   내가 쓴 후기 전체 조회 Query
+----------------------------- */
+export const useMyReviewsQuery = (page = 0, size = 10) => {
+  return useQuery({
+    queryKey: ["myReviews", page, size],
+    queryFn: () => getMyReviews(page, size),
   });
 };

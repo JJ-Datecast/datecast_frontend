@@ -12,10 +12,11 @@ export const sidebarIcon = [
       ],
     },
     {
-      title: "커플 연결",
+      title: "커플 관리",
       icon: couple,
       items: [
         { label: "커플 현황", key: "status" },
+        { label: "데이트 후기", key: "coupleReview" },
       ],
     },
     {

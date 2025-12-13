@@ -1,16 +1,22 @@
 .review-detail {
   box-sizing: border-box;
+  padding: 0 16px;
+}
+
+/* 상단 헤더 (← + 수정/삭제) */
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
 }
 
 /* ← 버튼 */
 .back-btn {
   border: none;
   background: transparent;
-  font-size: 20px;
+  font-size: 22px;
   cursor: pointer;
-  margin-bottom: 10px;
-  text-align: left;
-  display: flex;
   color: #333;
 }
 
@@ -18,48 +24,96 @@
   color: #000;
 }
 
-/* 이미지 센터 정렬 */
+/* 수정 / 삭제 버튼 */
+.detail-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.edit-btn {
+  padding: 6px 14px;
+  font-size: 14px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  color: #555;
+}
+
+.edit-btn:hover {
+  background: #f5f5f5;
+}
+
+.delete-btn {
+  padding: 6px 14px;
+  font-size: 14px;
+  border-radius: 10px;
+  border: none;
+  background: #ff6b6b;
+  color: #fff;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background: #ff5252;
+}
+
+/* 이미지 */
 .detail-img-box {
   display: flex;
   justify-content: center;
-  margin-bottom: 10px;
+  margin: 20px 0;
 }
 
 .detail-img {
   width: 50%;
   height: 300px;
   max-width: 600px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
 }
 
-/* 제목 & 위치 */
+/* 내용 영역 */
 .detail-content {
   max-width: 600px;
   margin: 0 auto;
 }
 
+/* 제목 */
 .detail-title {
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 700;
-  margin-bottom: 6px;
+
+  color: #9f9f9f;
 }
 
-.detail-location {
-  font-size: 15px;
-  color: #888;
-  margin-bottom: 20px;
-}
-
-/* 본문 영역 */
+/* 후기 텍스트 */
 .detail-text {
   line-height: 1.7;
-  font-size: 16px;
-  color: #444;
-  white-space: pre-line; /* 줄바꿈 유지 가능 */
+  font-size: 24px;
+  font-weight: 700;
+  color: #000;
+  white-space: pre-line;
 }
 
-/* 태그 등 확장 영역 시 여백 확보 */
-.detail-tags {
-  margin-top: 20px;
+/* 가운데 정렬 공통 */
+.text-center {
+  text-align: center;
+}
+
+/* 모바일 대응 */
+@media (max-width: 480px) {
+  .detail-img {
+    width: 100%;
+    height: auto;
+  }
+
+  .detail-title {
+    font-size: 20px;
+  }
+
+  .detail-text {
+    font-size: 18px;
+  }
 }
