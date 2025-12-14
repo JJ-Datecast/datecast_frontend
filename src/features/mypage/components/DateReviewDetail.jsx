@@ -25,7 +25,7 @@ const DateReviewDetail = ({ review, onBack }) => {
   const [preview, setPreview] = useState(null);
 
   /* =========================
-     🔥 데이터 들어오면 상태 동기화
+     데이터 동기화
   ========================= */
   useEffect(() => {
     if (!latestReview) return;
@@ -36,9 +36,7 @@ const DateReviewDetail = ({ review, onBack }) => {
 
     setPreview(
       latestReview.imageUrl
-        ? `${import.meta.env.VITE_API_URL}${
-            latestReview.imageUrl
-          }?t=${Date.now()}`
+        ? `${import.meta.env.VITE_API_URL}${latestReview.imageUrl}?t=${Date.now()}`
         : null
     );
   }, [latestReview]);
@@ -72,46 +70,28 @@ const DateReviewDetail = ({ review, onBack }) => {
   };
 
   /* =========================
-     수정 저장
+     수정 저장 (핵심)
   ========================= */
-  const handleUpdate = () => {
-    if (!content.trim()) {
-      alert("후기 내용을 입력해주세요.");
-      return;
-    }
+const handleUpdate = () => {
+  if (!content.trim()) {
+    alert("후기 내용을 입력해주세요.");
+    return;
+  }
 
-    const formData = new FormData();
-
-    formData.append(
-      "dto",
-      new Blob(
-        [
-          JSON.stringify({
-            rating,
-            content,
-          }),
-        ],
-        { type: "application/json" }
-      )
-    );
-
-    if (imageFile) {
-      formData.append("image", imageFile);
-    }
-
-    updateDateReviewMutation.mutate(
-      {
-        dateReviewId: reviewId,
-        payload: formData,
+  updateDateReviewMutation.mutate(
+    {
+      dateReviewId: reviewId,
+      payload: { rating, content },
+      image: imageFile || null,
+    },
+    {
+      onSuccess: () => {
+        alert("후기가 수정되었습니다.");
+        setIsEditMode(false);
       },
-      {
-        onSuccess: () => {
-          alert("데이트 후기가 수정되었습니다.");
-          setIsEditMode(false);
-        },
-      }
-    );
-  };
+    }
+  );
+};
 
   return (
     <div className="review-detail">
@@ -168,7 +148,7 @@ const DateReviewDetail = ({ review, onBack }) => {
 
       {/* 내용 */}
       <div className="detail-content">
-        <div className="detail-title text-center">데이트 후기</div>
+        <div className="detail-title text-center">{review.scheduleTitle}</div>
 
         {isEditMode && (
           <div className="star-rating text-center">

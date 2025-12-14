@@ -15,7 +15,9 @@ const DateReviewPage = () => {
   const createDateReviewMutation = useCreateDateReviewMutation();
 
   // Calendar에서 넘어온 데이터
-  const scheduleDate = state?.date; // "2025-12-11"
+  const scheduleTitle = state?.scheduleTitle;
+  const scheduleId = state?.scheduleId;
+  const scheduleDate = state?.date;
   const title = state?.title;
   const place = state?.place;
 
@@ -23,18 +25,17 @@ const DateReviewPage = () => {
     ? `${scheduleDate.split("-")[1]}월 ${scheduleDate.split("-")[2]}일`
     : "";
 
-  /* =========================
-     이미지 선택
-  ========================= */
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) setImage(file);
   };
 
-  /* =========================
-     후기 작성 (POST)
-  ========================= */
   const handleSubmit = () => {
+    if (!scheduleId) {
+      alert("일정 정보가 없습니다.");
+      return;
+    }
+
     if (!rating) {
       alert("별점을 선택해 주세요.");
       return;
@@ -45,22 +46,18 @@ const DateReviewPage = () => {
       return;
     }
 
-    // ⭐ dto
     const dto = {
       rating,
       content,
+      scheduleId,
     };
 
-    // ⭐ FormData
     const formData = new FormData();
-
-    // dto는 반드시 Blob(JSON)으로
     formData.append(
       "dto",
       new Blob([JSON.stringify(dto)], { type: "application/json" })
     );
 
-    // 이미지 선택한 경우만 추가
     if (image) {
       formData.append("image", image);
     }
@@ -68,7 +65,7 @@ const DateReviewPage = () => {
     createDateReviewMutation.mutate(formData, {
       onSuccess: () => {
         alert("데이트 후기가 등록되었습니다 💕");
-        navigate(-1); // 이전 페이지(캘린더)로
+        navigate(-1);
       },
       onError: (err) => {
         console.error("데이트 후기 등록 실패:", err);
@@ -80,16 +77,13 @@ const DateReviewPage = () => {
   return (
     <HeaderLayout>
       <div className="date-review-page">
-        {/* 제목 */}
-        <h2 className="date-review-title">{displayDate} 데이트 후기</h2>
+        <h2 className="date-review-title">{displayDate} {scheduleTitle}</h2>
 
-        {/* 일정 정보 */}
         <div className="date-info-box">
           <p className="date-info-title">{title}</p>
           {place && <p className="date-info-place">📍 {place}</p>}
         </div>
 
-        {/* 별점 */}
         <div className="date-review-section">
           <label className="section-label">데이트 별점</label>
           <div className="star-rating">
@@ -105,7 +99,6 @@ const DateReviewPage = () => {
           </div>
         </div>
 
-        {/* 후기 작성 */}
         <div className="date-review-section">
           <label className="section-label">후기 작성</label>
           <textarea
@@ -116,21 +109,17 @@ const DateReviewPage = () => {
           />
         </div>
 
-        {/* 이미지 등록 */}
         <div className="date-review-section">
           <label className="section-label">이미지 등록</label>
-
           <label className="image-upload-box">
             <input type="file" accept="image/*" onChange={handleImageChange} />
             <span>📷 이미지 선택</span>
           </label>
-
           <p className="image-file-name">
             {image ? image.name : "선택된 파일 없음"}
           </p>
         </div>
 
-        {/* 작성 버튼 */}
         <button
           className="submit-btn"
           onClick={handleSubmit}

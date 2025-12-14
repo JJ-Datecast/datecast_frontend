@@ -1,9 +1,8 @@
 import axios from "axios";
 
 export const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,   // 환경 자동 적용
-  headers: { "Content-Type": "application/json" },
-  withCredentials: true, // refreshToken cookie 전달
+  baseURL: import.meta.env.VITE_API_URL,
+  withCredentials: true, 
 });
 
 let isRefreshing = false;
@@ -16,9 +15,13 @@ const processQueue = (error, token = null) => {
 
 apiClient.interceptors.request.use((config) => {
   const token = localStorage.getItem("accessToken");
-  if (token && !config.url.includes("/api/auth/logout")) {            // 로그아웃 요청은 Authorization 제거
+  if (token && !config.url.includes("/api/auth/logout")) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+  if (config.data instanceof FormData) {
+    delete config.headers["Content-Type"];
+  }
+
   return config;
 });
 
@@ -27,7 +30,6 @@ apiClient.interceptors.response.use(
   async (err) => {
     const original = err.config;
 
-    // 🚫 /auth/logout은 refresh 처리하지 않음
     if (original.url.includes("/api/auth/logout")) {
       return Promise.reject(err);
     }

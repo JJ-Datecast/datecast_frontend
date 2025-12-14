@@ -1,15 +1,24 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  createDateReview,
   getDateReviews,
-  postDateReview,
   getDateReviewDetail,
+  updateDateReview,
   deleteDateReview,
-  patchDateReview,
 } from "../apis/dateReviewApi";
 
-/* -----------------------------
-   1) 데이트 후기 리스트 조회
------------------------------ */
+export const useCreateDateReviewMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: createDateReview,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["dateReviews"] });
+    },
+  });
+};
+
 export const useDateReviewsQuery = (page = 0, size = 10) => {
   return useQuery({
     queryKey: ["dateReviews", page, size],
@@ -17,56 +26,44 @@ export const useDateReviewsQuery = (page = 0, size = 10) => {
   });
 };
 
-/* -----------------------------
-   2) 데이트 후기 상세 조회
------------------------------ */
-export const useDateReviewDetailQuery = (dateReviewId) => {
+
+export const useDateReviewDetailQuery = (reviewId) => {
   return useQuery({
-    queryKey: ["dateReviewDetail", dateReviewId],
-    queryFn: () => getDateReviewDetail(dateReviewId),
-    enabled: !!dateReviewId,
+    queryKey: ["dateReviewDetail", reviewId],
+    queryFn: () => getDateReviewDetail(reviewId),
+    enabled: !!reviewId,
   });
 };
 
-/* -----------------------------
-   3) 데이트 후기 작성
------------------------------ */
-export const useCreateDateReviewMutation = () => {
+export const useUpdateDateReviewMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: postDateReview,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["dateReviews"]);
+    mutationFn: ({ dateReviewId, payload, image }) =>
+      updateDateReview({ dateReviewId, payload, image }),
+
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["dateReviews"] });
+      queryClient.invalidateQueries({
+        queryKey: ["dateReviewDetail", variables.dateReviewId],
+      });
+    },
+
+    onError: (err) => {
+      alert("후기 수정에 실패했습니다.");
+      console.error(err);
     },
   });
 };
 
-/* -----------------------------
-   4) 데이트 후기 삭제
------------------------------ */
 export const useDeleteDateReviewMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: deleteDateReview,
     onSuccess: () => {
-      queryClient.invalidateQueries(["dateReviews"]);
-    },
-  });
-};
 
-/* -----------------------------
-   5) 데이트 후기 수정
------------------------------ */
-export const useUpdateDateReviewMutation = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: patchDateReview,
-    onSuccess: (_, { dateReviewId }) => {
-      queryClient.invalidateQueries(["dateReviews"]);
-      queryClient.invalidateQueries(["dateReviewDetail", dateReviewId]);
+      queryClient.invalidateQueries({ queryKey: ["dateReviews"] });
     },
   });
 };
