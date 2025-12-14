@@ -9,11 +9,14 @@ import ReviewDetail from "../components/ReviewDetail";
 import AfterConnect from "../components/AfterConnect";
 import { useCoupleMe } from "../../../networks/hooks/useCouple";
 import SavedPlace from "../components/SavedPlace";
+import DateReview from "../components/DateReview";
+import DateReviewDetail from "../components/DateReviewDetail";
 
 const MyPageLayout = () => {
   const [activeMenu, setActiveMenu] = useState("basic");
   const [showConnect, setShowConnect] = useState(false);
   const [selectedReview, setSelectedReview] = useState(null);
+  const [selectedDateReview, setSelectedDateReview] = useState(null);
 
   // 커플 상태 로드
   const { data, isLoading, error } = useCoupleMe();
@@ -35,6 +38,8 @@ const MyPageLayout = () => {
     review: "후기 보기",
     reviewDetail: "후기 상세보기",
     place: "장소 보기",
+    coupleReview: "데이트 후기",
+    coupleReviewDetail: "데이트 후기 상세",
   };
 
   return (
@@ -98,6 +103,25 @@ const MyPageLayout = () => {
           <div>
             <SavedPlace />
           </div>
+        )}
+
+        {activeMenu === "coupleReview" && (
+          <DateReview
+            onSelectReview={(review) => {
+              setSelectedDateReview(review);
+              setActiveMenu("coupleReviewDetail");
+            }}
+          />
+        )}
+
+        {activeMenu === "coupleReviewDetail" && selectedDateReview && (
+          <DateReviewDetail
+            review={selectedDateReview}
+            onBack={() => {
+              setActiveMenu("coupleReview");
+              setSelectedDateReview(null);
+            }}
+          />
         )}
       </div>
     </div>

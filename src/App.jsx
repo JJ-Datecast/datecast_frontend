@@ -18,6 +18,7 @@ import AcceptInvitePage from "./features/mypage/components/AcceptInvitePage";
 import WritingReview from "./features/\bmypage/components/WritingReview";
 import SavedPlace from "./features/\bmypage/components/SavedPlace";
 import ReviewWaiting from "./features/\bmypage/components/ReviewWaiting";
+import DateReviewPage from "./pages/review/DateReviewPage";
 
 function App() {
   // localStorage.clear();
@@ -44,10 +45,7 @@ function App() {
           path="/places/:placeId/review-waiting"
           element={<ReviewWaiting />}
         />
-        {/* <Route
-          path="/places/:placeId/review/write"
-          element={<WritingReview />}
-        /> */}
+        <Route path="/date-review" element={<DateReviewPage />} />
         <Route path="/place/review" element={<WritingReview />} />
 
         <Route path="*" element={<Notfound />} />

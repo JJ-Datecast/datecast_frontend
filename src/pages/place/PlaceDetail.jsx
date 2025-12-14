@@ -173,8 +173,6 @@ const PlaceDetail = () => {
             <div className="placeDetail-content-title-bottom">
               <img src={locationIcon} style={{ width: "23px" }} alt="" />
               <span>{data.address}</span>
-              <span>{data.lat}</span>
-              <span>{data.lng}</span>
             </div>
           </div>
         </div>

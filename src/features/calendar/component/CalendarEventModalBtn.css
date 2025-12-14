@@ -1,3 +1,4 @@
+/* 기본 버튼 */
 .CalendarEventModaBtn {
   border: none;
   width: 50px;
@@ -10,9 +11,35 @@
   color: #797979;
   cursor: pointer;
 }
+
+/* 상세보기 */
 .CalendarEventModaBtn_pink {
   border: none;
   width: 100px;
   background-color: #fcc2c2;
   color: white;
+}
+
+/* 후기작성 (연한 핑크 - 기본) */
+.CalendarEventModaBtn_lightpink {
+  border: none;
+  width: 100px;
+  background-color: #ffe1e1;
+  color: #ffffff;
+}
+
+/*  오늘일 때 후기작성 (진한 핑크) */
+.CalendarEventModaBtn_today {
+  border: none;
+  width: 100px;
+  background-color: #ffa3a3;
+  color: #ffffff;
+}
+
+/* 비활성화 (과거/미래) */
+.CalendarEventModaBtn_disabled {
+  background-color: #f0f0f0 !important;
+  color: #bdbdbd !important;
+
+  opacity: 0.6;
 }
