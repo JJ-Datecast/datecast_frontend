@@ -36,7 +36,7 @@ const DateReview = ({ onSelectReview }) => {
                 ? `${import.meta.env.VITE_API_URL}${item.imageUrl}`
                 : null
             }
-            title="데이트 후기"
+            title={item.scheduleTitle}
             location={item.content}
             onClick={() => onSelectReview(item)}
           />
