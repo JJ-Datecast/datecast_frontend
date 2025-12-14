@@ -148,7 +148,7 @@ const handleUpdate = () => {
 
       {/* 내용 */}
       <div className="detail-content">
-        <div className="detail-title text-center">데이트 후기</div>
+        <div className="detail-title text-center">{review.scheduleTitle}</div>
 
         {isEditMode && (
           <div className="star-rating text-center">

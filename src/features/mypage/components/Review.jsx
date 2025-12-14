@@ -33,6 +33,7 @@ const Review = ({ onSelectReview }) => {
             key={item.reviewId}
             image={`${import.meta.env.VITE_API_URL}${item.imageUrl}`}
             title={item.placeName}
+            scheduleTitle={item.scheduleTitle}
             location={item.content}
             onClick={() => onSelectReview(item)}
           />
