@@ -8,29 +8,30 @@ const CalendarEventModal = ({ event, position, onDelete, onDetail }) => {
 
   if (!event) return null;
 
-  const { title, description, place, startDate, endDate, startTime, endTime } =
-    event;
+  const {
+    id,
+    title,
+    description,
+    place,
+    startDate,
+    endDate,
+    startTime,
+    endTime,
+    hasReview, // 이미 후기 작성 여부 (있다면)
+  } = event;
 
   /* =========================
-     날짜 + 시간 비교 로직
+     후기 작성 가능 여부 (수정)
+     기준: 일정 종료 이후
   ========================= */
   const now = new Date();
 
-  // 오늘 날짜 (시간 제거)
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  // 이벤트 날짜 (시간 제거)
-  const eventDate = new Date(`${startDate}T00:00:00`);
-  eventDate.setHours(0, 0, 0, 0);
-
-  const isToday = today.getTime() === eventDate.getTime();
-
-  // 이벤트 시작 시각
-  const eventStartDateTime = new Date(`${startDate}T${startTime}:00`);
+  // 이벤트 종료 시각
+  const eventEndDateTime = new Date(`${endDate}T${endTime}:00`);
 
   // 후기 작성 가능 여부
-  const canWriteReview = isToday && now >= eventStartDateTime;
+  const canWriteReview =
+    now >= eventEndDateTime && !hasReview; // hasReview 없으면 제거 가능
 
   /* =========================
      날짜 표시
@@ -43,13 +44,12 @@ const CalendarEventModal = ({ event, position, onDelete, onDetail }) => {
   const handleWriteReview = () => {
     if (!canWriteReview) return;
 
-    console.log("🔥 후기 작성 이동");
     nav("/date-review", {
       state: {
-        scheduleId: event.id,
-        title: event.title,
-        place: event.place,
-        date: event.startDate,
+        scheduleId: id,
+        title,
+        place,
+        date: startDate,
       },
     });
   };
@@ -94,7 +94,9 @@ const CalendarEventModal = ({ event, position, onDelete, onDetail }) => {
 
         {/* 액션 버튼 */}
         <div className="CalendarEventModal_actions">
-          <CalendarEventModalBtn onClick={onDelete}>삭제</CalendarEventModalBtn>
+          <CalendarEventModalBtn onClick={onDelete}>
+            삭제
+          </CalendarEventModalBtn>
 
           <CalendarEventModalBtn type="pink" onClick={onDetail}>
             상세보기
