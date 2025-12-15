@@ -20,7 +20,7 @@ export const sidebarIcon = [
       ],
     },
     {
-      title: "작성 후기",
+      title: "장소 후기",
       icon: review,
       items: [
         { label: "후기 보기", key: "review" },

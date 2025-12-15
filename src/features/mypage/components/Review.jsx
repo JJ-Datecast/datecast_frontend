@@ -4,7 +4,7 @@ import ReviewCard from "../components/ReviewCard";
 import { useMyReviewsQuery } from "../../../networks/hooks/useReview";
 import { useNavigate } from "react-router-dom";
 
-const Review = ({ onSelectReview }) => {
+const Review = () => {
   // 내가 작성한 후기 전체 조회
   const { data, isLoading, isError } = useMyReviewsQuery(0, 100); // 100개 정도 넉넉하게 가져오기
 
@@ -26,9 +26,22 @@ const Review = ({ onSelectReview }) => {
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
+  if (reviewList.length === 0) {
+    return (
+      <div
+        className="empty-review"
+        style={{ textAlign: "center", marginTop: "120px" }}
+      >
+        <p style={{ fontSize: "20PX" }}>작성된 후기가 없습니다.</p>
+        <p style={{ fontSize: "20PX" }}>
+          해당 장소를 방문하여 후기를 작성해보세요.💕
+        </p>
+      </div>
+    );
+  }
 
   return (
-    <>
+    <div className="review-content">
       <div className="review-list">
         {currentItems.map((item) => (
           <ReviewCard
@@ -58,7 +71,7 @@ const Review = ({ onSelectReview }) => {
           </button>
         ))}
       </div>
-    </>
+    </div>
   );
 };
 

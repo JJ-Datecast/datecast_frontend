@@ -48,3 +48,9 @@
   border-radius: 6px;
   background: #eee;
 }
+.pagination {
+  margin-top: auto; /* ⭐ 항상 아래로 밀림 */
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}

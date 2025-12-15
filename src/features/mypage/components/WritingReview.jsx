@@ -4,6 +4,7 @@ import HeaderLayout from "../../../shared/layout/HeaderLayout";
 import ActionButton from "../../../shared/components/ActionButton";
 import { useCreateReviewMutation } from "../../../networks/hooks/useReview";
 import { useParams, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const WritingReview = () => {
   const [content, setContent] = useState("");
@@ -12,6 +13,8 @@ const WritingReview = () => {
 
   const { placeId } = useParams();
   const nav = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from;
 
   const createReviewMutation = useCreateReviewMutation();
 
@@ -50,7 +53,10 @@ const WritingReview = () => {
     createReviewMutation.mutate(formData, {
       onSuccess: () => {
         alert("후기 작성 완료!");
-        nav(`/places/${placeId}`);
+        nav(`/places/${placeId}`, {
+          replace: true,
+          state: { from: "reviewWrite" },
+        });
       },
       onError: (err) => {
         console.error("리뷰 저장 실패:", err);

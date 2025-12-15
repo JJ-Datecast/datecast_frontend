@@ -17,6 +17,18 @@ const DateReview = () => {
   const reviewList = data?.data?.content || [];
   const totalPages = Math.ceil(reviewList.length / itemsPerPage);
 
+  /* =========================
+     후기 없음 처리
+  ========================= */
+  if (reviewList.length === 0) {
+    return (
+      <div className="empty-review">
+        <p>아직 등록된 데이트 후기가 없습니다.</p>
+        <p>캘린더에서 일정을 등록하고 후기를 작성해보세요 💕</p>
+      </div>
+    );
+  }
+
   const currentItems = reviewList.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage

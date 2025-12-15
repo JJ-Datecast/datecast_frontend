@@ -1,17 +1,26 @@
+.review-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 480px; /* ⭐ 중요: 화면 기준 말고 “영역 기준” */
+}
+
+/* 카드 리스트 */
 .review-list {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  min-height: 430px;
+  gap: 24px;
 }
 
+/* 페이지네이션 */
 .pagination {
   display: flex;
   justify-content: center;
   gap: 8px;
-  margin: 30px 0px 6px 0px;
+  margin-top: 40px; /* ⭐ 리스트와의 간격만 고정 */
+  margin-bottom: 10px;
 }
 
+/* 버튼 스타일 */
 .pagination button {
   padding: 6px 12px;
   border-radius: 6px;
@@ -24,4 +33,14 @@
   background: #4b7bec;
   color: white;
   font-weight: bold;
+}
+
+/* ⭐ 후기 없을 때 중앙 정렬 */
+.empty-review {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #888;
 }

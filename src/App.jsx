@@ -50,7 +50,11 @@ function App() {
         <Route path="/mypage/placeReviews/:id" element={<ReviewDetail />} />
         <Route path="/date-review" element={<DateReviewPage />} />
         <Route path="/mypage/date-reviews/:id" element={<DateReviewDetail />} />
-        <Route path="/place/review" element={<WritingReview />} />
+        <Route
+          path="/places/:placeId/review/write"
+          element={<WritingReview />}
+        />
+        <Route path="/places/:placeId" element={<PlaceDetail />} />
 
         <Route path="*" element={<Notfound />} />
       </Routes>

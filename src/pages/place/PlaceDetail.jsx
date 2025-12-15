@@ -142,8 +142,10 @@ const PlaceDetail = () => {
               nav("/mypageView", {
                 state: { activeMenu: "place" },
               });
+            } else if (from === "reviewWrite") {
+              nav(`/`);
             } else {
-              nav(-1);
+              nav(-1); // 그 외 일반 케이스
             }
           }}
         >
