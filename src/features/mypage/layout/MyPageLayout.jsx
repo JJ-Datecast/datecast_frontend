@@ -60,6 +60,7 @@ const MyPageLayout = () => {
       <div className="MyPageLayout_left">
         <MyPageSidebar
           activeMenu={activeMenu}
+          isCoupleConnected={isCoupleConnected} // ⭐ 추가
           onMenuSelect={(menu) => {
             setActiveMenu(menu);
             if (menu === "status") setShowConnect(false);
