@@ -10,11 +10,18 @@ const AfterConnect = ({ coupleData }) => {
   const handleBreakUp = () => {
     const confirmCheck = window.confirm("정말 커플을 해제하시겠습니까? 🥺");
 
-    if (confirmCheck) {
-      deleteCouple();
-      alert("커플이 해제되었습니다. 😭");
-      window.location.reload();
-    }
+    if (!confirmCheck) return;
+
+    deleteCouple(undefined, {
+      onSuccess: (data) => {
+        console.log("✅ 커플 해제 성공:", data);
+        alert("커플이 해제되었습니다. 😭");
+      },
+      onError: (error) => {
+        console.error("❌ 커플 해제 실패:", error);
+        alert("커플 해제 중 오류가 발생했습니다.");
+      },
+    });
   };
 
   return (
