@@ -1,20 +1,27 @@
 // src/api/placeApi.js
 
 import apiClient from "../../networks/client/apiClient";
+import publicApi from "../../networks/client/publicApi";
 
 const BASE_URL = "/api";  // apiClient가 baseURL을 이미 들고 있으므로 상대경로 사용 가능
 
-/* -----------------------
-   인기 장소 조회
------------------------- */
-export const getPopularPlaces = async (category) => {
-  const url = category
-    ? `${BASE_URL}/places/popular?category=${category}`
-    : `${BASE_URL}/places/popular`;
 
-  const res = await apiClient.get(url);
+/* 인기 장소 */
+export const getPopularPlaces = async (category) => {
+  const res = await publicApi.get("/api/places/popular", {
+    params: { category },
+  });
   return res.data;
 };
+
+/* 장소 상세 */
+export const getPlaceDetail = async (placeId) => {
+  const res = await publicApi.get(`/api/places/${placeId}`);
+  return res.data;
+};
+
+
+
 
 /* -----------------------
    지역별 장소 조회
@@ -29,13 +36,7 @@ export const getPlacesByRegion = async ({ regionCode, district, category }) => {
   return res.data;
 };
 
-/* -----------------------
-   장소 상세 조회
------------------------- */
-export const getPlaceDetail = async (placeId) => {
-  const res = await apiClient.get(`${BASE_URL}/places/${placeId}`);
-  return res.data;
-};
+
 
 /* -----------------------
    장소 저장 (북마크 추가)

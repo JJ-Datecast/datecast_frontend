@@ -9,6 +9,8 @@ import {
   getBookmarkedPlaces,
   deleteBookmarkedPlace,
 } from "../apis/placeApi";
+import { useProfileStore } from "../../store/profileStore";
+
 
 // 인기 장소 조회
 export const usePopularPlacesQuery = (category) =>
@@ -48,10 +50,15 @@ export const useDeletePlaceMutation = () =>
   });
 
   /* 찜한 장소 목록 조회 */
-export const useBookmarkedPlacesQuery = () =>
-  useQuery({
-    queryKey: ["bookmarkedPlaces"],
-    queryFn: () => getBookmarkedPlaces(),
-    staleTime: 1000 * 60 * 5, // 5분 캐싱
-  });
-
+  export const useBookmarkedPlacesQuery = () => {
+    const userId = useProfileStore((s) => s.userId);
+    const isLoggedIn = !!userId;
+  
+    return useQuery({
+      queryKey: ["bookmarkedPlaces"],
+      queryFn: getBookmarkedPlaces,
+      enabled: isLoggedIn,          // ⭐ 핵심 한 줄
+      staleTime: 1000 * 60 * 5,
+    });
+  };
+  
