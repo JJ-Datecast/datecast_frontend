@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "../css/Review.css";
 import ReviewCard from "../components/ReviewCard";
 import { useMyReviewsQuery } from "../../../networks/hooks/useReview";
+import { useNavigate } from "react-router-dom";
 
 const Review = ({ onSelectReview }) => {
   // 내가 작성한 후기 전체 조회
@@ -9,6 +10,7 @@ const Review = ({ onSelectReview }) => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
+  const nav = useNavigate();
 
   if (isLoading) return <p>로딩 중...</p>;
   if (isError) return <p>리뷰를 불러오는 중 오류가 발생했습니다.</p>;
@@ -35,7 +37,11 @@ const Review = ({ onSelectReview }) => {
             title={item.placeName}
             scheduleTitle={item.scheduleTitle}
             location={item.content}
-            onClick={() => onSelectReview(item)}
+            onClick={() =>
+              nav(`/mypage/placeReviews/${item.reviewId}`, {
+                state: { fromTab: "review" },
+              })
+            }
           />
         ))}
       </div>

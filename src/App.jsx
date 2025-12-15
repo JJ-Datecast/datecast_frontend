@@ -19,6 +19,8 @@ import WritingReview from "./features/\bmypage/components/WritingReview";
 import SavedPlace from "./features/\bmypage/components/SavedPlace";
 import ReviewWaiting from "./features/\bmypage/components/ReviewWaiting";
 import DateReviewPage from "./pages/review/DateReviewPage";
+import DateReviewDetail from "./features/\bmypage/components/DateReviewDetail";
+import ReviewDetail from "./features/\bmypage/components/ReviewDetail";
 
 function App() {
   // localStorage.clear();
@@ -45,7 +47,9 @@ function App() {
           path="/places/:placeId/review-waiting"
           element={<ReviewWaiting />}
         />
+        <Route path="/mypage/placeReviews/:id" element={<ReviewDetail />} />
         <Route path="/date-review" element={<DateReviewPage />} />
+        <Route path="/mypage/date-reviews/:id" element={<DateReviewDetail />} />
         <Route path="/place/review" element={<WritingReview />} />
 
         <Route path="*" element={<Notfound />} />

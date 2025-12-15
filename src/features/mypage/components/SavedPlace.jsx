@@ -32,7 +32,11 @@ const SavedPlace = () => {
             image={item.imageUrl} // API 필드 매핑
             title={item.name} // 장소 이름
             location={item.address} // 주소
-            onClick={() => nav(`/place/${item.placeId}`)}
+            onClick={() =>
+              nav(`/place/${item.placeId}`, {
+                state: { from: "mypage" }, // ⭐ 반드시 from
+              })
+            }
           />
         ))}
       </div>

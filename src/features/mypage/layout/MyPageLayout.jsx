@@ -1,30 +1,45 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import MyPageSidebar from "../components/MypageSidebar";
 import "../css/MyPageLayout.css";
 import MyInfo from "../components/MyInfo";
 import PreConnect from "../components/PreConnect";
 import CoupleConnect from "../components/CoupleConnect";
 import Review from "../components/Review";
-import ReviewDetail from "../components/ReviewDetail";
 import AfterConnect from "../components/AfterConnect";
 import { useCoupleMe } from "../../../networks/hooks/useCouple";
 import SavedPlace from "../components/SavedPlace";
 import DateReview from "../components/DateReview";
-import DateReviewDetail from "../components/DateReviewDetail";
 
 const MyPageLayout = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [activeMenu, setActiveMenu] = useState("basic");
   const [showConnect, setShowConnect] = useState(false);
   const [selectedReview, setSelectedReview] = useState(null);
-  const [selectedDateReview, setSelectedDateReview] = useState(null);
 
-  // 커플 상태 로드
-  const { data, isLoading, error } = useCoupleMe();
-  const coupleData = data?.data; // 실제 응답 데이터
+  /* =========================
+     location.state로 탭 복구
+  ========================= */
+  useEffect(() => {
+    if (location.state?.activeMenu) {
+      setActiveMenu(location.state.activeMenu);
+
+      // ⭐ state 즉시 제거 (중요)
+      navigate(location.pathname, {
+        replace: true,
+        state: null,
+      });
+    }
+  }, [location.state, location.pathname, navigate]);
+
+  /* =========================
+     커플 상태
+  ========================= */
+  const { data, isLoading } = useCoupleMe();
+  const coupleData = data?.data;
   const isCoupleConnected = !!coupleData?.coupleId;
-  console.log("Is Couple Connected:", isCoupleConnected);
-
-  console.log("Couple Me Data:", data, "Error:", error);
 
   const titles = {
     basic: "기본 정보",
@@ -36,10 +51,8 @@ const MyPageLayout = () => {
       ? "커플 연결"
       : "커플 현황",
     review: "후기 보기",
-    reviewDetail: "후기 상세보기",
     place: "장소 보기",
     coupleReview: "데이트 후기",
-    coupleReviewDetail: "데이트 후기 상세",
   };
 
   return (
@@ -61,15 +74,12 @@ const MyPageLayout = () => {
 
         {activeMenu === "status" && (
           <>
-            {/* 로딩 중 */}
             {isLoading && <div>로딩중...</div>}
 
-            {/* 연결된 상태 (최우선 조건) */}
             {!isLoading && isCoupleConnected && (
               <AfterConnect coupleData={coupleData} />
             )}
 
-            {/* 연결 안 되어 있을 때 */}
             {!isLoading &&
               !isCoupleConnected &&
               (showConnect ? (
@@ -79,50 +89,11 @@ const MyPageLayout = () => {
               ))}
           </>
         )}
+        {activeMenu === "review" && <Review />}
 
-        {activeMenu === "review" && (
-          <Review
-            onSelectReview={(review) => {
-              setSelectedReview(review);
-              setActiveMenu("reviewDetail");
-            }}
-          />
-        )}
+        {activeMenu === "place" && <SavedPlace />}
 
-        {activeMenu === "reviewDetail" && selectedReview && (
-          <ReviewDetail
-            review={selectedReview}
-            onBack={() => {
-              setActiveMenu("review");
-              setSelectedReview(null);
-            }}
-          />
-        )}
-
-        {activeMenu === "place" && (
-          <div>
-            <SavedPlace />
-          </div>
-        )}
-
-        {activeMenu === "coupleReview" && (
-          <DateReview
-            onSelectReview={(review) => {
-              setSelectedDateReview(review);
-              setActiveMenu("coupleReviewDetail");
-            }}
-          />
-        )}
-
-        {activeMenu === "coupleReviewDetail" && selectedDateReview && (
-          <DateReviewDetail
-            review={selectedDateReview}
-            onBack={() => {
-              setActiveMenu("coupleReview");
-              setSelectedDateReview(null);
-            }}
-          />
-        )}
+        {activeMenu === "coupleReview" && <DateReview />}
       </div>
     </div>
   );

@@ -1,20 +1,61 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../css/ReviewDetail.css";
 import {
   useDeleteReviewMutation,
   useUpdateReviewMutation,
+  usePlaceReviewDetailQuery, // ⭐ 상세 조회 훅
 } from "../../../networks/hooks/useReview";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+import HeaderLayout from "../../../shared/layout/HeaderLayout";
 
-const ReviewDetail = ({ review, onBack }) => {
+const ReviewDetail = () => {
+  const { id } = useParams(); // ⭐ URL 기반
+  const nav = useNavigate();
+  const location = useLocation();
+
+  /* =========================
+     어디서 왔는지 (탭 복구용)
+  ========================= */
+  const fromTab = location.state?.fromTab || "basic";
+
+  /* =========================
+     후기 상세 조회
+  ========================= */
+  const { data, isLoading, isError } = usePlaceReviewDetailQuery(id);
+  const review = data?.data;
+
+  /* =========================
+     로컬 상태
+  ========================= */
   const [isEditMode, setIsEditMode] = useState(false);
-  const [content, setContent] = useState(review.content);
+  const [content, setContent] = useState("");
   const [imageFile, setImageFile] = useState(null);
-  const [preview, setPreview] = useState(
-    review.imageUrl ? `${import.meta.env.VITE_API_URL}${review.imageUrl}` : null
-  );
+  const [preview, setPreview] = useState(null);
 
-  const deleteReviewMutation = useDeleteReviewMutation(review.placeId);
+  /* =========================
+     서버 데이터 → 로컬 상태 동기화
+  ========================= */
+  useEffect(() => {
+    if (!review) return;
+
+    setContent(review.content ?? "");
+    setImageFile(null);
+
+    setPreview(
+      review.imageUrl
+        ? `${import.meta.env.VITE_API_URL}${review.imageUrl}?t=${Date.now()}`
+        : null
+    );
+  }, [review]);
+
+  /* =========================
+     Mutation
+  ========================= */
+  const deleteReviewMutation = useDeleteReviewMutation(review?.placeId);
   const updateReviewMutation = useUpdateReviewMutation();
+
+  if (isLoading) return <p>로딩 중...</p>;
+  if (isError || !review) return <p>후기를 불러올 수 없습니다.</p>;
 
   /* =========================
      삭제
@@ -25,7 +66,9 @@ const ReviewDetail = ({ review, onBack }) => {
     deleteReviewMutation.mutate(review.reviewId, {
       onSuccess: () => {
         alert("후기가 삭제되었습니다.");
-        onBack();
+        nav("/mypageView", {
+          state: { activeMenu: fromTab },
+        });
       },
       onError: () => alert("삭제 중 오류가 발생했습니다."),
     });
@@ -43,7 +86,7 @@ const ReviewDetail = ({ review, onBack }) => {
   };
 
   /* =========================
-     수정 저장 (FormData)
+     수정 저장
   ========================= */
   const handleUpdate = () => {
     if (!content.trim()) {
@@ -58,14 +101,11 @@ const ReviewDetail = ({ review, onBack }) => {
     };
 
     const formData = new FormData();
-
-    // ⭐ dto는 반드시 Blob(JSON)
     formData.append(
       "dto",
       new Blob([JSON.stringify(dto)], { type: "application/json" })
     );
 
-    // ⭐ 이미지가 바뀌었을 때만 추가
     if (imageFile) {
       formData.append("image", imageFile);
     }
@@ -80,81 +120,93 @@ const ReviewDetail = ({ review, onBack }) => {
           alert("후기가 수정되었습니다.");
           setIsEditMode(false);
         },
-        onError: () => {
-          alert("수정 중 오류가 발생했습니다.");
-        },
+        onError: () => alert("수정 중 오류가 발생했습니다."),
       }
     );
   };
 
   return (
-    <div className="review-detail">
-      {/* 상단 */}
-      <div className="detail-header">
-        <button className="back-btn" onClick={onBack}>
-          ←
-        </button>
+    <>
+      <HeaderLayout>
+        <div className="review-detail">
+          {/* 상단 */}
+          <div className="detail-header">
+            <button
+              className="back-btn"
+              onClick={() =>
+                nav("/mypageView", {
+                  state: { activeMenu: fromTab },
+                })
+              }
+            >
+              ←
+            </button>
 
-        <div className="detail-actions">
-          {isEditMode ? (
-            <>
-              <button className="edit-btn" onClick={handleUpdate}>
-                저장
-              </button>
-              <button
-                className="delete-btn"
-                onClick={() => setIsEditMode(false)}
-              >
-                취소
-              </button>
-            </>
-          ) : (
-            <>
-              <button className="edit-btn" onClick={() => setIsEditMode(true)}>
-                수정
-              </button>
-              <button className="delete-btn" onClick={handleDelete}>
-                삭제
-              </button>
-            </>
+            <div className="detail-actions">
+              {isEditMode ? (
+                <>
+                  <button className="edit-btn" onClick={handleUpdate}>
+                    저장
+                  </button>
+                  <button
+                    className="delete-btn"
+                    onClick={() => setIsEditMode(false)}
+                  >
+                    취소
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    className="edit-btn"
+                    onClick={() => setIsEditMode(true)}
+                  >
+                    수정
+                  </button>
+                  <button className="delete-btn" onClick={handleDelete}>
+                    삭제
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* 이미지 */}
+          {preview && (
+            <div className="detail-img-box">
+              <img src={preview} className="detail-img" alt="review" />
+
+              {isEditMode && (
+                <label className="image-edit-btn">
+                  이미지 변경
+                  <input
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    onChange={handleImageChange}
+                  />
+                </label>
+              )}
+            </div>
           )}
-        </div>
-      </div>
 
-      {/* 이미지 */}
-      {preview && (
-        <div className="detail-img-box">
-          <img src={preview} className="detail-img" alt="review" />
+          {/* 내용 */}
+          <div className="detail-content">
+            <div className="detail-title text-center">{review.placeName}</div>
 
-          {isEditMode && (
-            <label className="image-edit-btn">
-              이미지 변경
-              <input
-                type="file"
-                accept="image/*"
-                hidden
-                onChange={handleImageChange}
+            {isEditMode ? (
+              <textarea
+                className="edit-textarea"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
               />
-            </label>
-          )}
+            ) : (
+              <div className="detail-text text-center">{review.content}</div>
+            )}
+          </div>
         </div>
-      )}
-
-      {/* 내용 */}
-      <div className="detail-content">
-        <div className="detail-title text-center">{review.placeName}</div>
-
-        {isEditMode ? (
-          <textarea
-            className="edit-textarea"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
-        ) : (
-          <div className="detail-text text-center">{review.content}</div>
-        )}
-      </div>
-    </div>
+      </HeaderLayout>
+    </>
   );
 };
 

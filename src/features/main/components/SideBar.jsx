@@ -32,7 +32,7 @@ const SideBar = ({ isLoggedIn, onRequireLogin }) => {
       <div className="SideBar_content">
         <ul>
           <li onClick={() => handleClick("/calendarView")}>캘린더</li>
-          <li onClick={() => handleClick("/mypageVIEW")}>마이페이지</li>
+          <li onClick={() => handleClick("/mypageView")}>마이페이지</li>
           <li>
             {isLoggedIn && (
               <button className="logout-button" onClick={() => logout()}>

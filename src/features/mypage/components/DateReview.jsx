@@ -1,36 +1,33 @@
 import React, { useState } from "react";
-import "../css/Review.css"; // 기존 리뷰 css 재사용해도 OK
+import "../css/Review.css";
 import ReviewCard from "../components/ReviewCard";
 import { useDateReviewsQuery } from "../../../networks/hooks/useDateReview";
+import { useNavigate } from "react-router-dom";
 
-const DateReview = ({ onSelectReview }) => {
-  // 데이트 후기 전체 조회
+const DateReview = () => {
   const { data, isLoading, isError } = useDateReviewsQuery(0, 100);
-
   const [currentPage, setCurrentPage] = useState(1);
+  const nav = useNavigate();
+
   const itemsPerPage = 6;
 
   if (isLoading) return <p>로딩 중...</p>;
-  if (isError) return <p>데이트 후기를 불러오는 중 오류가 발생했습니다.</p>;
+  if (isError) return <p>데이트 후기를 불러오는 중 오류 발생</p>;
 
-  // 백엔드 page 응답 구조에 맞춰 content 꺼내기
   const reviewList = data?.data?.content || [];
-
   const totalPages = Math.ceil(reviewList.length / itemsPerPage);
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = reviewList.slice(indexOfFirstItem, indexOfLastItem);
 
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
+  const currentItems = reviewList.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
     <>
       <div className="review-list">
         {currentItems.map((item) => (
           <ReviewCard
-            key={item.dateReviewId}
+            key={item.reviewId}
             image={
               item.imageUrl
                 ? `${import.meta.env.VITE_API_URL}${item.imageUrl}`
@@ -38,21 +35,24 @@ const DateReview = ({ onSelectReview }) => {
             }
             title={item.scheduleTitle}
             location={item.content}
-            onClick={() => onSelectReview(item)}
+            onClick={() =>
+              nav(`/mypage/date-reviews/${item.reviewId}`, {
+                state: { fromTab: "coupleReview" },
+              })
+            }
           />
         ))}
       </div>
 
-      {/* 페이지네이션 */}
       {totalPages > 1 && (
         <div className="pagination">
-          {Array.from({ length: totalPages }, (_, idx) => (
+          {Array.from({ length: totalPages }, (_, i) => (
             <button
-              key={idx + 1}
-              className={currentPage === idx + 1 ? "active" : ""}
-              onClick={() => handlePageChange(idx + 1)}
+              key={i + 1}
+              className={currentPage === i + 1 ? "active" : ""}
+              onClick={() => setCurrentPage(i + 1)}
             >
-              {idx + 1}
+              {i + 1}
             </button>
           ))}
         </div>

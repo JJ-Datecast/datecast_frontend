@@ -1,5 +1,6 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
+
 import "./PlaceDetail.css";
 import { useProfileStore } from "../../store/profileStore";
 import AlterModal from "../../shared/\bcomponents/AlterModal";
@@ -20,6 +21,9 @@ import HeaderLayout from "../../shared/layout/HeaderLayout";
 const PlaceDetail = () => {
   const { placeId } = useParams();
   const nav = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from; // "mypage" | undefined
 
   // 장소 상세 조회
   const { data, isLoading, isError } = usePlaceDetailQuery(placeId);
@@ -131,7 +135,18 @@ const PlaceDetail = () => {
   return (
     <HeaderLayout>
       <div className="placeDetail">
-        <button className="placeDetailPrev_button" onClick={() => nav(-1)}>
+        <button
+          className="placeDetailPrev_button"
+          onClick={() => {
+            if (from === "mypage") {
+              nav("/mypageView", {
+                state: { activeMenu: "place" },
+              });
+            } else {
+              nav(-1);
+            }
+          }}
+        >
           이전으로
         </button>
 
