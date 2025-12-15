@@ -13,25 +13,35 @@ const CalendarEventModal = ({ event, position, onDelete, onDetail }) => {
     title,
     description,
     place,
-    startDate,
-    endDate,
-    startTime,
-    endTime,
-    hasReview, // 이미 후기 작성 여부 (있다면)
+    startDate, // YYYY-MM-DD
+    endDate, // YYYY-MM-DD
+    startTime, // HH:mm
+    endTime, // HH:mm
+    hasReview,
   } = event;
 
   /* =========================
-     후기 작성 가능 여부 (수정)
-     기준: 일정 종료 이후
+     날짜 / 시간 비교 로직
   ========================= */
   const now = new Date();
 
-  // 이벤트 종료 시각
+  // 오늘 날짜 (시간 제거)
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  // 일정 날짜 (시작일 기준)
+  const eventDate = new Date(startDate);
+  eventDate.setHours(0, 0, 0, 0);
+
+  // 일정 종료 시각
   const eventEndDateTime = new Date(`${endDate}T${endTime}:00`);
 
-  // 후기 작성 가능 여부
-  const canWriteReview =
-    now >= eventEndDateTime && !hasReview; // hasReview 없으면 제거 가능
+  // 조건
+  const isToday = today.getTime() === eventDate.getTime();
+  const isAfterEndTime = now >= eventEndDateTime;
+
+  // ✅ 후기 작성 가능 여부
+  const canWriteReview = isToday && isAfterEndTime && !hasReview;
 
   /* =========================
      날짜 표시
@@ -41,6 +51,9 @@ const CalendarEventModal = ({ event, position, onDelete, onDetail }) => {
     ? `${startDate} ${startTime} ~ ${endTime}`
     : `${startDate} ${startTime} ~ ${endDate} ${endTime}`;
 
+  /* =========================
+     후기 작성 이동
+  ========================= */
   const handleWriteReview = () => {
     if (!canWriteReview) return;
 
@@ -94,9 +107,7 @@ const CalendarEventModal = ({ event, position, onDelete, onDetail }) => {
 
         {/* 액션 버튼 */}
         <div className="CalendarEventModal_actions">
-          <CalendarEventModalBtn onClick={onDelete}>
-            삭제
-          </CalendarEventModalBtn>
+          <CalendarEventModalBtn onClick={onDelete}>삭제</CalendarEventModalBtn>
 
           <CalendarEventModalBtn type="pink" onClick={onDetail}>
             상세보기

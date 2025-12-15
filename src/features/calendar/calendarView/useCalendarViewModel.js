@@ -116,18 +116,35 @@ export const useCalendarViewModel = () => {
    * ------------------------------- */
   const handleDelete = async () => {
     if (!selectedEvent) return;
-
+  
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
-
+  
     try {
       await deleteSchedule(selectedEvent.id);
-      setEvents((prev) => prev.filter((e) => e.id !== selectedEvent.id));
+  
+      // 화면에서도 즉시 제거
+      setEvents((prev) =>
+        prev.filter((e) => e.id !== selectedEvent.id)
+      );
+  
       closeModal();
+      alert("일정이 삭제되었습니다.");
     } catch (err) {
       console.error("삭제 실패:", err);
+  
+      const status = err?.response?.status;
+  
+      // 🔥 이미 후기 등록된 일정
+      if (status === 500) {
+        alert("이미 후기가 등록된 일정은 삭제할 수 없습니다.");
+        return;
+      }
+  
+      // 그 외 에러
+      alert("일정 삭제 중 오류가 발생했습니다.");
     }
   };
-
+  
   /* -------------------------------
    *  🔥 상세 보기 → 수정 페이지 이동
    * ------------------------------- */
