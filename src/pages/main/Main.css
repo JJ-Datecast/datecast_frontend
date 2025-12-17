@@ -1,8 +1,7 @@
 .regionRow {
   display: flex;
   justify-content: center;
-  gap: 55px;
-  margin-bottom: 25px;
+  margin: 20px 0px 0px 20px;
 }
 .main_popularPlace {
   margin-left: 8px;

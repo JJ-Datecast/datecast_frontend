@@ -34,6 +34,7 @@
 }
 .header_right_right {
   cursor: pointer;
+  position: relative; /* 기준 부모 */
 }
 
 .header-profile-img {

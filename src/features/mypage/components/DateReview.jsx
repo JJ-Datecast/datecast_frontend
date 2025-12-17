@@ -56,7 +56,7 @@ const DateReview = () => {
         ))}
       </div>
 
-      {totalPages > 1 && (
+      {totalPages > 0 && (
         <div className="pagination">
           {Array.from({ length: totalPages }, (_, i) => (
             <button

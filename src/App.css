@@ -1,13 +1,33 @@
-body{
+/* ====== Reset & Base ====== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
   background-color: #f5f5f5;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
 }
 
+/* ====== Root Layout ====== */
 #root {
-  width: 780px;
+  width: 100%;
+  max-width: 780px; /* PC 최대 폭 */
+  min-width: 720px; /* 기존 디자인 유지 */
   margin: 0 auto;
+  background-color: #ffffff;
+
   text-align: center;
-  background-color: white;
-  
 }
-
-
+/* ====== Mobile (iPhone 15 포함) ====== */
+@media (max-width: 430px) {
+  #root {
+    min-width: 100%; /* 고정 폭 제거 */
+    max-width: 100%;
+    width: 100%;
+    padding: 0 16px; /* 모바일 좌우 여백 */
+  }
+}

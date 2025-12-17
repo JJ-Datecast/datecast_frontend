@@ -58,15 +58,10 @@ const HeaderLayout = ({ children }) => {
     <div className="HeaderLayout">
       <Header
         isLoggedIn={isLoggedIn}
+        showSidebar={showSidebar}
         onSidebarClick={() => setShowSidebar(!showSidebar)}
+        onRequireLogin={() => setShowModal(true)}
       />
-
-      {showSidebar && (
-        <SideBar
-          isLoggedIn={isLoggedIn}
-          onRequireLogin={() => setShowModal(true)}
-        />
-      )}
 
       {showModal && (
         <AlterModal

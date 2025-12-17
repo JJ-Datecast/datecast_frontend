@@ -54,7 +54,7 @@ const SavedPlace = () => {
       </div>
 
       {/* 페이지네이션 */}
-      {totalPages > 1 && (
+      {totalPages > 0 && (
         <div className="pagination">
           {Array.from({ length: totalPages }, (_, idx) => (
             <button

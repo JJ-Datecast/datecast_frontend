@@ -32,32 +32,30 @@ const Main = () => {
 
   return (
     <>
-      <div className="main">
-        <div className="main_region">
-          {region.map((row, rowIndex) => (
-            <div key={rowIndex} className="regionRow">
-              {row.map((region) => (
-                <RegionCard
-                  key={region.name}
-                  {...region}
-                  onClick={() => handleRegionClick(region.name)}
-                />
-              ))}
-            </div>
-          ))}
-        </div>
-        <div className="main_banner">
-          <PromoBannerList />
-        </div>
-        <div className="main_popularPlace">
-          <PopularPlacesSection />
-          <p className="main_allViewBtn">
-            <AllViewButton />
-          </p>
-        </div>
-        <div className="main_foot">
-          <MainFooter />
-        </div>
+      <div className="main_region">
+        {region.map((row, rowIndex) => (
+          <div key={rowIndex} className="regionRow">
+            {row.map((region) => (
+              <RegionCard
+                key={region.name}
+                {...region}
+                onClick={() => handleRegionClick(region.name)}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
+      <div className="main_banner">
+        <PromoBannerList />
+      </div>
+      <div className="main_popularPlace">
+        <PopularPlacesSection />
+        <p className="main_allViewBtn">
+          <AllViewButton />
+        </p>
+      </div>
+      <div className="main_foot">
+        <MainFooter />
       </div>
     </>
   );
