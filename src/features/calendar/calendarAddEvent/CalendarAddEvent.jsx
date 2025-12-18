@@ -59,6 +59,7 @@ const CalendarAddEvent = () => {
           const result = await handleSave();
 
           if (result !== false) {
+            alert("저장되었습니다."); // ✅ 추가
             setOpenModal(true);
             setTimeout(() => nav("/calendarView"), 1200);
           }

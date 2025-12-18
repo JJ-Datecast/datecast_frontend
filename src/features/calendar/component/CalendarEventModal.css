@@ -1,56 +1,84 @@
+/* ====== Modal Wrapper ====== */
 .CalendarEventModal {
-  position: fixed;
+  position: absolute;
+
+  /* ✅ 일정 바로 아래 */
+  top: calc(100% + 8px);
+  left: 0;
+
   background-color: #fff;
   border: 1px solid #ccc;
+  border-radius: 12px;
 
-  box-shadow: 0 4px 8px rgba(177, 177, 177, 0.1);
-  width: 400px;
-  max-width: 90%;
-  padding: 0 20px 20px 20px 20px;
-  display: flex;
-  flex-direction: column;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+
+  width: 330px;
+  max-width: 90vw;
+
+  padding: 16px;
+
+  z-index: 100;
 }
+
+/* ====== Title ====== */
 .CalendarEventModal_title {
-  border-bottom: 1px solid #cecece;
   display: flex;
   align-items: center;
   gap: 10px;
+
+  padding-bottom: 10px;
+  border-bottom: 1px solid #cecece;
 }
+
 .CalendarEventModal_title h3 {
-  left: auto;
+  margin: 0;
+  font-size: clamp(16px, 2vw, 18px);
+  font-weight: 600;
 }
+
+/* ====== Title Icon ====== */
+.CalendarEventModal_title_img {
+  width: 24px;
+  height: 24px;
+  margin-left: 4px;
+}
+
+/* ====== Content ====== */
 .CalendarEventModal_content {
   display: flex;
   flex-direction: column;
-  margin-top: 10px;
-  gap: 10px;
+  gap: 12px;
+  margin-top: 12px;
 }
+
 .CalendarEventModal_content_item {
   display: flex;
-  gap: 15px;
+  gap: 12px;
+  align-items: center;
 }
+
+/* label */
 .CalendarEventModal_content_item label {
-  margin-left: 20px;
+  min-width: 64px;
   font-weight: 400;
   color: #8a8a8a;
 }
+
+/* value text */
 .CalendarEventModal_content_item p {
+  margin: 0;
+  flex: 1; /* 👈 부모 기준 */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   text-align: left;
-  width: 320px;
 }
 
+/* ====== Actions ====== */
 .CalendarEventModal_actions {
   display: flex;
   justify-content: center;
-  gap: 13px;
-  margin-top: 20px;
-  margin-bottom: 13px;
-}
-.CalendarEventModal_title_img {
-  width: 28px;
-  height: 28px;
-  margin-left: 10px;
+  gap: 12px;
+
+  margin-top: clamp(16px, 3vw, 24px);
 }

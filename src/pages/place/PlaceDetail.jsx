@@ -167,6 +167,9 @@ const PlaceDetail = () => {
               </div>
 
               <div className="placeDetail-button-space">
+                <button onClick={() => nav(`/places/${placeId}/reviews`)}>
+                  후기보기
+                </button>
                 <button
                   className="placeDetail-review-button"
                   onClick={handleReviewClick}

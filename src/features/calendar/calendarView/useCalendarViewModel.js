@@ -154,6 +154,7 @@ export const useCalendarViewModel = () => {
     try {
       const res = await getScheduleById(selectedEvent.id); // 🔥 서버에서 최신 데이터 GET
       const detail = res.data;
+      
   
       nav("/calendarAddEvent", {
         state: {

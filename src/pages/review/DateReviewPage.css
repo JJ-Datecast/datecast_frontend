@@ -6,12 +6,21 @@
 }
 
 .date-review-title {
-  font-size: 22px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 400;
   text-align: center;
-  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-self: center;
+  color: #666;
 }
-
+.date-info-title {
+  font-size: 22px;
+  font-weight: 600;
+  text-align: center;
+  color: #333;
+}
 /* 공통 섹션 */
 .date-review-section {
   margin-bottom: 26px;
@@ -102,4 +111,82 @@
   font-size: 13px;
   color: #888;
   text-align: center;
+}
+.emotion-selector {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.emotion-btn {
+  flex: 1;
+  padding: 12px 6px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.emotion-btn.active {
+  border-color: #ff6b81;
+  background: #fff0f3;
+}
+
+.emotion-emoji {
+  font-size: 24px;
+}
+
+.emotion-label {
+  font-size: 13px;
+}
+@media screen and (max-width: 900px) {
+  .date-review-page {
+    max-width: 560px; /* 📱보다 살짝 넓게 */
+    padding: 32px 24px;
+  }
+
+  .date-review-title {
+    font-size: 19px;
+    gap: 12px;
+  }
+
+  .date-info-title {
+    font-size: 24px;
+  }
+
+  /* 감정 버튼: 줄바꿈 허용 + 가운데 정렬 */
+  .emotion-selector {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .emotion-btn {
+    flex: 0 0 calc(33.333% - 8px); /* 한 줄에 3개 */
+    padding: 14px 8px;
+  }
+
+  .emotion-emoji {
+    font-size: 26px;
+  }
+
+  .emotion-label {
+    font-size: 14px;
+  }
+
+  /* textarea 살짝 키우기 */
+  .review-textarea {
+    min-height: 140px;
+    font-size: 15px;
+  }
+
+  /* 제출 버튼 더 시원하게 */
+  .submit-btn {
+    font-size: 17px;
+    padding: 16px 0;
+  }
 }

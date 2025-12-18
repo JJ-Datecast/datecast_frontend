@@ -73,3 +73,23 @@ export const getBookmarkedPlaces = async () => {
 };
 
 
+/* -----------------------
+   장소 검색 (상단 검색)
+   GET /api/search/places?keyword=
+------------------------ */
+export const searchPlaces = async (keyword) => {
+  if (!keyword) return [];
+
+  console.log("🔍 searchPlaces 호출됨, keyword =", keyword);
+
+  const res = await apiClient.get("/api/search/places", {
+    params: {
+      keyword: keyword.trim(), // ⭐ 공백 제거
+    },
+  });
+
+  console.log("✅ searchPlaces 응답 데이터:", res.data);
+
+  // Swagger 기준: 배열 그대로 반환
+  return Array.isArray(res.data) ? res.data : [];
+};

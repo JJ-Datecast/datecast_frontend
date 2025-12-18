@@ -50,9 +50,6 @@ const Main = () => {
       </div>
       <div className="main_popularPlace">
         <PopularPlacesSection />
-        <p className="main_allViewBtn">
-          <AllViewButton />
-        </p>
       </div>
       <div className="main_foot">
         <MainFooter />

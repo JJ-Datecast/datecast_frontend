@@ -4,8 +4,11 @@ import apiClient from "../client/apiClient";
 /* =========================================================
    1) 장소 후기 리스트 조회
    ========================================================= */
-   export const getPlaceReviews = (placeId) => {
-    return apiClient.get(`/api/place-reviews?placeId=${placeId}`);
+   export const getPlaceReviews = async (placeId) => {
+    const res = await apiClient.get("/api/place-reviews", {
+      params: { placeId },
+    });
+    return res.data; // ⭐ 핵심
   };
 /* =========================================================
    2) 장소 후기 작성 (최종 리뷰 저장)

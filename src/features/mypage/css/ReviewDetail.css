@@ -117,3 +117,25 @@
     font-size: 18px;
   }
 }
+.detail-rating {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin: 10px 0;
+}
+
+.detail-star {
+  font-size: 22px;
+  color: #ddd;
+}
+
+.detail-star.active {
+  color: #ffc107;
+}
+
+.rating-score {
+  margin-left: 8px;
+  font-size: 14px;
+  color: #666;
+}

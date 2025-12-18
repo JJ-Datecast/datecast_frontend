@@ -105,3 +105,37 @@
   justify-content: flex-end;
   margin-top: 25px;
 }
+.writingReview-rating {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.rating-label {
+  font-weight: 600;
+}
+
+.rating-stars {
+  display: flex;
+  cursor: pointer;
+}
+
+.star {
+  font-size: 24px;
+  color: #ddd;
+  transition: color 0.2s;
+}
+
+.star.active {
+  color: #ffc107; /* 노란 별 */
+}
+
+.star:hover {
+  color: #ffb300;
+}
+
+.rating-score {
+  font-size: 14px;
+  color: #666;
+}

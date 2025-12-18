@@ -1,0 +1,51 @@
+/* PlaceReviewPage.css */
+
+.placeReviewPage {
+  padding: 16px;
+}
+
+.placeReviewPage-back {
+  margin-bottom: 12px;
+}
+
+.placeReviewPage-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.placeReviewPage-empty {
+  text-align: center;
+  color: #888;
+}
+
+.placeReviewPage-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.placeReviewPage-item {
+  padding: 12px;
+  border-radius: 8px;
+  background: #f7f7f7;
+}
+
+.placeReviewPage-item-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.placeReviewPage-nickname {
+  font-weight: 600;
+}
+
+.placeReviewPage-date {
+  font-size: 12px;
+  color: #999;
+}
+
+.placeReviewPage-content {
+  line-height: 1.5;
+}

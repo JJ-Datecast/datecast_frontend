@@ -1,0 +1,83 @@
+/* =========================
+   검색 페이지 전체
+========================= */
+.search-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 20px;
+  box-sizing: border-box;
+}
+
+/* =========================
+     제목
+  ========================= */
+.search-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* =========================
+     상태 메시지
+  ========================= */
+.search-loading,
+.search-error,
+.search-empty {
+  text-align: center;
+  font-size: 16px;
+  color: #777;
+  margin-top: 60px;
+}
+
+/* =========================
+     장소 리스트
+  ========================= */
+.place-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 기본 4개 */
+  gap: 20px;
+  margin-top: 24px;
+}
+
+/* =========================
+     PlaceCard 기본 보정
+     (카드 컴포넌트가 있다면
+      자연스럽게 맞춰줌)
+  ========================= */
+.place-list > * {
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.place-list > *:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* =========================
+     반응형
+  ========================= */
+@media (max-width: 768px) {
+  .search-page {
+    padding: 20px 16px;
+  }
+
+  .search-title {
+    font-size: 20px;
+  }
+
+  .place-list {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-title {
+    font-size: 18px;
+  }
+
+  .place-list {
+    grid-template-columns: 1fr;
+  }
+}

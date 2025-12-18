@@ -1,8 +1,14 @@
+/* ===== 기본 레이아웃 ===== */
 .MyPageLayout {
   display: flex;
   align-items: flex-start;
+  max-width: 1200px; /* 👉 루트 폭 기준 */
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
+/* ===== 왼쪽 사이드바 ===== */
 .MyPageLayout_left {
   flex-shrink: 0;
 }
@@ -13,13 +19,74 @@
   box-sizing: border-box;
 }
 
+/* ===== 오른쪽 콘텐츠 ===== */
 .MyPageLayout_right {
-  flex: 1; /*남는 공간 다 차지 */
-  padding: 0px 20px;
+  flex: 1;
+  padding: 0 20px;
+  box-sizing: border-box;
 }
 
 .MyPageLayout-title {
   text-align: left;
   font-size: 25px;
-  margin: 15px 0px 15px 0px;
+  margin: 15px 0;
+}
+
+/* ================================================= */
+/* ================= 반응형 ========================= */
+/* ================================================= */
+
+/* 🔹 16인치 노트북 (루트랑 맞춤) */
+@media screen and (max-width: 1600px) {
+  .MyPageLayout {
+    max-width: 1000px;
+  }
+
+  .mypage-sidebar {
+    width: 190px;
+    padding: 25px 16px;
+  }
+
+  .MyPageLayout_right {
+    padding: 0 16px;
+  }
+}
+
+/* 🔹 태블릿 */
+@media screen and (max-width: 900px) {
+  .MyPageLayout {
+    max-width: 100%;
+    padding: 0 16px;
+  }
+
+  .mypage-sidebar {
+    width: 170px;
+    padding: 20px 14px;
+  }
+
+  .MyPageLayout-title {
+    font-size: 22px;
+  }
+}
+
+/* 🔹 모바일 */
+@media screen and (max-width: 600px) {
+  .MyPageLayout {
+    flex-direction: column; /* ✅ 세로 스택 */
+    padding: 0 12px;
+  }
+
+  .mypage-sidebar {
+    width: 100%;
+    padding: 16px 12px;
+    margin-bottom: 16px;
+  }
+
+  .MyPageLayout_right {
+    padding: 0;
+  }
+
+  .MyPageLayout-title {
+    font-size: 20px;
+  }
 }

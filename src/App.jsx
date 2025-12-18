@@ -5,6 +5,7 @@ import Login from "./pages/auth/Login";
 import SignUp from "./pages/auth/SignUp";
 import CalendarAddEvent from "./features/\bcalendar/calendarAddEvent/CalendarAddEvent";
 import CalendarView from "./features/\bcalendar/calendarView/CalendarView";
+import PlaceReviewPage from "./pages/review/PlaceReviewPage";
 
 import MainView from "./views/MainView";
 
@@ -21,6 +22,7 @@ import ReviewWaiting from "./features/\bmypage/components/ReviewWaiting";
 import DateReviewPage from "./pages/review/DateReviewPage";
 import DateReviewDetail from "./features/\bmypage/components/DateReviewDetail";
 import ReviewDetail from "./features/\bmypage/components/ReviewDetail";
+import SearchPage from "./pages/search/SearchPage";
 
 function App() {
   // localStorage.clear();
@@ -31,15 +33,12 @@ function App() {
         <Route path="/oauth/callback" element={<AuthCallback />} />
         <Route path="/places/:region/:district" element={<PlaceList />} />
         <Route path="/place/:placeId" element={<PlaceDetail />} />
-
         <Route path="/login" element={<Login />} />
         <Route path="/signUp" element={<SignUp />} />
         <Route path="/mainView" element={<MainView />} />
-
         <Route path="/calendarAddEvent" element={<CalendarAddEvent />} />
         <Route path="/calendarView" element={<CalendarView />} />
         <Route path="/mypageView" element={<MyPageView />} />
-
         <Route path="/district/:region" element={<DistrictView />} />
         <Route path="/accept-invite" element={<AcceptInvitePage />} />
         <Route path="/savedPlace" element={<SavedPlace />} />
@@ -55,7 +54,9 @@ function App() {
           element={<WritingReview />}
         />
         <Route path="/places/:placeId" element={<PlaceDetail />} />
+        <Route path="/search" element={<SearchPage />} />
 
+        <Route path="/places/:placeId/reviews" element={<PlaceReviewPage />} />
         <Route path="*" element={<Notfound />} />
       </Routes>
     </>

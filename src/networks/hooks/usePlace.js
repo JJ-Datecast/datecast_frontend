@@ -8,6 +8,7 @@ import {
   saveBookmarkedPlace,
   getBookmarkedPlaces,
   deleteBookmarkedPlace,
+  searchPlaces, // ⭐ 추가
 } from "../apis/placeApi";
 import { useProfileStore } from "../../store/profileStore";
 
@@ -62,3 +63,14 @@ export const useDeletePlaceMutation = () =>
     });
   };
   
+/* -----------------------
+   장소 검색 (상단 검색)
+------------------------ */
+export const useSearchPlacesQuery = (keyword) =>
+  useQuery({
+    queryKey: ["searchPlaces", keyword],
+    queryFn: () => searchPlaces(keyword),
+    enabled: !!keyword && keyword.trim().length > 0, // ⭐ 더 안전
+    staleTime: 1000 * 60 * 3,
+    retry: 1, // ⭐ 에러 시 1번만 재시도
+  });

@@ -1,17 +1,21 @@
-/* 전체 레이아웃 */
+/* =========================
+   전체 레이아웃
+========================= */
 .review-detail {
   box-sizing: border-box;
   padding: 20px;
+  background: #fafafa;
+  min-height: 100vh;
 }
 
 /* =========================
-     상단 헤더
-  ========================= */
+   상단 헤더
+========================= */
 .detail-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 /* 뒤로가기 */
@@ -20,14 +24,14 @@
   background: transparent;
   font-size: 22px;
   cursor: pointer;
-  color: #333;
+  color: #555;
 }
 
 .back-btn:hover {
   color: #000;
 }
 
-/* 수정 / 삭제 버튼 영역 */
+/* 수정 / 삭제 */
 .detail-actions {
   display: flex;
   gap: 8px;
@@ -36,7 +40,7 @@
 .edit-btn {
   padding: 6px 14px;
   font-size: 14px;
-  border-radius: 8px;
+  border-radius: 999px;
   border: 1px solid #ddd;
   background: #fff;
   cursor: pointer;
@@ -50,7 +54,7 @@
 .delete-btn {
   padding: 6px 14px;
   font-size: 14px;
-  border-radius: 8px;
+  border-radius: 999px;
   border: none;
   background: #ff6b6b;
   color: #fff;
@@ -62,43 +66,48 @@
 }
 
 /* =========================
-     이미지 영역
-  ========================= */
+   이미지 카드
+========================= */
 .detail-img-box {
   position: relative;
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .detail-img {
   width: 100%;
-  max-width: 500px;
-  height: 280px;
+  max-width: 520px;
+  height: 300px;
   object-fit: cover;
-  border-radius: 14px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  border-radius: 20px;
+  background: #eee;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
 }
 
 /* 이미지 변경 버튼 */
 .image-edit-btn {
   position: absolute;
-  bottom: 12px;
-  right: 12px;
-  background: rgba(0, 0, 0, 0.6);
+  bottom: 14px;
+  right: 14px;
+  background: rgba(0, 0, 0, 0.55);
   color: #fff;
-  padding: 6px 10px;
+  padding: 6px 12px;
   font-size: 12px;
-  border-radius: 6px;
+  border-radius: 999px;
   cursor: pointer;
 }
 
 /* =========================
-     내용 영역
-  ========================= */
+   내용 카드
+========================= */
 .detail-content {
-  max-width: 500px;
+  max-width: 520px;
   margin: 0 auto;
+  padding: 24px 20px;
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   text-align: center;
 }
 
@@ -106,10 +115,68 @@
 .detail-title {
   font-size: 22px;
   font-weight: 700;
-  margin-bottom: 14px;
+  margin-bottom: 6px;
 }
 
-/* 후기 텍스트 */
+/* =========================
+   감정 표시
+========================= */
+.emotion-view {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.emotion-emoji {
+  font-size: 26px;
+}
+
+.emotion-label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #ff6b81;
+}
+
+/* 감정 선택 */
+.emotion-selector {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.emotion-btn {
+  border: 1px solid #eee;
+  background: #fff;
+  border-radius: 16px;
+  padding: 8px 12px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 56px;
+}
+
+.emotion-btn.active {
+  border-color: #ff6b81;
+  background: #fff0f3;
+}
+
+.emotion-btn .emotion-emoji {
+  font-size: 22px;
+}
+
+.emotion-btn .emotion-label {
+  font-size: 12px;
+}
+
+/* =========================
+   후기 텍스트
+========================= */
 .detail-text {
   font-size: 16px;
   line-height: 1.7;
@@ -121,42 +188,31 @@
 .edit-textarea {
   width: 100%;
   min-height: 140px;
-  padding: 12px;
+  padding: 14px;
   font-size: 15px;
-  border-radius: 10px;
+  border-radius: 14px;
   border: 1px solid #ddd;
   resize: none;
   outline: none;
 }
 
 /* =========================
-     별점
-  ========================= */
-.star-rating {
-  margin-bottom: 12px;
-}
-
-.star {
-  font-size: 26px;
-  color: #ddd;
-  cursor: pointer;
-}
-
-.star.active {
-  color: #ff9f43;
-}
-
-/* =========================
-     공통
-  ========================= */
+   공통
+========================= */
 .text-center {
   text-align: center;
 }
 
-/* 모바일 대응 */
+/* =========================
+   모바일 대응
+========================= */
 @media (max-width: 480px) {
   .detail-img {
-    height: 220px;
+    height: 240px;
+  }
+
+  .detail-content {
+    padding: 20px 16px;
   }
 
   .detail-title {

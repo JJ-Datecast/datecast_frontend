@@ -80,6 +80,21 @@ const WritingReview = () => {
               </p>
             </div>
           </div>
+          <div className="writingReview-rating">
+            <span className="rating-label">별점</span>
+            <div className="rating-stars">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <span
+                  key={star}
+                  className={star <= rating ? "star active" : "star"}
+                  onClick={() => setRating(star)}
+                >
+                  ★
+                </span>
+              ))}
+            </div>
+            <span className="rating-score">{rating} / 5</span>
+          </div>
 
           <textarea
             className="writingReview-input"

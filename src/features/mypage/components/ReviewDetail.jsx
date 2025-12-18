@@ -3,13 +3,13 @@ import "../css/ReviewDetail.css";
 import {
   useDeleteReviewMutation,
   useUpdateReviewMutation,
-  usePlaceReviewDetailQuery, // ⭐ 상세 조회 훅
+  usePlaceReviewDetailQuery,
 } from "../../../networks/hooks/useReview";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import HeaderLayout from "../../../shared/layout/HeaderLayout";
 
 const ReviewDetail = () => {
-  const { id } = useParams(); // ⭐ URL 기반
+  const { id } = useParams();
   const nav = useNavigate();
   const location = useLocation();
 
@@ -29,6 +29,7 @@ const ReviewDetail = () => {
   ========================= */
   const [isEditMode, setIsEditMode] = useState(false);
   const [content, setContent] = useState("");
+  const [rating, setRating] = useState(0); // ⭐ 추가
   const [imageFile, setImageFile] = useState(null);
   const [preview, setPreview] = useState(null);
 
@@ -39,6 +40,7 @@ const ReviewDetail = () => {
     if (!review) return;
 
     setContent(review.content ?? "");
+    setRating(review.rating ?? 0); // ⭐ 별점 동기화
     setImageFile(null);
 
     setPreview(
@@ -96,7 +98,7 @@ const ReviewDetail = () => {
 
     const dto = {
       placeId: review.placeId,
-      rating: review.rating,
+      rating, // ⭐ 수정된 별점 전송
       content,
     };
 
@@ -126,87 +128,101 @@ const ReviewDetail = () => {
   };
 
   return (
-    <>
-      <HeaderLayout>
-        <div className="review-detail">
-          {/* 상단 */}
-          <div className="detail-header">
-            <button
-              className="back-btn"
-              onClick={() =>
-                nav("/mypageView", {
-                  state: { activeMenu: fromTab },
-                })
-              }
-            >
-              ←
-            </button>
+    <HeaderLayout>
+      <div className="review-detail">
+        {/* 상단 */}
+        <div className="detail-header">
+          <button
+            className="back-btn"
+            onClick={() =>
+              nav("/mypageView", {
+                state: { activeMenu: fromTab },
+              })
+            }
+          >
+            ←
+          </button>
 
-            <div className="detail-actions">
-              {isEditMode ? (
-                <>
-                  <button className="edit-btn" onClick={handleUpdate}>
-                    저장
-                  </button>
-                  <button
-                    className="delete-btn"
-                    onClick={() => setIsEditMode(false)}
-                  >
-                    취소
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    className="edit-btn"
-                    onClick={() => setIsEditMode(true)}
-                  >
-                    수정
-                  </button>
-                  <button className="delete-btn" onClick={handleDelete}>
-                    삭제
-                  </button>
-                </>
-              )}
-            </div>
-          </div>
-
-          {/* 이미지 */}
-          {preview && (
-            <div className="detail-img-box">
-              <img src={preview} className="detail-img" alt="review" />
-
-              {isEditMode && (
-                <label className="image-edit-btn">
-                  이미지 변경
-                  <input
-                    type="file"
-                    accept="image/*"
-                    hidden
-                    onChange={handleImageChange}
-                  />
-                </label>
-              )}
-            </div>
-          )}
-
-          {/* 내용 */}
-          <div className="detail-content">
-            <div className="detail-title text-center">{review.placeName}</div>
-
+          <div className="detail-actions">
             {isEditMode ? (
-              <textarea
-                className="edit-textarea"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-              />
+              <>
+                <button className="edit-btn" onClick={handleUpdate}>
+                  저장
+                </button>
+                <button
+                  className="delete-btn"
+                  onClick={() => setIsEditMode(false)}
+                >
+                  취소
+                </button>
+              </>
             ) : (
-              <div className="detail-text text-center">{review.content}</div>
+              <>
+                <button
+                  className="edit-btn"
+                  onClick={() => setIsEditMode(true)}
+                >
+                  수정
+                </button>
+                <button className="delete-btn" onClick={handleDelete}>
+                  삭제
+                </button>
+              </>
             )}
           </div>
         </div>
-      </HeaderLayout>
-    </>
+
+        {/* 이미지 */}
+        {preview && (
+          <div className="detail-img-box">
+            <img src={preview} className="detail-img" alt="review" />
+
+            {isEditMode && (
+              <label className="image-edit-btn">
+                이미지 변경
+                <input
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  onChange={handleImageChange}
+                />
+              </label>
+            )}
+          </div>
+        )}
+
+        {/* 내용 */}
+        <div className="detail-content">
+          <div className="detail-title text-center">{review.placeName}</div>
+
+          {/* ⭐ 별점 영역 (조회 + 수정 공통) */}
+          <div className="detail-rating">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <span
+                key={star}
+                className={
+                  star <= rating ? "detail-star active" : "detail-star"
+                }
+                onClick={() => isEditMode && setRating(star)}
+              >
+                ★
+              </span>
+            ))}
+            <span className="rating-score">{rating} / 5</span>
+          </div>
+
+          {isEditMode ? (
+            <textarea
+              className="edit-textarea"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            />
+          ) : (
+            <div className="detail-text text-center">{review.content}</div>
+          )}
+        </div>
+      </div>
+    </HeaderLayout>
   );
 };
 

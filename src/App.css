@@ -28,6 +28,5 @@ body {
     min-width: 100%; /* 고정 폭 제거 */
     max-width: 100%;
     width: 100%;
-    padding: 0 16px; /* 모바일 좌우 여백 */
   }
 }

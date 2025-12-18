@@ -4,11 +4,19 @@ import "./DateReviewPage.css";
 import HeaderLayout from "../../shared/layout/HeaderLayout";
 import { useCreateDateReviewMutation } from "../../networks/hooks/useDateReview";
 
+const EMOTIONS = [
+  { key: "HAPPY", label: "행복", emoji: "😊", rating: 5 },
+  { key: "EXCITED", label: "설렘", emoji: "💖", rating: 4 },
+  { key: "SOSO", label: "보통", emoji: "😐", rating: 3 },
+  { key: "BAD", label: "별로", emoji: "😕", rating: 2 },
+  { key: "ANGRY", label: "화남", emoji: "😡", rating: 1 },
+];
+
 const DateReviewPage = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
 
-  const [rating, setRating] = useState(0);
+  const [emotion, setEmotion] = useState(null); // ⭐ 변경
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
 
@@ -36,8 +44,8 @@ const DateReviewPage = () => {
       return;
     }
 
-    if (!rating) {
-      alert("별점을 선택해 주세요.");
+    if (!emotion) {
+      alert("데이트 감정을 선택해 주세요.");
       return;
     }
 
@@ -46,8 +54,15 @@ const DateReviewPage = () => {
       return;
     }
 
+    const selectedEmotion = EMOTIONS.find((item) => item.key === emotion);
+
+    if (!selectedEmotion) {
+      alert("감정 선택 오류가 발생했습니다.");
+      return;
+    }
+
     const dto = {
-      rating,
+      rating: selectedEmotion.rating, // ⭐ 여기!!
       content,
       scheduleId,
     };
@@ -77,28 +92,32 @@ const DateReviewPage = () => {
   return (
     <HeaderLayout>
       <div className="date-review-page">
-        <h2 className="date-review-title">{displayDate} {scheduleTitle}</h2>
-
-        <div className="date-info-box">
-          <p className="date-info-title">{title}</p>
-          {place && <p className="date-info-place">📍 {place}</p>}
+        <div className="date-review-title">
+          <p className="date-info-title">❤️ {title}</p>
+          <p>{displayDate}</p>
         </div>
 
+        {/* ⭐ 감정 선택 */}
         <div className="date-review-section">
-          <label className="section-label">데이트 별점</label>
-          <div className="star-rating">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <span
-                key={star}
-                className={`star ${rating >= star ? "active" : ""}`}
-                onClick={() => setRating(star)}
+          <label className="section-label">데이트 감정</label>
+          <div className="emotion-selector">
+            {EMOTIONS.map((item) => (
+              <button
+                key={item.key}
+                type="button"
+                className={`emotion-btn ${
+                  emotion === item.key ? "active" : ""
+                }`}
+                onClick={() => setEmotion(item.key)}
               >
-                ★
-              </span>
+                <span className="emotion-emoji">{item.emoji}</span>
+                <span className="emotion-label">{item.label}</span>
+              </button>
             ))}
           </div>
         </div>
 
+        {/* 후기 */}
         <div className="date-review-section">
           <label className="section-label">후기 작성</label>
           <textarea
@@ -109,6 +128,7 @@ const DateReviewPage = () => {
           />
         </div>
 
+        {/* 이미지 */}
         <div className="date-review-section">
           <label className="section-label">이미지 등록</label>
           <label className="image-upload-box">

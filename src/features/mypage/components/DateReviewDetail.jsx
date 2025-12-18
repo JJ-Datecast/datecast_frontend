@@ -8,6 +8,17 @@ import {
 } from "../../../networks/hooks/useDateReview";
 import HeaderLayout from "../../../shared/layout/HeaderLayout";
 
+/* =========================
+   감정 ↔ rating 매핑
+========================= */
+const EMOTIONS = [
+  { key: "HAPPY", label: "행복", emoji: "😊", rating: 5 },
+  { key: "EXCITED", label: "설렘", emoji: "💖", rating: 4 },
+  { key: "SOSO", label: "보통", emoji: "😐", rating: 3 },
+  { key: "BAD", label: "별로", emoji: "😕", rating: 2 },
+  { key: "ANGRY", label: "화남", emoji: "😡", rating: 1 },
+];
+
 const DateReviewDetail = () => {
   const { id } = useParams();
   const nav = useNavigate();
@@ -30,6 +41,9 @@ const DateReviewDetail = () => {
   const [imageFile, setImageFile] = useState(null);
   const [preview, setPreview] = useState(null);
 
+  /* =========================
+     서버 → 로컬 동기화
+  ========================= */
   useEffect(() => {
     if (!review) return;
 
@@ -51,6 +65,11 @@ const DateReviewDetail = () => {
   if (!review) return <p>후기를 찾을 수 없습니다.</p>;
 
   /* =========================
+     현재 감정 계산
+  ========================= */
+  const currentEmotion = EMOTIONS.find((item) => item.rating === rating);
+
+  /* =========================
      삭제
   ========================= */
   const handleDelete = () => {
@@ -59,7 +78,7 @@ const DateReviewDetail = () => {
     deleteDateReviewMutation.mutate(id, {
       onSuccess: () => {
         alert("데이트 후기가 삭제되었습니다.");
-        nav("/mypage", {
+        nav("/mypageView", {
           state: { activeMenu: fromTab },
         });
       },
@@ -89,7 +108,10 @@ const DateReviewDetail = () => {
     updateDateReviewMutation.mutate(
       {
         dateReviewId: id,
-        payload: { rating, content },
+        payload: {
+          rating,
+          content,
+        },
         image: imageFile || null,
       },
       {
@@ -101,9 +123,15 @@ const DateReviewDetail = () => {
     );
   };
 
+  /* 날짜 포맷 */
+  const formattedDate = review.createdAt
+    ? new Date(review.createdAt).toLocaleDateString("ko-KR")
+    : "";
+
   return (
     <HeaderLayout>
       <div className="review-detail">
+        {/* 상단 */}
         <div className="detail-header">
           <button
             className="back-btn"
@@ -145,6 +173,7 @@ const DateReviewDetail = () => {
           </div>
         </div>
 
+        {/* 이미지 */}
         {preview && (
           <div className="detail-img-box">
             <img src={preview} className="detail-img" alt="date-review" />
@@ -163,19 +192,40 @@ const DateReviewDetail = () => {
           </div>
         )}
 
+        {/* 내용 */}
         <div className="detail-content">
           <div className="detail-title text-center">{review.scheduleTitle}</div>
 
+          {/* ⭐ 작성자 + 날짜 */}
+          <div className="review-meta text-center">
+            <span className="review-author">{review.authorName}</span>
+            <span className="review-dot">·</span>
+            <span className="review-date">{formattedDate}</span>
+          </div>
+
+          {/* ⭐ 조회 모드 감정 */}
+          {!isEditMode && currentEmotion && (
+            <div className="emotion-view text-center">
+              <span className="emotion-emoji">{currentEmotion.emoji}</span>
+              <span className="emotion-label">{currentEmotion.label}</span>
+            </div>
+          )}
+
+          {/* ⭐ 수정 모드 감정 선택 */}
           {isEditMode && (
-            <div className="star-rating text-center">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <span
-                  key={star}
-                  className={`star ${rating >= star ? "active" : ""}`}
-                  onClick={() => setRating(star)}
+            <div className="emotion-selector text-center">
+              {EMOTIONS.map((item) => (
+                <button
+                  key={item.key}
+                  type="button"
+                  className={`emotion-btn ${
+                    rating === item.rating ? "active" : ""
+                  }`}
+                  onClick={() => setRating(item.rating)}
                 >
-                  ★
-                </span>
+                  <span className="emotion-emoji">{item.emoji}</span>
+                  <span className="emotion-label">{item.label}</span>
+                </button>
               ))}
             </div>
           )}
