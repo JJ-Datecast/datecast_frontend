@@ -128,6 +128,13 @@ const PlaceDetail = () => {
     }
     nav(`/places/${placeId}/review-waiting`);
   };
+  const handleViewReview = () => {
+    if (!isLoggedIn) {
+      setShowModal(true);
+      return;
+    }
+    nav(`/places/${placeId}/reviews`);
+  };
 
   if (isLoading || bookmarkedQuery.isLoading) return <p>로딩중...</p>;
   if (isError) return <p>에러 발생!</p>;
@@ -145,7 +152,7 @@ const PlaceDetail = () => {
             } else if (from === "reviewWrite") {
               nav(`/`);
             } else {
-              nav(-1); // 그 외 일반 케이스
+              nav(`/`); // 그 외 일반 케이스
             }
           }}
         >
@@ -167,7 +174,10 @@ const PlaceDetail = () => {
               </div>
 
               <div className="placeDetail-button-space">
-                <button onClick={() => nav(`/places/${placeId}/reviews`)}>
+                <button
+                  onClick={handleViewReview}
+                  className="placeDetail-view-button"
+                >
                   후기보기
                 </button>
                 <button

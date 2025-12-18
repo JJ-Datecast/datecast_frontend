@@ -52,7 +52,10 @@ const Review = () => {
             location={item.content}
             onClick={() =>
               nav(`/mypage/placeReviews/${item.reviewId}`, {
-                state: { fromTab: "review" },
+                state: {
+                  from: "mypage", // 🔥 이 줄이 핵심
+                  fromTab: "review",
+                },
               })
             }
           />

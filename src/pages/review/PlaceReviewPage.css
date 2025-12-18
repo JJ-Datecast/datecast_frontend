@@ -1,36 +1,65 @@
 /* PlaceReviewPage.css */
 
 .placeReviewPage {
-  padding: 16px;
+  position: relative;
+  padding: 24px 32px;
 }
 
+/* 🔙 상단 왼쪽 뒤로가기 버튼 */
 .placeReviewPage-back {
-  margin-bottom: 12px;
+  position: absolute;
+  top: 16px;
+  left: 16px;
+
+  border: none;
+  background: transparent;
+  font-size: 15px;
+  cursor: pointer;
+  color: #555;
 }
 
+.placeReviewPage-back:hover {
+  color: #ff7aa2;
+}
+
+/* 제목 */
 .placeReviewPage-title {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
-  margin-bottom: 16px;
+  margin-bottom: 32px;
+  text-align: center;
 }
 
+/* 빈 상태 */
 .placeReviewPage-empty {
   text-align: center;
   color: #888;
 }
 
+/* ⭐ 기존 list → grid 로 변경 */
 .placeReviewPage-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 한 줄 3개 */
+  gap: 24px;
+
+  max-width: 1000px;
+  margin: 0 auto; /* 가운데 정렬 */
 }
 
+/* 카드 */
 .placeReviewPage-item {
   padding: 12px;
-  border-radius: 8px;
+  border-radius: 12px;
   background: #f7f7f7;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.placeReviewPage-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* 카드 상단 */
 .placeReviewPage-item-top {
   display: flex;
   justify-content: space-between;
@@ -48,4 +77,17 @@
 
 .placeReviewPage-content {
   line-height: 1.5;
+}
+
+/* 📱 반응형 */
+@media (max-width: 1024px) {
+  .placeReviewPage-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .placeReviewPage-list {
+    grid-template-columns: 1fr;
+  }
 }

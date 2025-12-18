@@ -61,3 +61,20 @@
 .placeDetail-content-title-bottom span {
   font-size: 18px;
 }
+
+.placeDetail-view-button {
+  border: 1.5px solid #f48fb1;
+  padding: 6px 14px;
+  background-color: transparent;
+  color: #f48fb1;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  margin-right: 10px;
+}
+
+.placeDetail-view-button:hover {
+  background-color: rgba(244, 143, 177, 0.1);
+}

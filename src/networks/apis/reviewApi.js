@@ -1,11 +1,12 @@
 // src/networks/apis/reviewApi.js
 import apiClient from "../client/apiClient";
+import publicApi from "../client/publicApi";
 
 /* =========================================================
    1) 장소 후기 리스트 조회
    ========================================================= */
    export const getPlaceReviews = async (placeId) => {
-    const res = await apiClient.get("/api/place-reviews", {
+    const res = await publicApi.get("/api/place-reviews", {
       params: { placeId },
     });
     return res.data; // ⭐ 핵심

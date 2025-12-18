@@ -22,32 +22,44 @@ const PlaceReviewPage = () => {
   return (
     <HeaderLayout>
       <div className="placeReviewPage">
-        <button onClick={() => nav(-1)}>이전으로</button>
+        {/* 🔙 상단 왼쪽 버튼 */}
+        <button className="placeReviewPage-back" onClick={() => nav(-1)}>
+          ← 이전으로
+        </button>
 
-        <h2>후기</h2>
+        <h2 className="placeReviewPage-title">후기</h2>
 
-        {reviews.length === 0 && <p>아직 작성된 후기가 없습니다.</p>}
+        {reviews.length === 0 && (
+          <p className="placeReviewPage-empty">아직 작성된 후기가 없습니다.</p>
+        )}
 
-        {reviews.map((review, index) => {
-          console.log(`🧩 review[${index}]`, review);
+        {/* ⭐ 카드 그리드 */}
+        <div className="placeReviewPage-grid">
+          {reviews.map((review, index) => {
+            const imageSrc = review.imageUrl
+              ? `${import.meta.env.VITE_API_URL}${review.imageUrl}`
+              : "/images/default-review.png";
 
-          // ✅ 이미지 URL 처리 (핵심)
-          const imageSrc = review.imageUrl
-            ? `${import.meta.env.VITE_API_URL}${review.imageUrl}`
-            : "/images/default-review.png";
-
-          return (
-            <ReviewCard
-              key={review.reviewId}
-              image={imageSrc}
-              title={review.content}
-              location={`${review.writerNickname} · ${new Date(
-                review.createdAt
-              ).toLocaleDateString()}`}
-              onClick={() => nav(`/place/${review.placeId}`, {})}
-            />
-          );
-        })}
+            return (
+              <ReviewCard
+                key={review.reviewId}
+                image={imageSrc}
+                title={review.content}
+                location={`${review.writerNickname} · ${new Date(
+                  review.createdAt
+                ).toLocaleDateString()}`}
+                onClick={() =>
+                  nav(`/mypage/placeReviews/${review.reviewId}`, {
+                    state: {
+                      from: "place",
+                      placeId: review.placeId,
+                    },
+                  })
+                }
+              />
+            );
+          })}
+        </div>
       </div>
     </HeaderLayout>
   );

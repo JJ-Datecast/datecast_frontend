@@ -15,7 +15,9 @@ const MyPageLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [activeMenu, setActiveMenu] = useState("basic");
+  const [activeMenu, setActiveMenu] = useState(
+    location.state?.activeMenu ?? "basic"
+  );
   const [showConnect, setShowConnect] = useState(false);
   const [selectedReview, setSelectedReview] = useState(null);
 

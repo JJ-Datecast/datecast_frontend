@@ -16,7 +16,11 @@ const ReviewDetail = () => {
   /* =========================
      어디서 왔는지 (탭 복구용)
   ========================= */
-  const fromTab = location.state?.fromTab || "basic";
+
+  // 🔑 state로 전달된 값들
+  const from = location.state?.from; // "mypage" | "place"
+  const fromTab = location.state?.fromTab; // "review" 등
+  const placeId = location.state?.placeId; // 장소에서 온 경우
 
   /* =========================
      후기 상세 조회
@@ -134,11 +138,20 @@ const ReviewDetail = () => {
         <div className="detail-header">
           <button
             className="back-btn"
-            onClick={() =>
-              nav("/mypageView", {
-                state: { activeMenu: fromTab },
-              })
-            }
+            onClick={() => {
+              if (from === "place" && placeId) {
+                // 장소 → 후기 → 리뷰 상세
+                nav(`/places/${placeId}`);
+              } else if (from === "mypage" && fromTab) {
+                // 마이페이지 → 리뷰 상세
+                nav("/mypageView", {
+                  state: { activeMenu: fromTab },
+                });
+              } else {
+                // 예외 / 직접 접근
+                nav(-1);
+              }
+            }}
           >
             ←
           </button>
