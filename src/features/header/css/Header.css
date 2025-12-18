@@ -123,3 +123,39 @@
     width: auto;
   }
 }
+/* =========================
+   📱 모바일 (휴대폰)
+========================= */
+@media screen and (max-width: 600px) {
+  .Header {
+    height: 64px;
+    padding: 0 12px;
+  }
+
+  /* 로고 영역 */
+  .Header .header_left img {
+    width: 65px;
+  }
+
+  /* 검색창 숨김 (혹시 모를 중복 대비) */
+  .header_center {
+    display: none;
+  }
+
+  /* 오른쪽 영역 간격 정리 */
+  .Header .header_right {
+    gap: 8px;
+  }
+
+  /* 프로필 크기 살짝 축소 */
+  .header-profile-img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .profile-circle {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 0;
+  }
+}

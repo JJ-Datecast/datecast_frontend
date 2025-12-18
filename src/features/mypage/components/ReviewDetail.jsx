@@ -17,7 +17,7 @@ const ReviewDetail = () => {
      어디서 왔는지 (탭 복구용)
   ========================= */
 
-  // 🔑 state로 전달된 값들
+  // 🔑 state로 전달된 값들ㅌ
   const from = location.state?.from; // "mypage" | "place"
   const fromTab = location.state?.fromTab; // "review" 등
   const placeId = location.state?.placeId; // 장소에서 온 경우
