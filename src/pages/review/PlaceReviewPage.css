@@ -37,10 +37,10 @@
 }
 
 /* ⭐ 기존 list → grid 로 변경 */
-.placeReviewPage-list {
+.placeReviewPage-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* 한 줄 3개 */
-  gap: 24px;
+  gap: 2px;
 
   max-width: 1000px;
   margin: 0 auto; /* 가운데 정렬 */
