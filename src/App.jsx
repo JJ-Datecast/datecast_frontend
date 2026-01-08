@@ -30,7 +30,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<MainView />} />
-        <Route path="/oauth/callback" element={<AuthCallback />} />
+        <Route path="/auth/callback" element={<AuthCallback />} />
         <Route path="/places/:region/:district" element={<PlaceList />} />
         <Route path="/place/:placeId" element={<PlaceDetail />} />
         <Route path="/login" element={<Login />} />
