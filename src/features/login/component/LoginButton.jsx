@@ -4,7 +4,7 @@ import "../css/LoginButton.css";
 const LoginButton = () => {
   const handleGoogleLogin = () => {
     const currentOrigin = window.location.origin;
-    const redirectPath = "/oauth/callback";
+    const redirectPath = "/auth/callback";
 
     // ⭐ 초대 토큰이 유효하면 가져오기
     const pendingToken = localStorage.getItem("inviteTokenPending");
